@@ -1,5 +1,9 @@
-clear all;
+clear all; close all
 clc;
+
+
+
+
 
 %Problem Statement
 % %A refrigerator in a meat warehouse located in Durham, NH has a cooling capacity of 5kW. It must maintain
@@ -267,8 +271,9 @@ text(S_2_Summer/1000,T_2_Summer-273.15, '\leftarrow State 2')
 text(S_2a_Summer/1000,T_2a_Summer-273.15, '\leftarrow State 2a')
 text(S_3_Summer/1000-.04,T_3_Summer-273.15, 'State 3')
 text(S_4_Summer/1000-.04,T_4-273.15-2, 'State 4')
+text(1.3,40,'Cycle Starts at State 1 towards State 2','FontSize',16)
 
-title('Refridgeration Cycle during the Summer in Durham, NH')
+title('Refrigeration Cycle during the Summer in Durham, NH')
 xlabel('Entropy (KJ/K)')
 ylabel('Temperature (Celcius)')
 xlim([.8 2])
@@ -276,10 +281,11 @@ ylim([-20 80])
 hold off
 
 % Syntax
-title('Refridgeration Cycle during the Winter in Durham, NH')
-xlabel('Entropy (J/K)')
-ylabel('Temperature (Celcius)')
-legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome')
+title('Refridgeration Cycle during the Winter in Durham, NH','FontSize',20)
+xlabel('Entropy (J/K)','FontSize',20)
+ylabel('Temperature (Celcius)','FontSize',20)
+lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
+lgd.FontSize = 20;
 xlim([.8 2])
 ylim([-20 80])
 hold off
@@ -318,12 +324,14 @@ text(H_2_Summer/1000,P_2_Summer/1000, '\leftarrow State 2')
 text(H_2a_Summer/1000-25,P_2a_Summer/1000-100, 'State 2a')
 text(H_3_Summer/1000-20,P_3_Summer/1000, 'State 3')
 text(H_4_Summer/1000-20,P_4_Summer/1000-50, 'State 4')
+text(275,2500, 'Cycle Starts at State 1 towards State 2','FontSize',16)
 
 % Plot Syntax
-title('Refridgeration Cycle during the Summer and Winter in Durham, NH')
-xlabel('Enthalpy (KJ/K)')
-ylabel('Pressure (KPa)')
-legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome')
+title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
+xlabel('Enthalpy (KJ/K)','FontSize',20)
+ylabel('Pressure (KPa)','FontSize',20)
+lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
+lgd.FontSize = 20;
 xlim([0 500])
 ylim([0 5000])
 hold off
