@@ -33,7 +33,7 @@ S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, Working_Fluid);
 V_1 = 1/CoolProp.PropsSI('D', 'T', T_1, 'Q', Q_1, Working_Fluid);
 
 Q_1_Apogee = 1; % Saturated Vapor
-T_1_Apogee = Cold_Space_Apogee; % Temperature from 4 to 1
+T_1_Apogee = Cold_Space; % Temperature from 4 to 1
 P_1_Apogee = CoolProp.PropsSI('P', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
 H_1_Apogee = CoolProp.PropsSI('H', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
 U_1_Apogee = CoolProp.PropsSI('U', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
@@ -55,7 +55,7 @@ S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
 V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
 
 
-T_3_Winter = Cold_Space; % Temperature from 4 to 1
+T_3_Winter = Cold_Space + 5; % Temperature from 4 to 1
 P_3_Winter = CoolProp.PropsSI('P', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 H_3_Winter = CoolProp.PropsSI('H', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 U_3_Winter = CoolProp.PropsSI('U', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
@@ -197,8 +197,8 @@ end
 
 P_Condensor_Summer = P_2_Summer; % Constant Pressure Process
 P_Condensor_Winter = P_2_Winter; % Constant Pressure Process
-T_Condensor_Summer = linspace(T_2_Summer,T_2a_Summer+.25,1000); % Added constant .5 so it does not go to the mixture
-T_Condensor_Winter = linspace(T_2_Winter,T_2a_Winter+.25,1000); % Added constant .5 so it does not go to the mixture
+T_Condensor_Summer = linspace(T_2_Summer,T_2a_Summer+.25,1000); % Added constant .25 so it does not go to the mixture
+T_Condensor_Winter = linspace(T_2_Winter,T_2a_Winter+.25,1000); % Added constant .25 so it does not go to the mixture
 S_Condensor_Summer = zeros(length(P_Condensor_Summer));
 S_Condensor_Winter = zeros(length(P_Condensor_Summer));
 H_Condensor_Summer = zeros(length(P_Condensor_Summer));
@@ -302,7 +302,7 @@ text(S_4_Winter/1000-.04,T_4_Winter-273.15, 'State 4')
 
 % Summer
 plot(S_Compressor_Summer/1000,T_Compressor_Summer,'r',S_Condensor_Summer/1000, T_Condensor_Summer-273.15,'r',S_Condensora_Summer/1000, T_Condensora_Summer-273.15,'r',S_Valve_Summer/1000,T_Valve_Summer-273.15,'r',S_Evaporator_Summer/1000, T_Evaporator_Summer-273.15,'m')
-
+plot(S_Compressor_Winter/1000,T_Compressor_Winter,'m')
 %text(S_1/1000,T_1-273.15, '\leftarrow State 1')
 text(S_2_Summer/1000,T_2_Summer-273.15, '\leftarrow State 2')
 text(S_2a_Summer/1000,T_2a_Summer-273.15, '\leftarrow State 2a')
@@ -357,6 +357,7 @@ H_Condensor_Summer = [H_2_Summer,H_2a_Summer];
 P_Valve_Summer = [P_3_Summer,P_4_Summer];
 H_Valve_Summer = [H_3_Summer,H_4_Summer];
 plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',H_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',H_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',H_Valve_Summer/1000,P_Valve_Summer/1000,'r',H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
+plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
 text(H_2_Summer/1000,P_2_Summer/1000, '\leftarrow State 2')
 text(H_2a_Summer/1000-25,P_2a_Summer/1000-100, 'State 2a')
 text(H_3_Summer/1000-20,P_3_Summer/1000, 'State 3')
@@ -403,6 +404,7 @@ V_Condensor_Summer = [V_2_Summer,V_2a_Summer];
 P_Valve_Summer = [P_3_Summer,P_4_Summer];
 V_Valve_Summer = [V_3_Summer,V_4_Summer];
 plot(V_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',V_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',V_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',V_Valve_Summer/1000,P_Valve_Summer/1000,'r',V_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
+plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
 text(V_2_Summer/1000,P_2_Summer/1000+20, '\leftarrow State 2')
 text(V_3_Summer/1000+.000001,P_3_Summer/1000-60, 'State 3')
 text(V_4_Summer/1000+.000001,P_4_Summer/1000-60, 'State 4')
@@ -475,7 +477,7 @@ for i = Working_Fluids
         
         % Finding all values of the fluid at location 3
         Q_3 = 0; % Saturated Liquid
-        T_3_Summer = temps; % Temperature from 4 to 1
+        T_3_Summer = temps + 5; % Temperature from 4 to 1
         P_3_Summer = CoolProp.PropsSI('P', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
         H_3_Summer = CoolProp.PropsSI('H', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
         U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
