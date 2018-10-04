@@ -1,23 +1,17 @@
 clear all; close all
 clc;
 
-% Two extreme temperatures
-
 Working_Fluid = {'R410a'};
 Working_Fluid = Working_Fluid{1};
-%Working_Fluid = string(Working_Fluid);
-%Working_Fluid = "'" + Working_Fluid + "'";
 Max_Pressure  = 4900000;
 
 %%%%%%%%%%%%%
 % Constants for the Refridgeration Cycle for Durham, NH
 %%%%%%%%%%%%%
 
-
 Cold_Space = 273+20; % Kelvin - Temperature of Cold Space of Pod
 Hot_Space_Liftoff  = 273 + 49; % Hottest Outside Environment
 Cold_Space_Apogee   = 273 - 18; % Coldest Outside Environment
-
 
 %%%%%%%%%%%%%
 % Location 1 - Between Evaporator and Compressor
@@ -40,7 +34,6 @@ U_1_Apogee = CoolProp.PropsSI('U', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
 S_1_Apogee = CoolProp.PropsSI('S', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
 V_1_Apogee = 1/CoolProp.PropsSI('D', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid);
 
-
 %%%%%%%%%%%%%
 % Location 3 - Between Condensor and Expansion Valve - Saturated Liquid
 %%%%%%%%%%%%%
@@ -54,14 +47,12 @@ U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
 S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
 V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid);
 
-
 T_3_Winter = Cold_Space + 5; % Temperature from 4 to 1
 P_3_Winter = CoolProp.PropsSI('P', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 H_3_Winter = CoolProp.PropsSI('H', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 U_3_Winter = CoolProp.PropsSI('U', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 S_3_Winter = CoolProp.PropsSI('S', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
 V_3_Winter = 1/CoolProp.PropsSI('D', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid);
-
 
 %%%%%%%%%%%%%
 % Location 2 - Between Condensor and Expansion Valve Super-Heated Vapor
@@ -81,8 +72,6 @@ T_2_Winter = CoolProp.PropsSI('T', 'P', P_2_Winter, 'S', S_2_Winter, Working_Flu
 H_2_Winter = CoolProp.PropsSI('H', 'P', P_2_Winter, 'S', S_2_Winter, Working_Fluid);
 U_2_Winter = CoolProp.PropsSI('U', 'P', P_2_Winter, 'S', S_2_Winter, Working_Fluid);
 V_2_Winter = 1/CoolProp.PropsSI('D', 'P', P_2_Winter, 'S', S_2_Winter, Working_Fluid);
-
-
 
 %%%%%%%%%%%%%
 % Location 2a - On Vapor Dome During the process 2 to 3 in condensor
@@ -104,8 +93,6 @@ H_2a_Winter = CoolProp.PropsSI('H', 'P', P_2a_Winter, 'Q', Q_2a, Working_Fluid);
 U_2a_Winter = CoolProp.PropsSI('U', 'P', P_2a_Winter, 'Q', Q_2a, Working_Fluid);
 V_2a_Winter = 1/CoolProp.PropsSI('D', 'P', P_2a_Winter, 'Q', Q_2a, Working_Fluid);
 
-
-
 %%%%%%%%%%%%%
 % Location 4 - Mixture between the expansion valve and evaporator
 %%%%%%%%%%%%%
@@ -125,14 +112,11 @@ U_4_Winter = CoolProp.PropsSI('U', 'P', P_4_Winter, 'H', H_4_Winter, Working_Flu
 S_4_Winter = CoolProp.PropsSI('S', 'P', P_4_Winter, 'H', H_4_Winter, Working_Fluid);
 V_4_Winter = 1/CoolProp.PropsSI('D', 'P', P_4_Winter, 'H', H_4_Winter, Working_Fluid);
 
-
-
 %%%%%%%%%%%%%
 % Calculations of the Vapor Dome for the Refridgeration Cycle
 % Will be plotted as a T-s and P-h Diagram
 % Two curves will be plotted for each graph, one for the Saturated Liquid and one for Saturdated Vapor Sections
 %%%%%%%%%%%%%
-
 
 % Constant Variables and Pressure Array to Calculate Graph Values
 Q_SL = 0; % Saturated Liquid
@@ -148,7 +132,6 @@ S_SV = zeros(length(P_SL_SV));
 H_SV = zeros(length(P_SL_SV));
 V_SV = zeros(length(P_SL_SV));
 
-
 % Looping 1000 times to provide values for the Vapor Dome Curves for T, s, h and v. P array will be graphed with them
 for index=1:1000
     T_SL(index) = CoolProp.PropsSI('T', 'P', P_SL_SV(index), 'Q', Q_SL, Working_Fluid) -273;
@@ -161,11 +144,9 @@ for index=1:1000
     V_SV(index) = 1/CoolProp.PropsSI('D','P',P_SL_SV(index), 'Q', Q_SV, Working_Fluid);
 end
 
-
 %%%%%%%%%%%%%
 % Calculations of Every Point during the Refridgeration Cycle
 %%%%%%%%%%%%%
-
 
 % Compressor Points - Points 1 to 2 - Constant Entropy
 
@@ -181,6 +162,7 @@ H_Compressor_Summer = zeros(length(P_Compressor_Summer));
 H_Compressor_Winter = zeros(length(P_Compressor_Summer));
 V_Compressor_Summer = zeros(length(P_Compressor_Summer));
 V_Compressor_Winter = zeros(length(P_Compressor_Summer));
+
 for index = 1:1000
     T_Compressor_Summer(index) = CoolProp.PropsSI('T', 'P', P_Compressor_Summer(index), 'S', S_Compressor_Liftoff, Working_Fluid) - 273;
     T_Compressor_Winter(index) = CoolProp.PropsSI('T', 'P', P_Compressor_Winter(index), 'S', S_Compressor_Apogee, Working_Fluid) - 273;
@@ -191,7 +173,6 @@ for index = 1:1000
     V_Compressor_Summer(index) = 1/CoolProp.PropsSI('D', 'P', P_Compressor_Summer(index), 'S', S_Compressor_Liftoff, Working_Fluid);
     V_Compressor_Winter(index) = 1/CoolProp.PropsSI('D', 'P', P_Compressor_Winter(index), 'S', S_Compressor_Apogee, Working_Fluid);
 end
-
 
 % Condensor - Points 2 to 2a - Constant Pressure
 
@@ -227,12 +208,6 @@ H_Condensora_Winter = [H_2a_Winter,H_3_Winter];
 V_Condensora_Summer = [V_2a_Summer,V_3_Summer];
 V_Condensora_Winter = [V_2a_Winter,V_3_Winter];
 
-
-
-
-
-
-
 % Expansion Valve - Points 3 to 4 - Constant Enthalpy
 
 H_Valve_Summer = H_3_Summer; % Constant Enthlpy Process
@@ -254,8 +229,6 @@ for index = 1:1000
     V_Valve_Winter(index) = 1/CoolProp.PropsSI('D', 'H', H_Valve_Winter, 'P', P_Valve_Winter(index), Working_Fluid);
 end
 
-
-
 % Evaporator - Points 4 to 1 - Constant Temperature - Straight Line inside Vapor Dome
 
 T_Evaporator_Summer = [T_4,T_1]; % Constant Temperature
@@ -268,17 +241,6 @@ H_Evaporator_Summer = [H_4_Summer,H_1];
 H_Evaporator_Winter = [H_4_Winter,H_1_Apogee];
 V_Evaporator_Summer = [V_4_Summer,V_1];
 V_Evaporator_Winter = [V_4_Winter,V_1_Apogee];
-
-
-
-
-
-
-
-
-
-
-
 
 %%%%%%%%%%%%%
 % Graphing the T-s and P-h Graphs with Vapor Dome and Labels
@@ -295,20 +257,17 @@ hold on
 plot(S_Compressor_Winter/1000,T_Compressor_Winter,'b',S_Condensor_Winter/1000, T_Condensor_Winter-273.15,'b',S_Condensora_Winter/1000, T_Condensora_Winter-273.15,'b',S_Valve_Winter/1000,T_Valve_Winter-273.15,'b',S_Evaporator_Winter/1000, T_Evaporator_Winter-273.15,'b')
 text(S_1_Apogee/1000,T_1_Apogee-273.15, '\leftarrow State 1')
 text(S_2_Winter/1000,T_2_Winter-273.15, '\leftarrow State 2')
-text(S_2a_Winter/1000,T_2a_Winter-273.15, '\leftarrow State 1','FontSize', 8)
-text(S_2a_Winter/1000+.02,T_2a_Winter-273.15-3, 'State 2a','FontSize', 8)
+text(S_2a_Winter/1000-.025,T_2a_Winter-273.15-1, 'State 2a','FontSize', 8)
 text(S_3_Winter/1000-.04,T_3_Winter-273.15, 'State 3')
-text(S_4_Winter/1000-.04,T_4_Winter-273.15, 'State 4')
+text(S_4_Winter/1000-.02,T_4_Winter-273.15-1, 'State 4')
 
 % Summer
 plot(S_Compressor_Summer/1000,T_Compressor_Summer,'r',S_Condensor_Summer/1000, T_Condensor_Summer-273.15,'r',S_Condensora_Summer/1000, T_Condensora_Summer-273.15,'r',S_Valve_Summer/1000,T_Valve_Summer-273.15,'r',S_Evaporator_Summer/1000, T_Evaporator_Summer-273.15,'m')
 plot(S_Compressor_Winter/1000,T_Compressor_Winter,'m')
-%text(S_1/1000,T_1-273.15, '\leftarrow State 1')
 text(S_2_Summer/1000,T_2_Summer-273.15, '\leftarrow State 2')
 text(S_2a_Summer/1000,T_2a_Summer-273.15, '\leftarrow State 2a')
 text(S_3_Summer/1000-.04,T_3_Summer-273.15, 'State 3')
-text(S_4_Summer/1000-.04,T_4-273.15-2, 'State 4')
-text(1.3,40,'Cycle Starts at State 1 towards State 2','FontSize',16)
+text(S_4_Summer/1000-.01,T_4-273.15-1, 'State 4')
 
 title('Refrigeration Cycle during the Summer in Durham, NH')
 xlabel('Entropy (KJ/K)')
@@ -318,24 +277,23 @@ ylim([-20 80])
 hold off
 
 % Syntax
-title('Refridgeration Cycle during the Winter in Durham, NH','FontSize',20)
-xlabel('Entropy (J/K)','FontSize',20)
-ylabel('Temperature (Celcius)','FontSize',20)
+%title('Refridgeration Cycle during the Winter in Durham, NH','FontSize',20)
+xlabel('Entropy (J/K)','FontSize',22)
+set(gca,'fontsize',20)
+ylabel('Temperature (Celcius)','FontSize',22)
+set(gca,'fontsize',20)
 lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
-lgd.FontSize = 20;
-xlim([.8 2])
-ylim([-20 80])
+lgd.FontSize = 22;
+xlim([.9 1.9])
+ylim([0 75])
 hold off
-
-
-
-
 
 % P-h Graph for the Summer
 figure(2)
 % Vapor Dome
 plot(H_SL/1000,P_SL_SV/1000,'k',H_SV/1000,P_SL_SV/1000,'k')
 hold on
+
 % Processes
 
 %Winter
@@ -346,10 +304,8 @@ H_Valve_Winter = [H_3_Winter,H_4_Winter];
 plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',H_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',H_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',H_Valve_Winter/1000,P_Valve_Winter/1000,'b',H_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
 text(H_1_Apogee/1000,P_1_Apogee/1000, '\leftarrow State 1')
 text(H_2_Winter/1000,P_2_Winter/1000, '\leftarrow State 2')
-text(H_2a_Winter/1000,P_2a_Winter/1000-100, 'State 1')
-text(H_2a_Winter/1000-20,P_2a_Winter/1000-100, 'State 2a')
-text(H_3_Winter/1000-20,P_3_Winter/1000, 'State 3')
-text(H_4_Winter/1000-20,P_4_Winter/1000, 'State 4')
+text(H_3_Winter/1000-12,P_3_Winter/1000, 'State 3')
+text(H_4_Winter/1000-5,P_4_Winter/1000-35, 'State 4')
 
 % Summer
 P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
@@ -359,32 +315,27 @@ H_Valve_Summer = [H_3_Summer,H_4_Summer];
 plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',H_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',H_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',H_Valve_Summer/1000,P_Valve_Summer/1000,'r',H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
 plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
 text(H_2_Summer/1000,P_2_Summer/1000, '\leftarrow State 2')
-text(H_2a_Summer/1000-25,P_2a_Summer/1000-100, 'State 2a')
-text(H_3_Summer/1000-20,P_3_Summer/1000, 'State 3')
-text(H_4_Summer/1000-20,P_4_Summer/1000-50, 'State 4')
-text(275,2500, 'Cycle Starts at State 1 towards State 2','FontSize',16)
+text(H_3_Summer/1000-12,P_3_Summer/1000, 'State 3')
+text(H_4_Summer/1000-5,P_4_Summer/1000-50, 'State 4')
 
 % Plot Syntax
-title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
-xlabel('Enthalpy (KJ/K)','FontSize',20)
-ylabel('Pressure (KPa)','FontSize',20)
+%title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
+xlabel('Enthalpy (KJ/K)','FontSize',22)
+set(gca,'fontsize',20)
+ylabel('Pressure (KPa)','FontSize',22)
+set(gca,'fontsize',20)
 lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
-lgd.FontSize = 20;
-xlim([0 500])
-ylim([0 5000])
+lgd.FontSize = 22;
+xlim([150 475])
+ylim([500 5000])
 hold off
-
-
-
-
-
-
 
 % P-h Graph for the Summer
 figure(3)
 % Vapor Dome
 plot(V_SL/1000,P_SL_SV/1000,'k',V_SV/1000,P_SL_SV/1000,'k')
 hold on
+
 % Processes
 
 %Winter
@@ -395,8 +346,8 @@ V_Valve_Winter = [V_3_Winter,V_4_Winter];
 plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',V_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',V_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',V_Valve_Winter/1000,P_Valve_Winter/1000,'b',V_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
 text(V_1/1000,P_1/1000+20, '\leftarrow State 1')
 text(V_2_Winter/1000,P_2_Winter/1000+20, '\leftarrow State 2')
-text(V_3_Winter/1000+.000001,P_3_Winter/1000-30, 'State 3')
-text(V_4_Winter/1000+.000001,P_4_Winter/1000-30, 'State 4')
+text(V_3_Winter/1000+.00000035,P_3_Winter/1000-35, 'State 3')
+text(V_4_Winter/1000,P_4_Winter/1000-35, 'State 4')
 
 % Summer
 P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
@@ -406,27 +357,25 @@ V_Valve_Summer = [V_3_Summer,V_4_Summer];
 plot(V_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',V_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',V_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',V_Valve_Summer/1000,P_Valve_Summer/1000,'r',V_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
 plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
 text(V_2_Summer/1000,P_2_Summer/1000+20, '\leftarrow State 2')
-text(V_3_Summer/1000+.000001,P_3_Summer/1000-60, 'State 3')
-text(V_4_Summer/1000+.000001,P_4_Summer/1000-60, 'State 4')
+text(V_3_Summer/1000+.0000005,P_3_Summer/1000-65, 'State 3')
+text(V_4_Summer/1000,P_4_Summer/1000-70, 'State 4')
 text(275,2500, 'Cycle Starts at State 1 towards State 2','FontSize',16)
 
 % Plot Syntax
-title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
-xlabel('Specific Volume (m3/Kg)','FontSize',20)
-ylabel('Pressure (KPa)','FontSize',20)
+%title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
+xlabel('Specific Volume (m3/Kg)','FontSize',22)
+set(gca,'fontsize',20)
+ylabel('Pressure (KPa)','FontSize',22)
+set(gca,'fontsize',20)
 lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
-lgd.FontSize = 20;
-xlim([.0000005 .00008])
-ylim([0 5000])
+lgd.FontSize = 22;
+xlim([.0000005 .000025])
+ylim([1000 5000])
 hold off
 
-%%%%% End of 1st Bullet Point of 3 graphs
-
-
-%%%%% Start of COP vs Outside Temperature for 3 Different Refrigerants
-
-
-
+%%%%%%%%%%%%%
+% COP vs Outside Temperature for 3 Different Refrigerants
+%%%%%%%%%%%%%
 
 Working_Fluid = {'R410a'};
 Working_Fluid_2 = {'R290'};
@@ -533,24 +482,15 @@ for i = Working_Fluids
         
         COP_Summer = (H_1 - H_4_Summer)/(H_2_Summer - H_1);
         
-        
         % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
         
-        
         dH_Evaporator_Summer = H_1 - H_4_Summer;
-        
         Cooling_Capacity = 5000; % Watts
         Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
-        
-        
         
         % Compressor Power
         
         Compressor_Power_Summer = Mass_Flow_Rate_Summer * (H_2_Summer - H_1); % [J/s]
-        
-        
-        
-        
         Final_Data_Names  = ['COP_Summer',' Mass_Flow_Rate_Summer',' Compressor_Power_Summer'];
         Final_Data_Values = [COP_Summer,Mass_Flow_Rate_Summer,Compressor_Power_Summer];
         
@@ -572,13 +512,20 @@ for pos = 1:1000
     COP_R290(pos) = abs(COP_R290(pos));
     COP_Ammonia(pos) = abs(COP_Ammonia(pos));
 end
+
+% Plotting COP vs Outside Temperature
 figure(4)
 semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'b',COP_Ammonia,Outside_Temperature-273,'k')
+
 % Plot Syntax
-title('COP of a Thermal Mangement System with Varying Outside Temperature','FontSize',20)
-xlabel('Coefficient of Performance','FontSize',20)
-ylabel('Temperature','FontSize',20)
+%title('COP of a Thermal Mangement System with Varying Outside Temperature','FontSize',18)
+xlabel('Coefficient of Performance','FontSize',22)
+set(gca,'fontsize',20)
+ylabel('Temperature','FontSize',22)
+set(gca,'fontsize',20)
+xlim([5 1000])
+ylim([-20 50])
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{black} Ammonia');
-lgd.FontSize = 20;
+lgd.FontSize = 22;
 hold off
 
