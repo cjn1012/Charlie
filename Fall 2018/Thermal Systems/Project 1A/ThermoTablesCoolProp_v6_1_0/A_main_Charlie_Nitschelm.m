@@ -1,322 +1,322 @@
-clear all; close all
-clc;
-
-
-%%%%%%%%%%%%%
-% COP vs Outside Temperature for 3 Different Refrigerants
-%%%%%%%%%%%%%
-
-Working_Fluid_1  = {'R410a'};
-Working_Fluid_2  = {'R290'};
-Working_Fluid_3  = {'Ammonia'};
-Working_Fluid_4  = {'Water'};
-Working_Fluid_5  = {'R22'};
-Working_Fluid_6  = {'R114'};
-Working_Fluid_7  = {'IsoButane'};
-Working_Fluid_8  = {'MDM'};
-Working_Fluid_9  = {'R12'};
-Working_Fluid_10 = {'R143a'};
-Working_Fluid_11 = {'R123'};
-Working_Fluid_12 = {'Acetone'};
-Working_Fluid_13 = {'R404a'};
-Working_Fluid_14 = {'R125'};
-Working_Fluid_15 = {'R134a'};
-Working_Fluids   = [Working_Fluid_1,Working_Fluid_2,Working_Fluid_3,Working_Fluid_4,Working_Fluid_5,Working_Fluid_6,Working_Fluid_7,...
-    Working_Fluid_8,Working_Fluid_9,Working_Fluid_10,Working_Fluid_11,Working_Fluid_12,Working_Fluid_13,Working_Fluid_14,Working_Fluid_15];
-
-Outside_Temperature = linspace(273 + 18 - 1, 273 + 50 + 2, 1000);
-
-COP_R410a       = zeros(1000);
-COP_R290        = zeros(1000);
-COP_Ammonia     = zeros(1000);
-COP_Water       = zeros(1000);
-COP_R22         = zeros(1000);
-COP_R114        = zeros(1000);
-COP_IsoButane   = zeros(1000);
-COP_MDM         = zeros(1000);
-COP_R12         = zeros(1000);
-COP_R143a       = zeros(1000);
-COP_R123        = zeros(1000);
-COP_Acetone     = zeros(1000);
-COP_R404a       = zeros(1000);
-COP_R125        = zeros(1000);
-COP_R134a       = zeros(1000);
-
-MFR_R410a       = zeros(1000);
-MFR_R290        = zeros(1000);
-MFR_Ammonia     = zeros(1000);
-MFR_Water       = zeros(1000);
-MFR_R22         = zeros(1000);
-MFR_R114        = zeros(1000);
-MFR_IsoButane   = zeros(1000);
-MFR_MDM         = zeros(1000);
-MFR_R12         = zeros(1000);
-MFR_R143a       = zeros(1000);
-MFR_R123        = zeros(1000);
-MFR_Acetone     = zeros(1000);
-MFR_R404a       = zeros(1000);
-MFR_R125        = zeros(1000);
-MFR_R134a       = zeros(1000);
-
-j=1;
-for i = Working_Fluids
-    k=1;
-    for temps = Outside_Temperature
-        
-        Working_Fluid_1 = Working_Fluids{j};
-        %%%%%%%%%%%%%
-        % Constants for the Refridgeration Cycle for Durham, NH
-        %%%%%%%%%%%%%
-        
-        Cold_Space = 273+20; % Kelvin - Temperature of Cold Space of Pod
-        
-        %%%%%%%%%%%%%
-        % Location 1 - Between Evaporator and Compressor
-        %%%%%%%%%%%%%
-        
-        % Finding all values of the fluid at location 1
-        Q_1 = 1; % Saturated Vapor
-        T_1 = Cold_Space; % Temperature from 4 to 1
-        P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
-        H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
-        U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
-        S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
-        V_1 = 1/CoolProp.PropsSI('D', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
-        
-        %%%%%%%%%%%%%
-        % Location 3 - Between Condensor and Expansion Valve - Saturated Liquid
-        %%%%%%%%%%%%%
-        
-        % Finding all values of the fluid at location 3
-        Q_3 = 0; % Saturated Liquid
-        T_3_Summer = temps + 5; % Temperature from 4 to 1
-        P_3_Summer = CoolProp.PropsSI('P', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
-        H_3_Summer = CoolProp.PropsSI('H', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
-        U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
-        S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
-        V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
-        
-
-        %%%%%%%%%%%%%
-        % Location 2 - Between Condensor and Expansion Valve Super-Heated Vapor
-        %%%%%%%%%%%%%
-        
-        % Finding all values of the fluid at location 2
-        S_2_Summer = S_1; % Constant Entropy
-        P_2_Summer = P_3_Summer; % Constant Pressure Isobar
-        T_2_Summer = CoolProp.PropsSI('T', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
-        H_2_Summer = CoolProp.PropsSI('H', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
-        U_2_Summer = CoolProp.PropsSI('U', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
-        V_2_Summer = 1/CoolProp.PropsSI('D', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
-        
-        %%%%%%%%%%%%%
-        % Location 2a - On Vapor Dome During the process 2 to 3 in condensor
-        %%%%%%%%%%%%%
-        
-        % Finding all values of the fluid at location 2a
-        Q_2a=1; % On Vapor Dome as Saturdated Vapor
-        P_2a_Summer = P_2_Summer; % Isobar = Constant Pressure
-        T_2a_Summer = T_3_Summer; % Constant Temperature from T3
-        S_2a_Summer = CoolProp.PropsSI('S', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
-        H_2a_Summer = CoolProp.PropsSI('H', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
-        U_2a_Summer = CoolProp.PropsSI('U', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
-        V_2a_Summer = 1/CoolProp.PropsSI('D', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
-        
-        %%%%%%%%%%%%%
-        % Location 4 - Mixture between the expansion valve and evaporator
-        %%%%%%%%%%%%%
-        
-        % Finding all values of the fluid at location 4
-        T_4 = T_1; % Constant Temperature from 4 to 1 Process
-        H_4_Summer = H_3_Summer; % Expansion Valve is ~ constant enthalpy process
-        P_4_Summer = P_1; % Isobaric Process
-        U_4_Summer = CoolProp.PropsSI('U', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
-        S_4_Summer = CoolProp.PropsSI('S', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
-        V_4_Summer = 1/CoolProp.PropsSI('D', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
-        
-        % Co-Efficient of Performance where COP = (QL/Wnet) = ((h1-h4)/(h2-h1))
-        
-        COP_Summer = (H_1 - H_4_Summer)/(H_2_Summer - H_1);
-        
-        % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
-        
-        dH_Evaporator_Summer = H_1 - H_4_Summer;
-        Cooling_Capacity = 500; % Watts
-        Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
-        
-        % Compressor Power
-        
-        Compressor_Power_Summer = Mass_Flow_Rate_Summer * (H_2_Summer - H_1); % [J/s]
-      
-        if j == 1
-            COP_R410a(k)   = COP_Summer;
-            MFR_R410a(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 2
-            COP_R290(k)   = COP_Summer;
-            MFR_R290(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 3
-            COP_Ammonia(k)   = COP_Summer;
-            MFR_Ammonia(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 4
-            COP_Water(k)   = COP_Summer;
-            MFR_Water(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 5
-            COP_R22(k)   = COP_Summer;
-            MFR_R22(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 6
-            COP_R114(k)   = COP_Summer; 
-            MFR_R114(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 7
-            COP_IsoButane(k)   = COP_Summer;
-            MFR_IsoButane(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 8
-            COP_MDM(k)   = COP_Summer;
-            MFR_MDM(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 9
-            COP_R12(k)   = COP_Summer;
-            MFR_R12(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 10
-            COP_R143a(k)   = COP_Summer;
-            MFR_R143a(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 11
-            COP_R123(k)   = COP_Summer;
-            MFR_R123(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 12
-            COP_Acetone(k)   = COP_Summer;
-            MFR_Acetone(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 13
-            COP_R404a(k)   = COP_Summer;
-            MFR_R404a(k)   = Mass_Flow_Rate_Summer;
-        elseif j == 14
-            COP_R125(k)   = COP_Summer;
-            MFR_R125(k)   = Mass_Flow_Rate_Summer;
-        else
-            COP_R134a(k)   = COP_Summer;
-            MFR_R134a(k)   = Mass_Flow_Rate_Summer;
-        end
-        
-        k=k+1;
-    end
-    j=j+1;
-end
-
-for pos = 1:1000
-    COP_R410a(pos) = abs(COP_R410a(pos));
-    COP_R290(pos) = abs(COP_R290(pos));
-    COP_Ammonia(pos) = abs(COP_Ammonia(pos));
-    COP_Water(pos) = abs(COP_Water(pos));
-    COP_R22(pos) = abs(COP_R22(pos));
-    COP_R114(pos) = abs(COP_R114(pos));
-    COP_IsoButane(pos) = abs(COP_IsoButane(pos));
-    COP_MDM(pos) = abs(COP_MDM(pos));
-    COP_R12(pos) = abs(COP_R12(pos));
-    COP_R143a(pos) = abs(COP_R143a(pos));
-    COP_R123(pos) = abs(COP_R123(pos));
-    COP_Acetone(pos) = abs(COP_Acetone(pos));
-    COP_R404a(pos) = abs(COP_R404a(pos));
-    COP_R125(pos) = abs(COP_R125(pos));
-    COP_R134a(pos) = abs(COP_R134a(pos));
-end
-
-% Plotting COP vs Outside Temperature
-figure(1)
-% R Refrigerants
-semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'r')
-semilogx(COP_R404a,Outside_Temperature-273,'r',COP_R125,Outside_Temperature-273,'r',COP_R134a,Outside_Temperature-273,'r',COP_R22,Outside_Temperature-273,'r')
-semilogx(COP_R123,Outside_Temperature-273,'r',COP_R12,Outside_Temperature-273,'r',COP_R143a,Outside_Temperature-273,'r',COP_R114,Outside_Temperature-273,'r')
-hold on
-semilogx(COP_Water,Outside_Temperature-273,'b')
-semilogx(COP_IsoButane,Outside_Temperature-273,'k')
-semilogx(COP_MDM,Outside_Temperature-273,'m')
-semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'g')
-
-plot([5,100],[20,20],[5,150],[50,50])
-hold off
-text(20,49,'Takeoff Environment Temperature')
-text(20,19,'Cold Space Environment Temperature')
-
-
-% Plot Syntax
-
-xlabel('Coefficient of Performance','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Temperature','FontSize',22)
-set(gca,'fontsize',20)
-xlim([5 100])
-ylim([15 55])
-lgd = legend('\color{red} R-Refrigerants','\color{blue} Water Refrigerants','\color{black} IsoButane Refrigerants','\color{magenta} MDM Refrigerants','\color{green} Acetone/Ammonia');
-lgd.FontSize = 22;
-hold off
-
-% Plotting COP vs Outside Temperature
-figure(2)
-% R Refrigerants
-semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'r')
-semilogx(COP_R404a,Outside_Temperature-273,'r',COP_R125,Outside_Temperature-273,'r',COP_R134a,Outside_Temperature-273,'r',COP_R22,Outside_Temperature-273,'r')
-semilogx(COP_R123,Outside_Temperature-273,'r',COP_R12,Outside_Temperature-273,'r',COP_R143a,Outside_Temperature-273,'r',COP_R114,Outside_Temperature-273,'r')
-hold on
-semilogx(COP_Water,Outside_Temperature-273,'b')
-semilogx(COP_IsoButane,Outside_Temperature-273,'k')
-semilogx(COP_MDM,Outside_Temperature-273,'m')
-semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'g')
-
-plot([5,100],[20,20],[5,150],[50,50])
-hold off
-text(20,49,'Takeoff Environment Temperature')
-text(20,19,'Cold Space Environment Temperature')
-
-
-% Plot Syntax
-xlabel('Coefficient of Performance','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Temperature','FontSize',22)
-set(gca,'fontsize',20)
-xlim([5 100])
-ylim([15 55])
-hold off
-% Create a list from best to worst refrigerants in respect to its COP
-
-COP_R410a_Max       = COP_R410a(915); % The index selection for Takeoff Temperature
-COP_R290_Max        = COP_R290(915);
-COP_Ammonia_Max     = COP_Ammonia(915);
-COP_Water_Max       = COP_Water(915);
-COP_R22_Max         = COP_R22(915);
-COP_R114_Max        = COP_R114(915);
-COP_IsoButane_Max   = COP_IsoButane(915);
-COP_MDM_Max         = COP_MDM(915);
-COP_R12_Max         = COP_R12(915);
-COP_R143a_Max       = COP_R143a(915);
-COP_R123_Max        = COP_R123(915);
-COP_Acetone_Max     = COP_Acetone(915);
-COP_R404a_Max       = COP_R404a(915);
-COP_R125_Max        = COP_R125(915);
-COP_R134a_Max       = COP_R134a(915);
-
-COP_TakeOff_Sorted =sortrows({COP_R410a_Max,'R410a';COP_R290_Max,'R290';COP_Ammonia_Max,'Ammonia';COP_Water_Max,'Water';COP_R22_Max,'R22';COP_R114_Max,'R114';...
-    COP_IsoButane_Max,'IsoButane';COP_MDM_Max,'MDM';COP_R12_Max,'R12';COP_R143a_Max,'R143a';COP_R123_Max,'R123';COP_Acetone_Max,'Acetone';COP_R404a_Max,'R404a';COP_R125_Max,'R125';COP_R134a_Max,'R125'},1);
-figure(3)
-plot(Outside_Temperature-273,MFR_Acetone,'r',Outside_Temperature-273,MFR_R123,'b',Outside_Temperature-273,MFR_Ammonia,'m',Outside_Temperature-273,MFR_R290,'g')
-xlabel('Temperature (C)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Mass Flow Rate (kg/s)','FontSize',22)
-set(gca,'fontsize',20)
-lgd = legend('\color{red} Acetone','\color{blue} R123','\color{magenta} Ammonia','\color{green} R290');
-lgd.FontSize = 22;
-hold off
-
-figure(4)
-plot(Outside_Temperature-273,MFR_Acetone,'r',Outside_Temperature-273,MFR_R123,'b',Outside_Temperature-273,MFR_Ammonia,'m',Outside_Temperature-273,MFR_R290,'g')
-xlabel('Temperature (C)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Mass Flow Rate (kg/s)','FontSize',22)
-set(gca,'fontsize',20)
-
-hold off
-
-
-%Once the best COPs are chosen from the above analysis, the final full analysis of the desired working fluid is calculated and plotted
-
-
+% clear all; close all
+% clc;
+% 
+% 
+% %%%%%%%%%%%%%
+% % COP vs Outside Temperature for 3 Different Refrigerants
+% %%%%%%%%%%%%%
+% 
+% Working_Fluid_1  = {'R410a'};
+% Working_Fluid_2  = {'R290'};
+% Working_Fluid_3  = {'Ammonia'};
+% Working_Fluid_4  = {'Water'};
+% Working_Fluid_5  = {'R22'};
+% Working_Fluid_6  = {'R114'};
+% Working_Fluid_7  = {'IsoButane'};
+% Working_Fluid_8  = {'MDM'};
+% Working_Fluid_9  = {'R12'};
+% Working_Fluid_10 = {'R143a'};
+% Working_Fluid_11 = {'R123'};
+% Working_Fluid_12 = {'Acetone'};
+% Working_Fluid_13 = {'R404a'};
+% Working_Fluid_14 = {'R125'};
+% Working_Fluid_15 = {'R134a'};
+% Working_Fluids   = [Working_Fluid_1,Working_Fluid_2,Working_Fluid_3,Working_Fluid_4,Working_Fluid_5,Working_Fluid_6,Working_Fluid_7,...
+%     Working_Fluid_8,Working_Fluid_9,Working_Fluid_10,Working_Fluid_11,Working_Fluid_12,Working_Fluid_13,Working_Fluid_14,Working_Fluid_15];
+% 
+% Outside_Temperature = linspace(273 + 18 - 1, 273 + 50 + 2, 1000);
+% 
+% COP_R410a       = zeros(1000);
+% COP_R290        = zeros(1000);
+% COP_Ammonia     = zeros(1000);
+% COP_Water       = zeros(1000);
+% COP_R22         = zeros(1000);
+% COP_R114        = zeros(1000);
+% COP_IsoButane   = zeros(1000);
+% COP_MDM         = zeros(1000);
+% COP_R12         = zeros(1000);
+% COP_R143a       = zeros(1000);
+% COP_R123        = zeros(1000);
+% COP_Acetone     = zeros(1000);
+% COP_R404a       = zeros(1000);
+% COP_R125        = zeros(1000);
+% COP_R134a       = zeros(1000);
+% 
+% MFR_R410a       = zeros(1000);
+% MFR_R290        = zeros(1000);
+% MFR_Ammonia     = zeros(1000);
+% MFR_Water       = zeros(1000);
+% MFR_R22         = zeros(1000);
+% MFR_R114        = zeros(1000);
+% MFR_IsoButane   = zeros(1000);
+% MFR_MDM         = zeros(1000);
+% MFR_R12         = zeros(1000);
+% MFR_R143a       = zeros(1000);
+% MFR_R123        = zeros(1000);
+% MFR_Acetone     = zeros(1000);
+% MFR_R404a       = zeros(1000);
+% MFR_R125        = zeros(1000);
+% MFR_R134a       = zeros(1000);
+% 
+% j=1;
+% for i = Working_Fluids
+%     k=1;
+%     for temps = Outside_Temperature
+%         
+%         Working_Fluid_1 = Working_Fluids{j};
+%         %%%%%%%%%%%%%
+%         % Constants for the Refridgeration Cycle for Durham, NH
+%         %%%%%%%%%%%%%
+%         
+%         Cold_Space = 273+20; % Kelvin - Temperature of Cold Space of Pod
+%         
+%         %%%%%%%%%%%%%
+%         % Location 1 - Between Evaporator and Compressor
+%         %%%%%%%%%%%%%
+%         
+%         % Finding all values of the fluid at location 1
+%         Q_1 = 1; % Saturated Vapor
+%         T_1 = Cold_Space; % Temperature from 4 to 1
+%         P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
+%         H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
+%         U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
+%         S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
+%         V_1 = 1/CoolProp.PropsSI('D', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
+%         
+%         %%%%%%%%%%%%%
+%         % Location 3 - Between Condensor and Expansion Valve - Saturated Liquid
+%         %%%%%%%%%%%%%
+%         
+%         % Finding all values of the fluid at location 3
+%         Q_3 = 0; % Saturated Liquid
+%         T_3_Summer = temps + 5; % Temperature from 4 to 1
+%         P_3_Summer = CoolProp.PropsSI('P', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
+%         H_3_Summer = CoolProp.PropsSI('H', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
+%         U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
+%         S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
+%         V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
+%         
+% 
+%         %%%%%%%%%%%%%
+%         % Location 2 - Between Condensor and Expansion Valve Super-Heated Vapor
+%         %%%%%%%%%%%%%
+%         
+%         % Finding all values of the fluid at location 2
+%         S_2_Summer = S_1; % Constant Entropy
+%         P_2_Summer = P_3_Summer; % Constant Pressure Isobar
+%         T_2_Summer = CoolProp.PropsSI('T', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
+%         H_2_Summer = CoolProp.PropsSI('H', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
+%         U_2_Summer = CoolProp.PropsSI('U', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
+%         V_2_Summer = 1/CoolProp.PropsSI('D', 'P', P_2_Summer, 'S', S_2_Summer, Working_Fluid_1);
+%         
+%         %%%%%%%%%%%%%
+%         % Location 2a - On Vapor Dome During the process 2 to 3 in condensor
+%         %%%%%%%%%%%%%
+%         
+%         % Finding all values of the fluid at location 2a
+%         Q_2a=1; % On Vapor Dome as Saturdated Vapor
+%         P_2a_Summer = P_2_Summer; % Isobar = Constant Pressure
+%         T_2a_Summer = T_3_Summer; % Constant Temperature from T3
+%         S_2a_Summer = CoolProp.PropsSI('S', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
+%         H_2a_Summer = CoolProp.PropsSI('H', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
+%         U_2a_Summer = CoolProp.PropsSI('U', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
+%         V_2a_Summer = 1/CoolProp.PropsSI('D', 'P', P_2a_Summer, 'Q', Q_2a, Working_Fluid_1);
+%         
+%         %%%%%%%%%%%%%
+%         % Location 4 - Mixture between the expansion valve and evaporator
+%         %%%%%%%%%%%%%
+%         
+%         % Finding all values of the fluid at location 4
+%         T_4 = T_1; % Constant Temperature from 4 to 1 Process
+%         H_4_Summer = H_3_Summer; % Expansion Valve is ~ constant enthalpy process
+%         P_4_Summer = P_1; % Isobaric Process
+%         U_4_Summer = CoolProp.PropsSI('U', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
+%         S_4_Summer = CoolProp.PropsSI('S', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
+%         V_4_Summer = 1/CoolProp.PropsSI('D', 'P', P_4_Summer, 'H', H_4_Summer, Working_Fluid_1);
+%         
+%         % Co-Efficient of Performance where COP = (QL/Wnet) = ((h1-h4)/(h2-h1))
+%         
+%         COP_Summer = (H_1 - H_4_Summer)/(H_2_Summer - H_1);
+%         
+%         % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
+%         
+%         dH_Evaporator_Summer = H_1 - H_4_Summer;
+%         Cooling_Capacity = 500; % Watts
+%         Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
+%         
+%         % Compressor Power
+%         
+%         Compressor_Power_Summer = Mass_Flow_Rate_Summer * (H_2_Summer - H_1); % [J/s]
+%       
+%         if j == 1
+%             COP_R410a(k)   = COP_Summer;
+%             MFR_R410a(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 2
+%             COP_R290(k)   = COP_Summer;
+%             MFR_R290(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 3
+%             COP_Ammonia(k)   = COP_Summer;
+%             MFR_Ammonia(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 4
+%             COP_Water(k)   = COP_Summer;
+%             MFR_Water(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 5
+%             COP_R22(k)   = COP_Summer;
+%             MFR_R22(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 6
+%             COP_R114(k)   = COP_Summer; 
+%             MFR_R114(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 7
+%             COP_IsoButane(k)   = COP_Summer;
+%             MFR_IsoButane(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 8
+%             COP_MDM(k)   = COP_Summer;
+%             MFR_MDM(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 9
+%             COP_R12(k)   = COP_Summer;
+%             MFR_R12(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 10
+%             COP_R143a(k)   = COP_Summer;
+%             MFR_R143a(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 11
+%             COP_R123(k)   = COP_Summer;
+%             MFR_R123(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 12
+%             COP_Acetone(k)   = COP_Summer;
+%             MFR_Acetone(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 13
+%             COP_R404a(k)   = COP_Summer;
+%             MFR_R404a(k)   = Mass_Flow_Rate_Summer;
+%         elseif j == 14
+%             COP_R125(k)   = COP_Summer;
+%             MFR_R125(k)   = Mass_Flow_Rate_Summer;
+%         else
+%             COP_R134a(k)   = COP_Summer;
+%             MFR_R134a(k)   = Mass_Flow_Rate_Summer;
+%         end
+%         
+%         k=k+1;
+%     end
+%     j=j+1;
+% end
+% 
+% for pos = 1:1000
+%     COP_R410a(pos) = abs(COP_R410a(pos));
+%     COP_R290(pos) = abs(COP_R290(pos));
+%     COP_Ammonia(pos) = abs(COP_Ammonia(pos));
+%     COP_Water(pos) = abs(COP_Water(pos));
+%     COP_R22(pos) = abs(COP_R22(pos));
+%     COP_R114(pos) = abs(COP_R114(pos));
+%     COP_IsoButane(pos) = abs(COP_IsoButane(pos));
+%     COP_MDM(pos) = abs(COP_MDM(pos));
+%     COP_R12(pos) = abs(COP_R12(pos));
+%     COP_R143a(pos) = abs(COP_R143a(pos));
+%     COP_R123(pos) = abs(COP_R123(pos));
+%     COP_Acetone(pos) = abs(COP_Acetone(pos));
+%     COP_R404a(pos) = abs(COP_R404a(pos));
+%     COP_R125(pos) = abs(COP_R125(pos));
+%     COP_R134a(pos) = abs(COP_R134a(pos));
+% end
+% 
+% % Plotting COP vs Outside Temperature
+% figure(1)
+% % R Refrigerants
+% semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'r')
+% semilogx(COP_R404a,Outside_Temperature-273,'r',COP_R125,Outside_Temperature-273,'r',COP_R134a,Outside_Temperature-273,'r',COP_R22,Outside_Temperature-273,'r')
+% semilogx(COP_R123,Outside_Temperature-273,'r',COP_R12,Outside_Temperature-273,'r',COP_R143a,Outside_Temperature-273,'r',COP_R114,Outside_Temperature-273,'r')
+% hold on
+% semilogx(COP_Water,Outside_Temperature-273,'b')
+% semilogx(COP_IsoButane,Outside_Temperature-273,'k')
+% semilogx(COP_MDM,Outside_Temperature-273,'m')
+% semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'g')
+% 
+% plot([5,100],[20,20],[5,150],[50,50])
+% hold off
+% text(20,49,'Takeoff Environment Temperature')
+% text(20,19,'Cold Space Environment Temperature')
+% 
+% 
+% % Plot Syntax
+% 
+% xlabel('Coefficient of Performance','FontSize',22)
+% set(gca,'fontsize',20)
+% ylabel('Temperature','FontSize',22)
+% set(gca,'fontsize',20)
+% xlim([5 100])
+% ylim([15 55])
+% lgd = legend('\color{red} R-Refrigerants','\color{blue} Water Refrigerants','\color{black} IsoButane Refrigerants','\color{magenta} MDM Refrigerants','\color{green} Acetone/Ammonia');
+% lgd.FontSize = 22;
+% hold off
+% 
+% % Plotting COP vs Outside Temperature
+% figure(2)
+% % R Refrigerants
+% semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'r')
+% semilogx(COP_R404a,Outside_Temperature-273,'r',COP_R125,Outside_Temperature-273,'r',COP_R134a,Outside_Temperature-273,'r',COP_R22,Outside_Temperature-273,'r')
+% semilogx(COP_R123,Outside_Temperature-273,'r',COP_R12,Outside_Temperature-273,'r',COP_R143a,Outside_Temperature-273,'r',COP_R114,Outside_Temperature-273,'r')
+% hold on
+% semilogx(COP_Water,Outside_Temperature-273,'b')
+% semilogx(COP_IsoButane,Outside_Temperature-273,'k')
+% semilogx(COP_MDM,Outside_Temperature-273,'m')
+% semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'g')
+% 
+% plot([5,100],[20,20],[5,150],[50,50])
+% hold off
+% text(20,49,'Takeoff Environment Temperature')
+% text(20,19,'Cold Space Environment Temperature')
+% 
+% 
+% % Plot Syntax
+% xlabel('Coefficient of Performance','FontSize',22)
+% set(gca,'fontsize',20)
+% ylabel('Temperature','FontSize',22)
+% set(gca,'fontsize',20)
+% xlim([5 100])
+% ylim([15 55])
+% hold off
+% % Create a list from best to worst refrigerants in respect to its COP
+% 
+% COP_R410a_Max       = COP_R410a(915); % The index selection for Takeoff Temperature
+% COP_R290_Max        = COP_R290(915);
+% COP_Ammonia_Max     = COP_Ammonia(915);
+% COP_Water_Max       = COP_Water(915);
+% COP_R22_Max         = COP_R22(915);
+% COP_R114_Max        = COP_R114(915);
+% COP_IsoButane_Max   = COP_IsoButane(915);
+% COP_MDM_Max         = COP_MDM(915);
+% COP_R12_Max         = COP_R12(915);
+% COP_R143a_Max       = COP_R143a(915);
+% COP_R123_Max        = COP_R123(915);
+% COP_Acetone_Max     = COP_Acetone(915);
+% COP_R404a_Max       = COP_R404a(915);
+% COP_R125_Max        = COP_R125(915);
+% COP_R134a_Max       = COP_R134a(915);
+% 
+% COP_TakeOff_Sorted =sortrows({COP_R410a_Max,'R410a';COP_R290_Max,'R290';COP_Ammonia_Max,'Ammonia';COP_Water_Max,'Water';COP_R22_Max,'R22';COP_R114_Max,'R114';...
+%     COP_IsoButane_Max,'IsoButane';COP_MDM_Max,'MDM';COP_R12_Max,'R12';COP_R143a_Max,'R143a';COP_R123_Max,'R123';COP_Acetone_Max,'Acetone';COP_R404a_Max,'R404a';COP_R125_Max,'R125';COP_R134a_Max,'R125'},1);
+% figure(3)
+% plot(Outside_Temperature-273,MFR_Acetone,'r',Outside_Temperature-273,MFR_R123,'b',Outside_Temperature-273,MFR_Ammonia,'m',Outside_Temperature-273,MFR_R290,'g')
+% xlabel('Temperature (C)','FontSize',22)
+% set(gca,'fontsize',20)
+% ylabel('Mass Flow Rate (kg/s)','FontSize',22)
+% set(gca,'fontsize',20)
+% lgd = legend('\color{red} Acetone','\color{blue} R123','\color{magenta} Ammonia','\color{green} R290');
+% lgd.FontSize = 22;
+% hold off
+% 
+% figure(4)
+% plot(Outside_Temperature-273,MFR_Acetone,'r',Outside_Temperature-273,MFR_R123,'b',Outside_Temperature-273,MFR_Ammonia,'m',Outside_Temperature-273,MFR_R290,'g')
+% xlabel('Temperature (C)','FontSize',22)
+% set(gca,'fontsize',20)
+% ylabel('Mass Flow Rate (kg/s)','FontSize',22)
+% set(gca,'fontsize',20)
+% 
+% hold off
+% 
+% 
+% %Once the best COPs are chosen from the above analysis, the final full analysis of the desired working fluid is calculated and plotted
+% 
+% 
 
 
 Working_Fluid_1 = {'R290'};
@@ -347,7 +347,7 @@ S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 V_1 = 1/CoolProp.PropsSI('D', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 
 Q_1_Apogee = 1; % Saturated Vapor
-T_1_Apogee = Cold_Space; % Temperature from 4 to 1
+T_1_Apogee = Cold_Space_Apogee; % Temperature from 4 to 1
 P_1_Apogee = CoolProp.PropsSI('P', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
 H_1_Apogee = CoolProp.PropsSI('H', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
 U_1_Apogee = CoolProp.PropsSI('U', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
@@ -367,7 +367,7 @@ U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 
-T_3_Winter = Cold_Space + 5; % Temperature from 4 to 1
+T_3_Winter = Cold_Space; % Temperature from 4 to 1
 P_3_Winter = CoolProp.PropsSI('P', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
 H_3_Winter = CoolProp.PropsSI('H', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
 U_3_Winter = CoolProp.PropsSI('U', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
