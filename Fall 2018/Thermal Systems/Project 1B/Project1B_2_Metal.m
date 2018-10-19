@@ -123,8 +123,8 @@ for i = Working_Fluids
         % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
         
         dH_Evaporator_Summer = H_1 - H_4_Summer;
-        Cooling_Capacity = 500+72000; % Watts
-        Cooling_Capacity_Winter = 2000-40000; % Watts
+        Cooling_Capacity = 500+14000; % Watts
+        Cooling_Capacity_Winter = 2000-13500; % Watts
         Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
         Mass_Flow_Rate_Winter = Cooling_Capacity_Winter / dH_Evaporator_Summer;
         
@@ -170,15 +170,44 @@ for pos = 1:1000
     COP_Acetone(pos) = abs(COP_Acetone(pos));
 end
 
-% Create a list from best to worst refrigerants in respect to its COP
+% Create a list from best to worst refrigerants in respect to its COP, MFR, Compressor Power and Q dot
 
-COP_R410a_Max       = COP_R410a(915); % The index selection for Takeoff Temperature
-COP_R290_Max        = COP_R290(915);
-COP_Ammonia_Max     = COP_Ammonia(915);
-COP_Acetone_Max     = COP_Acetone(915);
+COP_R410a_Max       = COP_R410a(973); % The index selection for Takeoff Temperature
+COP_R290_Max        = COP_R290(973);
+COP_Ammonia_Max     = COP_Ammonia(973);
+COP_Acetone_Max     = COP_Acetone(973);
 
-COP_TakeOff_Sorted =sortrows({COP_R410a_Max,'R410a';COP_R290_Max,'R290';COP_Ammonia_Max,'Ammonia';COP_Acetone_Max,'Acetone'},1);
+COPW_R410a_Max       = COP_R410a(28); % The index selection for Takeoff Temperature
+COPW_R290_Max        = COP_R290(28);
+COPW_Ammonia_Max     = COP_Ammonia(28);
+COPW_Acetone_Max     = COP_Acetone(28);
 
+Comp_R410a_Max       = Comp_Power_R410a(973); % The index selection for Takeoff Temperature
+Comp_R290_Max        = Comp_Power_R290(973);
+Comp_Ammonia_Max     = Comp_Power_Ammonia(973);
+Comp_Acetone_Max     = Comp_Power_Acetone(973);
+
+CompW_R410a_Max       = Comp_PowerW_R410a(28); % The index selection for Takeoff Temperature
+CompW_R290_Max        = Comp_PowerW_R290(28);
+CompW_Ammonia_Max     = Comp_PowerW_Ammonia(28);
+CompW_Acetone_Max     = Comp_PowerW_Acetone(28);
+
+MFR_R410a_Max       = MFR_R410a(973); % The index selection for Takeoff Temperature
+MFR_R290_Max        = MFR_R290(973);
+MFR_Ammonia_Max     = MFR_Ammonia(973);
+MFR_Acetone_Max     = MFR_Acetone(973);
+
+MFRW_R410a_Max       = MFRW_R410a(28); % The index selection for Takeoff Temperature
+MFRW_R290_Max        = MFRW_R290(28);
+MFRW_Ammonia_Max     = MFRW_Ammonia(28);
+MFRW_Acetone_Max     = MFRW_Acetone(28);
+
+ACOP_TakeOff_Sorted =sortrows({COP_R410a_Max,'R410a';COP_R290_Max,'R290';COP_Ammonia_Max,'Ammonia';COP_Acetone_Max,'Acetone'},1);
+ACOPW_TakeOff_Sorted =sortrows({COPW_R410a_Max,'R410a';COPW_R290_Max,'R290';COPW_Ammonia_Max,'Ammonia';COPW_Acetone_Max,'Acetone'},1);
+AComp_TakeOff_Sorted =sortrows({Comp_R410a_Max,'R410a';Comp_R290_Max,'R290';Comp_Ammonia_Max,'Ammonia';Comp_Acetone_Max,'Acetone'},1);
+ACompW_TakeOff_Sorted =sortrows({CompW_R410a_Max,'R410a';CompW_R290_Max,'R290';CompW_Ammonia_Max,'Ammonia';CompW_Acetone_Max,'Acetone'},1);
+AMFR_TakeOff_Sorted =sortrows({MFR_R410a_Max,'R410a';MFR_R290_Max,'R290';MFR_Ammonia_Max,'Ammonia';MFR_Acetone_Max,'Acetone'},1);
+AMFRW_TakeOff_Sorted =sortrows({MFRW_R410a_Max,'R410a';MFRW_R290_Max,'R290';MFRW_Ammonia_Max,'Ammonia';MFRW_Acetone_Max,'Acetone'},1);
 
 % Plotting COP vs Outside Temperature
 figure(1)
@@ -207,7 +236,7 @@ figure(2)
 hold on
 plot(Outside_Temperature-273,MFR_R410a,'r',Outside_Temperature-273,MFR_R290,'b',Outside_Temperature-273,MFR_Ammonia,'g',Outside_Temperature-273,MFR_Acetone,'m')
 plot(Outside_Temperature-273,MFRW_R410a,'r',Outside_Temperature-273,MFRW_R290,'b',Outside_Temperature-273,MFRW_Ammonia,'g',Outside_Temperature-273,MFRW_Acetone,'m')
-plot([40,40],[0,.6])
+plot([50,50],[0,.6])
 plot([-20,-20],[-.4,0])
 plot([-25,60],[0,0],'k')
 % Plot Syntax
@@ -230,7 +259,7 @@ figure(3)
 hold on
 plot(Outside_Temperature-273,Comp_Power_R410a,'r',Outside_Temperature-273,Comp_Power_R290,'b',Outside_Temperature-273,Comp_Power_Ammonia,'g',Outside_Temperature-273,Comp_Power_Acetone,'m')
 plot(Outside_Temperature-273,Comp_PowerW_R410a,'r',Outside_Temperature-273,Comp_PowerW_R290,'b',Outside_Temperature-273,Comp_PowerW_Ammonia,'g',Outside_Temperature-273,Comp_PowerW_Acetone,'m')
-plot([40,40],[0,15000])
+plot([50,50],[0,15000])
 plot([-20,-20],[-10000,0])
 plot([-25,60],[0,0],'k')
 % Plot Syntax

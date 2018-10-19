@@ -21,8 +21,8 @@ h_Convection_Coefficient_Air = [35,17]; %W/m2k
 
 % Pod Dimensions
 Length_Pod = 2; % Meters
-Width_Pod  = 1; % Meters
-Height_Pod = 1; % Meters
+Width_Pod  = .38; % Meters
+Height_Pod = .4; % Meters
 
 % Material Densities
 Aluminum_Density        = 2700; %kg/m3, 6061
@@ -116,6 +116,10 @@ lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium 
 lgd.FontSize = 10;
 hold off
 
+% Q dot needed for correct refrigeration at takeoff and Apogee (Worst case scenarios
+Q_Takeoff_Fiberglass = Q_Dot_Environment_T2(3,2)
+Q_Takeoff_Aluminum = Q_Dot_Environment_T2(1,2)
+M_Takeoff_Fiberglass = Total_Mass_Pod_T2(3,2)
+M_Takeoff_Aluminum = Total_Mass_Pod_T2(1,2)
 
-%Make graphs presentable by moving legend and such
-
+% Change material thickness to 2mm and all consequences
