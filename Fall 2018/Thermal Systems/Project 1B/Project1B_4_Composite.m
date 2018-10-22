@@ -8,8 +8,8 @@ Max_Pressure  = 4250000;
 % Constants for the Refridgeration Cycle for Durham, NH
 %%%%%%%%%%%%%
 
-Cold_Space = 273+20; % Kelvin - Temperature of Cold Space of Pod
-Hot_Space_Liftoff  = 273 + 50; % Hottest Outside Environment
+Cold_Space = 273+20;            % Kelvin - Temperature of Cold Space of Pod
+Hot_Space_Liftoff  = 273 + 50;  % Hottest Outside Environment
 Cold_Space_Apogee   = 273 - 20; % Coldest Outside Environment
 
 %%% Summer is used to refer to Liftoff, and Winter is for Apogee %%%
@@ -20,7 +20,7 @@ Cold_Space_Apogee   = 273 - 20; % Coldest Outside Environment
 
 % Finding all values of the fluid at location 1
 Q_1 = 1; % Saturated Vapor
-T_1 = Cold_Space; % Temperature from 4 to 1
+T_1 = Cold_Space-5; % Temperature from 4 to 1
 P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
@@ -28,7 +28,7 @@ S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 V_1 = 1/CoolProp.PropsSI('D', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
 
 Q_1_Apogee = 1; % Saturated Vapor
-T_1_Apogee = Cold_Space_Apogee; % Temperature from 4 to 1
+T_1_Apogee = Cold_Space_Apogee+5; % Temperature from 4 to 1
 P_1_Apogee = CoolProp.PropsSI('P', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
 H_1_Apogee = CoolProp.PropsSI('H', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
 U_1_Apogee = CoolProp.PropsSI('U', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1);
@@ -41,14 +41,14 @@ V_1_Apogee = 1/CoolProp.PropsSI('D', 'T', T_1_Apogee, 'Q', Q_1, Working_Fluid_1)
 
 % Finding all values of the fluid at location 3
 Q_3 = 0; % Saturated Liquid
-T_3_Summer = Hot_Space_Liftoff; % Temperature from 4 to 1
+T_3_Summer = Hot_Space_Liftoff + 5; % Temperature from 4 to 1
 P_3_Summer = CoolProp.PropsSI('P', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 H_3_Summer = CoolProp.PropsSI('H', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 V_3_Summer = 1/CoolProp.PropsSI('D', 'T', T_3_Summer, 'Q', Q_3, Working_Fluid_1);
 
-T_3_Winter = Cold_Space; % Temperature from 4 to 1
+T_3_Winter = Cold_Space-5; % Temperature from 4 to 1
 P_3_Winter = CoolProp.PropsSI('P', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
 H_3_Winter = CoolProp.PropsSI('H', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
 U_3_Winter = CoolProp.PropsSI('U', 'T', T_3_Winter, 'Q', Q_3, Working_Fluid_1);
@@ -255,7 +255,7 @@ COP_Winter = (H_1_Apogee - H_4_Winter)/(H_2_Winter - H_1_Apogee);
 %%%%%%%%%%%%%
 
 % T-s Graph for the Summer
-figure(5)
+figure(1)
 % Vapor Dome
 plot(S_SL/1000,T_SL,'k',S_SV/1000,T_SV,'k')
 hold on
@@ -263,64 +263,37 @@ hold on
 
 % Winter
 plot(S_Compressor_Winter/1000,T_Compressor_Winter,'b',S_Condensor_Winter/1000, T_Condensor_Winter-273,'b',S_Condensora_Winter/1000, T_Condensora_Winter-273,'b',S_Valve_Winter/1000,T_Valve_Winter-273,'b',S_Evaporator_Winter/1000, T_Evaporator_Winter-273,'b')
-text(S_1_Apogee/1000,T_1_Apogee-273, '\leftarrow State 1')
-text(S_2_Winter/1000,T_2_Winter-273, '\leftarrow State 2')
-text(S_2a_Winter/1000-.03,T_2a_Winter-273-1, 'State 2a','FontSize', 8)
-text(S_3_Winter/1000-.06,T_3_Winter-273, 'State 3')
-text(S_4_Winter/1000-.02,T_4_Winter-273-1, 'State 4')
-text(1.8,27, strcat('Apogee COP: ' , num2str(COP_Winter)))
+text(S_1_Apogee/1000,T_1_Apogee-273, '\leftarrow State 1','FontSize', 8,'Color','blue')
+text(S_2_Winter/1000,T_2_Winter-273, '\leftarrow State 2','FontSize', 8,'Color','blue')
+text(S_3_Winter/1000-.2,T_3_Winter-273, 'State 3','FontSize', 8,'Color','blue')
+text(S_4_Winter/1000-.02,T_4_Winter-273-3, 'State 4','FontSize', 8,'Color','blue')
+text(1.6,20, strcat('Apogee COP: ' , num2str(COP_Winter)),'FontSize', 10,'Color','blue')
+text(1.5,0, 'Heat Transfer Total = 5300 J/s','FontSize', 8,'Color','blue')
 
 % Summer
 plot(S_Compressor_Summer/1000,T_Compressor_Summer,'r',S_Condensor_Summer/1000, T_Condensor_Summer-273,'r',S_Condensora_Summer/1000, T_Condensora_Summer-273,'r',S_Valve_Summer/1000,T_Valve_Summer-273,'r',S_Evaporator_Summer/1000, T_Evaporator_Summer-273,'m')
-plot(S_Compressor_Winter/1000,T_Compressor_Winter,'m')
-text(S_2_Summer/1000,T_2_Summer-273, '\leftarrow State 2')
-text(S_2a_Summer/1000,T_2a_Summer-273, '\leftarrow State 2a')
-text(S_3_Summer/1000-.07,T_3_Summer-273, 'State 3')
-text(S_4_Summer/1000-.01,T_4-273-1, 'State 4')
-text(1.8,51, strcat('Takeoff COP: ' , '6.87'))
-
-
-% Syntax
-xlabel('Entropy (J/K)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Temperature (Celcius)','FontSize',22)
-set(gca,'fontsize',20)
-lgd = legend('\color{red} Takeoff','\color{blue} Apogee','\color{black} Vapor Dome');
-lgd.FontSize = 22;
-xlim([1 2.5])
-ylim([15 100])
-hold off
-% T-s Graph for the Summer
-figure(6)
-% Vapor Dome
-plot(S_SL/1000,T_SL,'k',S_SV/1000,T_SV,'k')
-hold on
-% Processes
-
-% Winter
-plot(S_Compressor_Winter/1000,T_Compressor_Winter,'b',S_Condensor_Winter/1000, T_Condensor_Winter-273,'b',S_Condensora_Winter/1000, T_Condensora_Winter-273,'b',S_Valve_Winter/1000,T_Valve_Winter-273,'b',S_Evaporator_Winter/1000, T_Evaporator_Winter-273,'b')
-
-text(1.8,27, strcat('Apogee COP: ' , num2str(COP_Winter)))
-
-% Summer
-plot(S_Compressor_Summer/1000,T_Compressor_Summer,'r',S_Condensor_Summer/1000, T_Condensor_Summer-273,'r',S_Condensora_Summer/1000, T_Condensora_Summer-273,'r',S_Valve_Summer/1000,T_Valve_Summer-273,'r',S_Evaporator_Summer/1000, T_Evaporator_Summer-273,'m')
-plot(S_Compressor_Winter/1000,T_Compressor_Winter,'m')
-
-text(1.8,51, strcat('Takeoff COP: ' , '6.87'))
-
+%plot(S_Compressor_Winter/1000,T_Compressor_Winter,'b')
+text(S_2a_Winter/1000,T_2a_Winter-273, '\leftarrow State 1','FontSize', 8,'Color','red')
+text(S_2_Summer/1000,T_2_Summer-273, '\leftarrow State 2','FontSize', 8,'Color','red')
+text(S_3_Summer/1000-.2,T_3_Summer-273, 'State 3','FontSize', 8,'Color','red')
+text(S_4_Summer/1000-.1,T_4-273-2, 'State 4','FontSize', 8,'Color','red')
+text(1.6,60, strcat('Takeoff COP: ' , num2str(COP_Summer)),'FontSize', 10,'Color','red')
+text(1.5,40, 'Heat Transfer Total = 8000 J/s','FontSize', 8,'Color','red')
 
 % Syntax
-xlabel('Entropy (J/K)','FontSize',22)
+xlabel('Specific Entropy (kJ/kgK)','FontSize',20)
+set(gca,'fontsize',17)
+ylabel('Temperature (°C)','FontSize',20)
 set(gca,'fontsize',20)
-ylabel('Temperature (Celcius)','FontSize',22)
-set(gca,'fontsize',20)
-xlim([1 2.5])
-ylim([15 100])
+lgd = legend('\color{red} Takeoff','\color{blue} Apogee','\color{black} Vapor Dome','Location','NorthWest');
+lgd.FontSize = 16;
+xlim([.5 2.75])
+ylim([-30 100])
 hold off
 
 
 % P-h Graph for the Summer
-figure(7)
+figure(2)
 % Vapor Dome
 plot(H_SL/1000,P_SL_SV/1000,'k',H_SV/1000,P_SL_SV/1000,'k')
 hold on
@@ -333,11 +306,12 @@ H_Condensor_Winter = [H_2_Winter,H_2a_Winter];
 P_Valve_Winter_Ph = [P_3_Winter,P_4_Winter];
 H_Valve_Winter_Ph = [H_3_Winter,H_4_Winter];
 plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',H_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',H_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',H_Valve_Winter_Ph/1000,P_Valve_Winter_Ph/1000,'b',H_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
-text(H_1_Apogee/1000,P_1_Apogee/1000, '\leftarrow State 1')
-text(H_2_Winter/1000,P_2_Winter/1000, '\leftarrow State 2')
-text(H_3_Winter/1000-16,P_3_Winter/1000, 'State 3')
-text(H_4_Winter/1000-5,P_4_Winter/1000-35, 'State 4')
-text(450,1000, strcat('Apogee COP: ' , num2str(COP_Winter)))
+text(H_1_Apogee/1000,P_1_Apogee/1000, '\leftarrow State 1','FontSize', 8,'Color','blue')
+text(H_2_Winter/1000,P_2_Winter/1000, '\leftarrow State 2','FontSize', 8,'Color','blue')
+text(H_3_Winter/1000-55,P_3_Winter/1000, 'State 3','FontSize', 8,'Color','blue')
+text(H_4_Winter/1000-55,P_4_Winter/1000+35, 'State 4','FontSize', 8,'Color','blue')
+text(400,900, strcat('Apogee COP: ' , num2str(COP_Winter)),'FontSize', 10,'Color','blue')
+text(300,500, 'Heat Transfer Total = 5300 J/s','FontSize', 8,'Color','blue')
 
 % Summer
 P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
@@ -345,127 +319,20 @@ H_Condensor_Summer = [H_2_Summer,H_2a_Summer];
 P_Valve_Summer_Ph = [P_3_Summer,P_4_Summer];
 H_Valve_Summer_Ph = [H_3_Summer,H_4_Summer];
 plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',H_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',H_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',H_Valve_Summer_Ph/1000,P_Valve_Summer_Ph/1000,'r',H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
-plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
-text(H_2_Summer/1000,P_2_Summer/1000, '\leftarrow State 2')
-text(H_3_Summer/1000-14,P_3_Summer/1000, 'State 3')
-text(H_4_Summer/1000-5,P_4_Summer/1000-50, 'State 4')
-text(450,1800, strcat('Takeoff COP: ' , '6.87'))
+text(H_2_Winter/1000-65,P_2_Winter/1000-60, 'State 1','FontSize', 8,'Color','red')
+text(H_2_Summer/1000-3,P_2_Summer/1000, '\leftarrow State 2','FontSize', 8,'Color','red')
+text(H_3_Summer/1000-55,P_3_Summer/1000, 'State 3','FontSize', 8,'Color','red')
+text(H_4_Summer/1000-55,P_4_Summer/1000+90, 'State 4','FontSize', 8,'Color','red')
+text(400,2050, strcat('Takeoff COP: ' , num2str(COP_Summer)),'FontSize', 10,'Color','red')
+text(400,1500, 'Heat Transfer Total = 8000 J/s','FontSize', 8,'Color','red')
 
 % Plot Syntax
 xlabel('Enthalpy (KJ/K)','FontSize',22)
 set(gca,'fontsize',20)
 ylabel('Pressure (KPa)','FontSize',22)
 set(gca,'fontsize',20)
-lgd = legend('\color{red} Takeoff','\color{blue} Apogee','\color{black} Vapor Dome');
-lgd.FontSize = 22;
-xlim([225 650])
-ylim([500 4500])
-hold off
-
-
-
-% P-h Graph for the Summer
-figure(8)
-% Vapor Dome
-plot(H_SL/1000,P_SL_SV/1000,'k',H_SV/1000,P_SL_SV/1000,'k')
-hold on
-
-% Processes
-
-%Winter
-P_Condensor_Winter = [P_2_Winter,P_2a_Winter];
-H_Condensor_Winter = [H_2_Winter,H_2a_Winter];
-P_Valve_Winter_Ph = [P_3_Winter,P_4_Winter];
-H_Valve_Winter_Ph = [H_3_Winter,H_4_Winter];
-plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',H_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',H_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',H_Valve_Winter_Ph/1000,P_Valve_Winter_Ph/1000,'b',H_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
-
-text(450,1100, strcat('Apogee COP: ' , num2str(COP_Winter)))
-
-% Summer
-P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
-H_Condensor_Summer = [H_2_Summer,H_2a_Summer];
-P_Valve_Summer_Ph = [P_3_Summer,P_4_Summer];
-H_Valve_Summer_Ph = [H_3_Summer,H_4_Summer];
-plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',H_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',H_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',H_Valve_Summer_Ph/1000,P_Valve_Summer_Ph/1000,'r',H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
-plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
-text(450,1800, strcat('Takeoff COP: ' , '6.87'))
-
-% Plot Syntax
-
-xlabel('Enthalpy (KJ/K)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Pressure (KPa)','FontSize',22)
-set(gca,'fontsize',20)
-xlim([225 650])
-ylim([500 4500])
-hold off
-
-
-% P-h Graph for the Summer
-figure(9)
-% Vapor Dome
-plot(V_SL/1000,P_SL_SV/1000,'k',V_SV/1000,P_SL_SV/1000,'k')
-hold on
-
-% Processes
-
-%Winter
-P_Condensor_Winter = [P_2_Winter,P_2a_Winter];
-V_Condensor_Winter = [V_2_Winter,V_2a_Winter];
-plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',V_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',V_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',V_Valve_Winter/1000,P_Valve_Winter/1000,'b',V_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
-text(V_1/1000,P_1/1000+20, '\leftarrow State 1')
-text(V_2_Winter/1000,P_2_Winter/1000+20, '\leftarrow State 2')
-text(V_3_Winter/1000+.000001,P_3_Winter/1000-35, 'State 3')
-text(V_4_Winter/1000,P_4_Winter/1000-35, 'State 4')
-text(.000015,1000, strcat('Apogee COP: ' , num2str(COP_Winter)))
-
-% Summer
-P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
-V_Condensor_Summer = [V_2_Summer,V_2a_Summer];
-plot(V_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',V_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',V_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',V_Valve_Summer/1000,P_Valve_Summer/1000,'r',V_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
-plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
-text(V_2_Summer/1000,P_2_Summer/1000+20, '\leftarrow State 2')
-text(V_3_Summer/1000+.0000005,P_3_Summer/1000-65, 'State 3')
-text(V_4_Summer/1000,P_4_Summer/1000-70, 'State 4')
-text(.000015,1750, strcat('Takeoff COP: ' , '6.87'))
-
-% Plot Syntax
-xlabel('Specific Volume (m3/Kg)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Pressure (KPa)','FontSize',22)
-set(gca,'fontsize',20)
-lgd = legend('\color{red} Takeoff','\color{blue} Apogee','\color{black} Vapor Dome');
-lgd.FontSize = 22;
-xlim([.0000005 .00006])
-ylim([250 4500])
-hold off
-
-% P-h Graph for the Summer
-figure(10)
-% Vapor Dome
-plot(V_SL/1000,P_SL_SV/1000,'k',V_SV/1000,P_SL_SV/1000,'k')
-hold on
-
-% Processes
-
-%Winter
-P_Condensor_Winter = [P_2_Winter,P_2a_Winter];
-V_Condensor_Winter = [V_2_Winter,V_2a_Winter];
-plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',V_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',V_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',V_Valve_Winter/1000,P_Valve_Winter/1000,'b',V_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
-text(.000015,1150, strcat('Apogee COP: ' , num2str(COP_Winter)))
-
-% Summer
-P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
-V_Condensor_Summer = [V_2_Summer,V_2a_Summer];
-plot(V_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',V_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',V_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',V_Valve_Summer/1000,P_Valve_Summer/1000,'r',V_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
-plot(V_Compressor_Winter/1000,P_Compressor_Winter/1000,'m')
-text(.000010,1850, strcat('Takeoff COP: ' , '6.87'))
-
-% Plot Syntax
-xlabel('Specific Volume (m3/Kg)','FontSize',22)
-set(gca,'fontsize',20)
-ylabel('Pressure (KPa)','FontSize',22)
-set(gca,'fontsize',20)
-xlim([.0000005 .00006])
-ylim([250 4500])
+lgd = legend('\color{red} Takeoff','\color{blue} Apogee','\color{black} Vapor Dome','Location','NorthWest');
+lgd.FontSize = 16;
+xlim([150 700])
+ylim([100 3500])
 hold off

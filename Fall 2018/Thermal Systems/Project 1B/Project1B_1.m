@@ -7,15 +7,14 @@ clc;
 
 % For a well insulated pod, we want a material and thickness that minimizes weight and has a very low dQ
 % For not a well insulated pod (accounting for heat transfer from environment), we want a material and 
-%      thickness that minimizes weight and has a very high dQ
+% thickness that minimizes weight and has a very high dQ
 
-
-Apogee_Temperature  = 260; % Kelvin
-Takeoff_Temperature = 300; % Kelvin
+Apogee_Temperature  = 253; % Kelvin
+Takeoff_Temperature = 323; % Kelvin
 
 % The array of best and worst case scenarios
 Temperatures = [Apogee_Temperature,Takeoff_Temperature];
-T_Pod = 288; % Kelvin
+T_Pod = 293; % Kelvin
 % Convection coefficient for difference in temperatures
 h_Convection_Coefficient_Air = [35,17]; %W/m2k
 
@@ -40,7 +39,6 @@ Magnesium_AZ61_Thermal_k = [82,85];        %W/mk
 Magnesium_AZ31_Thermal_k = [60,63.5];      %W/mk
 Thermal_k_Array_T1 = [Aluminum_Thermal_k(1),CarbonFiber_Thermal_k(1),Fiberglass_Thermal_k(1),Magnesium_AZ61_Thermal_k(1),Magnesium_AZ31_Thermal_k(1)]; % 4 Total
 Thermal_k_Array_T2 = [Aluminum_Thermal_k(2),CarbonFiber_Thermal_k(2),Fiberglass_Thermal_k(2),Magnesium_AZ61_Thermal_k(2),Magnesium_AZ31_Thermal_k(2)]; % 4 Total
-
 
 Total_Mass_Pod = zeros(5,10);
 R_Pod_Total    = zeros(5,10);
@@ -99,18 +97,21 @@ ylabel('Frame Mass (kg)','FontSize',22)
 xlabel('Material Thickness (mm)','FontSize',22)
 legend()
 set(gca,'fontsize',20)
-ylim([0,250])
+ylim([0,90])
+xlim([1,10])
 
 set(gca,'fontsize',20)
 lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31','Location','northwest');
-lgd.FontSize = 12;
+lgd.FontSize = 10;
 hold off
+
 
 figure(2)
 plot(Q_Dot_Environment([1,2,3,4,5],1:10)')
-ylabel('dQ (J/s)','FontSize',22)
+ylabel('Heat Transfer (J/s)','FontSize',22)
 xlabel('Material Thickness (mm)','FontSize',22)
-ylim([-80000,20000])
+ylim([-25000,10000]) 
+xlim([1,10])
 set(gca,'fontsize',20)
 lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31','Location','northwest');
 lgd.FontSize = 10;
@@ -118,8 +119,8 @@ hold off
 
 % Q dot needed for correct refrigeration at takeoff and Apogee (Worst case scenarios
 Q_Takeoff_Fiberglass = Q_Dot_Environment_T2(3,2)
+Q_Apogee_Fiberglass = Q_Dot_Environment(3,2)
 Q_Takeoff_Aluminum = Q_Dot_Environment_T2(1,2)
+Q_Apogee_Aluminum = Q_Dot_Environment(1,2)
 M_Takeoff_Fiberglass = Total_Mass_Pod_T2(3,2)
 M_Takeoff_Aluminum = Total_Mass_Pod_T2(1,2)
-
-% Change material thickness to 2mm and all consequences

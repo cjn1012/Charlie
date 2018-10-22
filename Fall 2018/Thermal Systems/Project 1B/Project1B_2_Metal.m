@@ -13,7 +13,7 @@ Working_Fluid_4 = {'Acetone'};
 
 Working_Fluids   = [Working_Fluid_1,Working_Fluid_2,Working_Fluid_3,Working_Fluid_4];
 
-Outside_Temperature = linspace(273 - 22, 273 + 52, 1000);
+Outside_Temperature = linspace(273 - 27, 273 + 52, 1000);
 
 COP_R410a       = zeros(1000,1);
 COP_R290        = zeros(1000,1);
@@ -58,7 +58,7 @@ for i = Working_Fluids
         
         % Finding all values of the fluid at location 1
         Q_1 = 1; % Saturated Vapor
-        T_1 = Cold_Space; % Temperature from 4 to 1
+        T_1 = Cold_Space-5; % Temperature from 4 to 1
         P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
         H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
         U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
@@ -123,8 +123,8 @@ for i = Working_Fluids
         % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
         
         dH_Evaporator_Summer = H_1 - H_4_Summer;
-        Cooling_Capacity = 500+14000; % Watts
-        Cooling_Capacity_Winter = 2000-13500; % Watts
+        Cooling_Capacity = 500+14500; % Watts
+        Cooling_Capacity_Winter = 2000-23500; % Watts
         Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
         Mass_Flow_Rate_Winter = Cooling_Capacity_Winter / dH_Evaporator_Summer;
         
@@ -213,19 +213,21 @@ AMFRW_TakeOff_Sorted =sortrows({MFRW_R410a_Max,'R410a';MFRW_R290_Max,'R290';MFRW
 figure(1)
 % Plot Lines
 hold on
-semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'b')
-semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'m')
-plot([5,100],[-20,-20],[5,150],[50,50])
+semilogx(Outside_Temperature-273,COP_R410a,'r',Outside_Temperature-273,COP_R290,'b')
+semilogx(Outside_Temperature-273,COP_Acetone,'g',Outside_Temperature-273,COP_Ammonia,'m')
+plot([-20,-20],[0,50],[50,50],[0,50],[10,10],[0,50])
 hold off
 % Plot Syntax
-text(9,48,'Takeoff Environment')
-text(12,-18,'Apogee Environment')
-xlabel('Coefficient of Performance','FontSize',22)
+text(26,4,'Takeoff Environment','Color','red')
+text(-19.5,4,'Apogee Environment','Color','blue')
+text(13,10,'Cooling','Color','b')
+text(-3,10,'Heating','Color','r')
+ylabel('Coefficient of Performance','FontSize',22)
 set(gca,'fontsize',20)
-ylabel('Temperature','FontSize',22)
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
-xlim([5 100])
-ylim([-25 55])
+ylim([0 50])
+xlim([-25 55])
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia');
 lgd.FontSize = 14;
 hold off
@@ -234,20 +236,21 @@ hold off
 % Plot of Outside Temperature vs Mass Flow Rate with Lines for extreme environment temperatures
 figure(2)
 hold on
-plot(Outside_Temperature-273,MFR_R410a,'r',Outside_Temperature-273,MFR_R290,'b',Outside_Temperature-273,MFR_Ammonia,'g',Outside_Temperature-273,MFR_Acetone,'m')
-plot(Outside_Temperature-273,MFRW_R410a,'r',Outside_Temperature-273,MFRW_R290,'b',Outside_Temperature-273,MFRW_Ammonia,'g',Outside_Temperature-273,MFRW_Acetone,'m')
-plot([50,50],[0,.6])
-plot([-20,-20],[-.4,0])
-plot([-25,60],[0,0],'k')
+plot(Outside_Temperature(469:1000)-273,MFR_R410a(469:1000),'r',Outside_Temperature(469:1000)-273,MFR_R290(469:1000),'b',Outside_Temperature(469:1000)-273,MFR_Ammonia(469:1000),'g',Outside_Temperature(469:1000)-273,MFR_Acetone(469:1000),'m')
+plot(Outside_Temperature(1:469)-273,MFRW_R410a(1:469),'r',Outside_Temperature(1:469)-273,MFRW_R290(1:469),'b',Outside_Temperature(1:469)-273,MFRW_Ammonia(1:469),'g',Outside_Temperature(1:469)-273,MFRW_Acetone(1:469),'m')
+plot([40,40],[-.15,.15],'r')
+plot([-20,-20],[-.15,.15],'b')
+plot([10,10],[-.15,.15],'k')
 % Plot Syntax
-text(0,.03,'Cooling to Heating Line','Fontsize',8)
-text(12,.3,'Takeoff Environment')
-text(-19,-.3,'Apogee Environment')
-xlabel('Temperature (C)','FontSize',22)
+text(12,0.001,'Cooling','Color','b')
+text(-1,0.001,'Heating','Color','r')
+text(13,.12,'Takeoff Environment','Color','red')
+text(-19,-.13,'Apogee Environment','Color','blue')
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
 ylabel('Mass Flow Rate (kg/s)','FontSize',22)
-ylim([-.4,.6])
-xlim([-25,60])
+ylim([-.15,.15])
+xlim([-25,55])
 set(gca,'fontsize',20)
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia','Location','northwest');
 lgd.FontSize = 10;
@@ -259,18 +262,19 @@ figure(3)
 hold on
 plot(Outside_Temperature-273,Comp_Power_R410a,'r',Outside_Temperature-273,Comp_Power_R290,'b',Outside_Temperature-273,Comp_Power_Ammonia,'g',Outside_Temperature-273,Comp_Power_Acetone,'m')
 plot(Outside_Temperature-273,Comp_PowerW_R410a,'r',Outside_Temperature-273,Comp_PowerW_R290,'b',Outside_Temperature-273,Comp_PowerW_Ammonia,'g',Outside_Temperature-273,Comp_PowerW_Acetone,'m')
-plot([50,50],[0,15000])
-plot([-20,-20],[-10000,0])
-plot([-25,60],[0,0],'k')
+plot([50,50],[0,3000],'r')
+plot([-20,-20],[0,3000],'b')
+plot([10,10],[0,3000],'k')
 % Plot Syntax
-text(-20,500,'Cooling to Heating Line','Fontsize',8)
-text(13,10000,'Takeoff Environment')
-text(-19,-1600,'Apogee Environment')
-xlabel('Temperature (C)','FontSize',22)
+text(12,1300,'Cooling','Color','b')
+text(-1,1300,'Heating','Color','r')
+text(22,200,'Takeoff Environment','Color','red')
+text(-19,200,'Apogee Environment','Color','blue')
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
 ylabel('Compressor Power (J/s)','FontSize',22)
-ylim([-10000,15000])
-xlim([-25,60])
+ylim([0,3000])
+xlim([-25,55])
 set(gca,'fontsize',20)
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia','Location','northwest');
 lgd.FontSize = 10;

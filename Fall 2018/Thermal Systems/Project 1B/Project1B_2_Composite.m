@@ -13,7 +13,7 @@ Working_Fluid_4 = {'Acetone'};
 
 Working_Fluids   = [Working_Fluid_1,Working_Fluid_2,Working_Fluid_3,Working_Fluid_4];
 
-Outside_Temperature = linspace(273 - 22, 273 + 52, 1000);
+Outside_Temperature = linspace(273 - 27, 273 + 52, 1000);
 
 COP_R410a       = zeros(1000,1);
 COP_R290        = zeros(1000,1);
@@ -58,7 +58,7 @@ for i = Working_Fluids
         
         % Finding all values of the fluid at location 1
         Q_1 = 1; % Saturated Vapor
-        T_1 = Cold_Space; % Temperature from 4 to 1
+        T_1 = Cold_Space-5; % Temperature from 4 to 1
         P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
         H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
         U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, Working_Fluid_1);
@@ -123,8 +123,8 @@ for i = Working_Fluids
         % Mass Flow Rate where flow rate = Cooling Capacity / Q_L
         
         dH_Evaporator_Summer = H_1 - H_4_Summer;
-        Cooling_Capacity = 500+7000; % Watts
-        Cooling_Capacity_Winter = 2000-7500; % Watts
+        Cooling_Capacity = 500+7500; % Watts
+        Cooling_Capacity_Winter = 2000-7300; % Watts
         Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
         Mass_Flow_Rate_Winter = Cooling_Capacity_Winter / dH_Evaporator_Summer;
         
@@ -177,51 +177,57 @@ COP_R290_Max        = COP_R290(973);
 COP_Ammonia_Max     = COP_Ammonia(973);
 COP_Acetone_Max     = COP_Acetone(973);
 
+COPW_R410a_Max       = COP_R410a(28); % The index selection for Takeoff Temperature
+COPW_R290_Max        = COP_R290(28);
+COPW_Ammonia_Max     = COP_Ammonia(28);
+COPW_Acetone_Max     = COP_Acetone(28);
+
 Comp_R410a_Max       = Comp_Power_R410a(973); % The index selection for Takeoff Temperature
 Comp_R290_Max        = Comp_Power_R290(973);
 Comp_Ammonia_Max     = Comp_Power_Ammonia(973);
 Comp_Acetone_Max     = Comp_Power_Acetone(973);
 
-CompW_R410a_Max       = Comp_PowerW_R410a(123); % The index selection for Takeoff Temperature
-CompW_R290_Max        = Comp_PowerW_R290(123);
-CompW_Ammonia_Max     = Comp_PowerW_Ammonia(123);
-CompW_Acetone_Max     = Comp_PowerW_Acetone(123);
+CompW_R410a_Max       = Comp_PowerW_R410a(28); % The index selection for Takeoff Temperature
+CompW_R290_Max        = Comp_PowerW_R290(28);
+CompW_Ammonia_Max     = Comp_PowerW_Ammonia(28);
+CompW_Acetone_Max     = Comp_PowerW_Acetone(28);
 
 MFR_R410a_Max       = MFR_R410a(973); % The index selection for Takeoff Temperature
 MFR_R290_Max        = MFR_R290(973);
 MFR_Ammonia_Max     = MFR_Ammonia(973);
 MFR_Acetone_Max     = MFR_Acetone(973);
 
-MFRW_R410a_Max       = MFRW_R410a(123); % The index selection for Takeoff Temperature
-MFRW_R290_Max        = MFRW_R290(123);
-MFRW_Ammonia_Max     = MFRW_Ammonia(123);
-MFRW_Acetone_Max     = MFRW_Acetone(123);
-
+MFRW_R410a_Max       = MFRW_R410a(28); % The index selection for Takeoff Temperature
+MFRW_R290_Max        = MFRW_R290(28);
+MFRW_Ammonia_Max     = MFRW_Ammonia(28);
+MFRW_Acetone_Max     = MFRW_Acetone(28);
 
 ACOP_TakeOff_Sorted =sortrows({COP_R410a_Max,'R410a';COP_R290_Max,'R290';COP_Ammonia_Max,'Ammonia';COP_Acetone_Max,'Acetone'},1);
+ACOPW_TakeOff_Sorted =sortrows({COPW_R410a_Max,'R410a';COPW_R290_Max,'R290';COPW_Ammonia_Max,'Ammonia';COPW_Acetone_Max,'Acetone'},1);
 AComp_TakeOff_Sorted =sortrows({Comp_R410a_Max,'R410a';Comp_R290_Max,'R290';Comp_Ammonia_Max,'Ammonia';Comp_Acetone_Max,'Acetone'},1);
 ACompW_TakeOff_Sorted =sortrows({CompW_R410a_Max,'R410a';CompW_R290_Max,'R290';CompW_Ammonia_Max,'Ammonia';CompW_Acetone_Max,'Acetone'},1);
 AMFR_TakeOff_Sorted =sortrows({MFR_R410a_Max,'R410a';MFR_R290_Max,'R290';MFR_Ammonia_Max,'Ammonia';MFR_Acetone_Max,'Acetone'},1);
 AMFRW_TakeOff_Sorted =sortrows({MFRW_R410a_Max,'R410a';MFRW_R290_Max,'R290';MFRW_Ammonia_Max,'Ammonia';MFRW_Acetone_Max,'Acetone'},1);
 
-
 % Plotting COP vs Outside Temperature
 figure(1)
 % Plot Lines
 hold on
-semilogx(COP_R410a,Outside_Temperature-273,'r',COP_R290,Outside_Temperature-273,'b')
-semilogx(COP_Acetone,Outside_Temperature-273,'g',COP_Ammonia,Outside_Temperature-273,'m')
-plot([5,100],[-20,-20],[5,150],[50,50])
+semilogx(Outside_Temperature-273,COP_R410a,'r',Outside_Temperature-273,COP_R290,'b')
+semilogx(Outside_Temperature-273,COP_Acetone,'g',Outside_Temperature-273,COP_Ammonia,'m')
+plot([-20,-20],[0,50],[50,50],[0,50],[10,10],[0,50])
 hold off
 % Plot Syntax
-text(9,48,'Takeoff Environment')
-text(12,-18,'Apogee Environment')
-xlabel('Coefficient of Performance','FontSize',22)
+text(26,4,'Takeoff Environment','Color','red')
+text(-19.5,4,'Apogee Environment','Color','blue')
+text(13,10,'Cooling','Color','b')
+text(-3,10,'Heating','Color','r')
+ylabel('Coefficient of Performance','FontSize',22)
 set(gca,'fontsize',20)
-ylabel('Temperature','FontSize',22)
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
-xlim([5 100])
-ylim([-25 55])
+ylim([0 50])
+xlim([-25 55])
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia');
 lgd.FontSize = 14;
 hold off
@@ -230,19 +236,20 @@ hold off
 % Plot of Outside Temperature vs Mass Flow Rate with Lines for extreme environment temperatures
 figure(2)
 hold on
-plot(Outside_Temperature-273,MFR_R410a,'r',Outside_Temperature-273,MFR_R290,'b',Outside_Temperature-273,MFR_Ammonia,'g',Outside_Temperature-273,MFR_Acetone,'m')
-plot(Outside_Temperature-273,MFRW_R410a,'r',Outside_Temperature-273,MFRW_R290,'b',Outside_Temperature-273,MFRW_Ammonia,'g',Outside_Temperature-273,MFRW_Acetone,'m')
-plot([40,40],[0,.125])
-plot([-20,-20],[-.075,0])
-plot([-25,60],[0,0],'k')
+plot(Outside_Temperature(469:1000)-273,MFR_R410a(469:1000),'r',Outside_Temperature(469:1000)-273,MFR_R290(469:1000),'b',Outside_Temperature(469:1000)-273,MFR_Ammonia(469:1000),'g',Outside_Temperature(469:1000)-273,MFR_Acetone(469:1000),'m')
+plot(Outside_Temperature(1:469)-273,MFRW_R410a(1:469),'r',Outside_Temperature(1:469)-273,MFRW_R290(1:469),'b',Outside_Temperature(1:469)-273,MFRW_Ammonia(1:469),'g',Outside_Temperature(1:469)-273,MFRW_Acetone(1:469),'m')
+plot([40,40],[0,.125],'r')
+plot([-20,-20],[-.075,0],'b')
+plot([10,10],[-.05,.1],'k')
 % Plot Syntax
-text(0,.005,'Cooling to Heating Line','Fontsize',8)
-text(10,.049,'Takeoff Environment')
-text(-19,-.06,'Apogee Environment')
-xlabel('Temperature (C)','FontSize',22)
+text(12,0.001,'Cooling','Color','b')
+text(-1,0.001,'Heating','Color','r')
+text(13,.08,'Takeoff Environment','Color','red')
+text(-19,-.04,'Apogee Environment','Color','blue')
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
 ylabel('Mass Flow Rate (kg/s)','FontSize',22)
-ylim([-.075,.125])
+ylim([-.05,.1])
 xlim([-25,60])
 set(gca,'fontsize',20)
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia','Location','northwest');
@@ -255,18 +262,19 @@ figure(3)
 hold on
 plot(Outside_Temperature-273,Comp_Power_R410a,'r',Outside_Temperature-273,Comp_Power_R290,'b',Outside_Temperature-273,Comp_Power_Ammonia,'g',Outside_Temperature-273,Comp_Power_Acetone,'m')
 plot(Outside_Temperature-273,Comp_PowerW_R410a,'r',Outside_Temperature-273,Comp_PowerW_R290,'b',Outside_Temperature-273,Comp_PowerW_Ammonia,'g',Outside_Temperature-273,Comp_PowerW_Acetone,'m')
-plot([40,40],[0,3000])
-plot([-20,-20],[-2000,0])
-plot([-25,60],[0,0],'k')
+plot([50,50],[0,3000],'r')
+plot([-20,-20],[0,2000],'b')
+plot([10,10],[0,2000],'k')
 % Plot Syntax
-text(-20,100,'Cooling to Heating Line','Fontsize',8)
-text(12,2000,'Takeoff Environment')
-text(-19,-1700,'Apogee Environment')
-xlabel('Temperature (C)','FontSize',22)
+text(12,1300,'Cooling','Color','b')
+text(-1,1300,'Heating','Color','r')
+text(22,1900,'Takeoff Environment','Color','red')
+text(-19,750,'Apogee Environment','Color','blue')
+xlabel('Temperature (°C)','FontSize',22)
 set(gca,'fontsize',20)
 ylabel('Compressor Power (J/s)','FontSize',22)
-ylim([-2000,2500])
-xlim([-25,60])
+ylim([0,2000])
+xlim([-25,55])
 set(gca,'fontsize',20)
 lgd = legend('\color{red} R410a','\color{blue} R290','\color{green} Acetone','\color{magenta} Ammonia','Location','northwest');
 lgd.FontSize = 10;
