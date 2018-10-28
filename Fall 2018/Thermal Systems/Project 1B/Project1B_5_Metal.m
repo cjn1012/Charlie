@@ -119,12 +119,12 @@ V_4_Winter = 1/CoolProp.PropsSI('D', 'P', P_4_Winter, 'H', H_4_Winter, Working_F
 
 
 % To account for pressure drops, we must use delta p = pipe friction * L/D * rho/2 * v^2
-L = 1.5;
+L = 1;
 g = 9.8;
-NumPipes = 12;
+NumPipes = 14;
 eff_compressor = 0.8
 
-MFR = .0455;%kg/s
+MFR = .0627;%kg/s
 r = .03;
 d= r*2;
 rho_R290 = 2; %kg/m3
@@ -132,7 +132,7 @@ R290_Vis = rho_R290 * 10^-6;
 ReD = 4*MFR/((pi*(r^2)*R290_Vis));
 F = 64/ReD;
 v_avg = MFR/(rho_R290*pi*r^2);
-HL = (F*(L/d) * ((v_avg^2)/2*g))*NumPipes; % (.2*((v_avg^2)/(2*g)))
+HL = (F*(L/d) * ((v_avg^2)/2*g))*NumPipes % (.2*((v_avg^2)/(2*g)))
 loss_Percent = 1-HL;
 %%%%%%%%%%%%%
 % Location 1 - Between Evaporator and Compressor
@@ -493,24 +493,23 @@ hold on
 % Winter
 plot(S_Compressor_Winter/1000,T_Compressor_Winter,'k',S_Condensor_Winter/1000, T_Condensor_Winter-273,'k',S_Condensora_Winter/1000, T_Condensora_Winter-273,'k',S_Valve_Winter/1000,T_Valve_Winter-273,'k',S_Evaporator_Winter/1000, T_Evaporator_Winter-273,'k')
 
-text(1.6,20, strcat('Actual Apogee COP: ' , num2str(COP_Winter_Actual)),'FontSize', 8,'Color','blue')
+
 
 
 % Summer
-plot(S_Compressor_Summer/1000,T_Compressor_Summer,'k',S_Condensor_Summer/1000, T_Condensor_Summer-273,'k',S_Condensora_Summer/1000,T_Condensora_Summer-273,'k',S_Valve_Summer/1000,T_Valve_Summer-273,'k',S_Evaporator_Summer/1000, T_Evaporator_Summer-273,'m')
-text(1.6,60, strcat('Actual Takeoff COP: ' , num2str(COP_Summer_Actual)),'FontSize', 8,'Color','red')
+plot(S_Compressor_Summer/1000,T_Compressor_Summer,'k',S_Condensor_Summer/1000, T_Condensor_Summer-273,'k',S_Condensora_Summer/1000,T_Condensora_Summer-273,'k',S_Valve_Summer/1000,T_Valve_Summer-273,'k',S_Evaporator_Summer/1000, T_Evaporator_Summer-273,'k')
+
 
 
 % Processes Actual
 % Winter
 plot(S_Compressor_Apogee_Actual/1000,T_Compressor_Winter_Actual,'b',S_Condensor_Winter_Actual/1000, T_Condensor_Winter_Actual-273,'b',S_Condensora_Winter_Actual/1000, T_Condensora_Winter_Actual-273,'b',S_Valve_Winter_Actual/1000,T_Valve_Winter_Actual-273,'b',S_Evaporator_Winter_Actual/1000, T_Evaporator_Winter_Actual-273,'b')
-
+text(1.6,20, strcat('Actual Apogee COP: ' , num2str(COP_Winter_Actual)),'FontSize', 8,'Color','b')
 
 
 % Summer
 plot(S_Compressor_Liftoff_Actual/1000,T_Compressor_Summer_Actual,'r',S_Condensor_Summer_Actual/1000, T_Condensor_Summer_Actual-273,'r',S_Condensora_Summer_Actual/1000,T_Condensora_Summer_Actual-273,'r',S_Valve_Summer_Actual/1000,T_Valve_Summer_Actual-273,'r',S_Evaporator_Summer_Actual/1000, T_Evaporator_Summer_Actual-273,'r')
-
-
+text(1.6,60, strcat('Actual Takeoff COP: ' , num2str(COP_Summer_Actual)),'FontSize', 8,'Color','r')
 
 % Syntax
 xlabel('Specific Entropy (kJ/kgK)','FontSize',20)

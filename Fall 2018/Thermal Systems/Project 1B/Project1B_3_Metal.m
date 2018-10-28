@@ -15,7 +15,7 @@ Temperature_Environement = 273+50; % Environement Temperature at Apogee
 Temperature_Pod = 273 + 20; % Environement Temperature at Takeoff
 Length = 1; % Meters
 
-Q_Takeoff_Aluminum = 14500; 
+Q_Takeoff_Aluminum = 14500;
 
 Convection_Coeff_R290 = (120)/1000;
 Convection_Coeff_Air = 17;
@@ -49,10 +49,10 @@ for i = Q_PVC'
     end
 end
 
-mdot = .1475; %kg/s
+mdot = .0627; %kg/s
 
 R_total_Copper = r(x);
-Num_Pipes_Copper = R_total_Copper/.03/1.5; % Length of pipe equals 1.5
+Num_Pipes_Copper = R_total_Copper/.03/1.5 % Length of pipe equals 1.5
 v_Copper = mdot/(8960*pi*.03^2);
 volume_Copper = pi*((.03+.0008)^2-.03^2)*1.5*Num_Pipes_Copper;
 mass_Copper = 8960*volume_Copper;
@@ -70,17 +70,17 @@ figure(1)
 plot(Q_Copper,Num_Pipes,'r')
 hold on
 plot(Q_PVC,Num_Pipes,'b')
-xlim([0,14000])
-ylim([0,20])
-plot([7300,7300],[0,30],'k')
+xlim([0,18000])
+ylim([0,30])
+plot([14500,14500],[0,30],'k')
 set(gca,'fontsize',14)
 xlabel('Heat Transfer for Cooling','FontSize',18)
-ylabel('Number of 1.5 Meter-Long Pipes','FontSize',18)
+ylabel('Number of 1.5 Meter Pipes','FontSize',18)
 lgd = legend('\color{red} Copper Piping','\color{blue} PVC Piping','Location','northwest');
 lgd.FontSize = 10;
 text(7400,3,'Required Heat Transfer for Takeoff','Color','k','FontSize',9)
-text(7400,2,'With a Mass Flow Rate = .1475 kg/s','Color','k','FontSize',9)
-text(7400,5.5,strcat('Mass of Copper = ', num2str(mass_Copper)),'Color','red','FontSize',10)
-text(2700,11.5,strcat('Mass of PVC = ', num2str(mass_PVC)),'Color','blue','FontSize',10)
+text(7400,2,'With a Mass Flow Rate = .0627 kg/s','Color','k','FontSize',9)
+text(8500,12,strcat('Mass of Copper = ', num2str(mass_Copper)),'Color','red','FontSize',9)
+text(8300,22,strcat('Mass of PVC = ', num2str(mass_PVC)),'Color','blue','FontSize',10)
 
 

@@ -49,15 +49,15 @@ for density = Densities
     for Wall_Thickness = linspace(.001,.01,10)
         Temperature = Temperatures(1);
         h_Convection_Coefficient_Air_T1 = h_Convection_Coefficient_Air(1);
-        Pod_Surface_Area_1 = 2*Height_Pod*Width_Pod;
-        Pod_Surface_Area_2 = 3*Length_Pod*Height_Pod; % Not including Top Face against Drone
-        Total_Mass_Pod(i,j) = Wall_Thickness*density * (Pod_Surface_Area_1 + Pod_Surface_Area_2); % Total Weight of the Pod Frame
+        Pod_Surface_Area_1 = Height_Pod*Width_Pod; % 2 of these
+        Pod_Surface_Area_2 = Length_Pod*Height_Pod; % Not including Top Face against Drone 3 of these
+        Total_Mass_Pod(i,j) = Wall_Thickness*density * (2*Pod_Surface_Area_1 + 3*Pod_Surface_Area_2); % Total Weight of the Pod Frame
         % Resistances
         R_Conductivity_Pod_1 = Wall_Thickness / (Thermal_k_Array_T1(i) * Pod_Surface_Area_1);
         R_Conductivity_Pod_2 = Wall_Thickness / (Thermal_k_Array_T1(i) * Pod_Surface_Area_2);
         R_Convection_Air_1 = 1/(h_Convection_Coefficient_Air_T1*Pod_Surface_Area_1);
         R_Convection_Air_2 = 1/(h_Convection_Coefficient_Air_T1*Pod_Surface_Area_2);
-        R_Pod_Total(i,j) = 1/(1/(R_Conductivity_Pod_1 + R_Convection_Air_1) + 1/(R_Conductivity_Pod_2+ R_Convection_Air_2));
+        R_Pod_Total(i,j) = 1/(1/(R_Conductivity_Pod_1 + R_Convection_Air_1) + 1/(R_Conductivity_Pod_1 + R_Convection_Air_1)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2));
         Q_Dot_Environment(i,j) = T_Pod-Temperature/(R_Pod_Total(i,j));
         j = j+1;
     end
@@ -74,15 +74,15 @@ for density = Densities
         
         Temperature = Temperatures(2);
         h_Convection_Coefficient_Air_T2 = h_Convection_Coefficient_Air(2);
-        Pod_Surface_Area_1 = 2*Height_Pod*Width_Pod;
-        Pod_Surface_Area_2 = 3*Length_Pod*Height_Pod; % Not including Top Face against Drone
-        Total_Mass_Pod_T2(i,j) = Wall_Thickness.*density * (Pod_Surface_Area_1 + Pod_Surface_Area_2); % Total Weight of the Pod Frame
+        Pod_Surface_Area_1 = Height_Pod*Width_Pod;
+        Pod_Surface_Area_2 = Length_Pod*Height_Pod; % Not including Top Face against Drone
+        Total_Mass_Pod_T2(i,j) = Wall_Thickness.*density * (2*Pod_Surface_Area_1 + 3*Pod_Surface_Area_2); % Total Weight of the Pod Frame
         % Resistances
         R_Conductivity_Pod_1 = Wall_Thickness ./ (Thermal_k_Array_T2(i) * Pod_Surface_Area_1);
         R_Conductivity_Pod_2 = Wall_Thickness ./ (Thermal_k_Array_T2(i) * Pod_Surface_Area_2);
         R_Convection_Air_1 = 1/(h_Convection_Coefficient_Air_T2*Pod_Surface_Area_1);
         R_Convection_Air_2 = 1/(h_Convection_Coefficient_Air_T2*Pod_Surface_Area_2);
-        R_Pod_Total_T2(i,j) = 1/(1/(R_Conductivity_Pod_1 + R_Convection_Air_1) + 1/(R_Conductivity_Pod_2+ R_Convection_Air_2));
+        R_Pod_Total_T2(i,j) = 1/(1/(R_Conductivity_Pod_1 + R_Convection_Air_1) + 1/(R_Conductivity_Pod_1 + R_Convection_Air_1)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2)+ 1/(R_Conductivity_Pod_2+ R_Convection_Air_2));
     
         Q_Dot_Environment_T2(i,j) = T_Pod-Temperature/(R_Pod_Total_T2(i,j));
         j = j+1;
@@ -93,12 +93,15 @@ end
 
 figure(1)
 plot(Total_Mass_Pod')
+hold on
+plot([2,2],[0,90],'k')
+text(2.1,12,'Optimal Pod Thickness')
 ylabel('Frame Mass (kg)','FontSize',22)
 xlabel('Material Thickness (mm)','FontSize',22)
 legend()
 set(gca,'fontsize',20)
-ylim([0,90])
-xlim([1,10])
+ylim([0,30])
+xlim([1,5])
 
 set(gca,'fontsize',20)
 lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31','Location','northwest');
@@ -108,14 +111,35 @@ hold off
 
 figure(2)
 plot(Q_Dot_Environment([1,2,3,4,5],1:10)')
+hold on
+plot([2,2],[-30000,10000],'k')
+text(2.15,0,'Apogee Temperature','Color','b')
+text(2.1,-10000,'Optimal Pod Thickness')
 ylabel('Heat Transfer (J/s)','FontSize',22)
 xlabel('Material Thickness (mm)','FontSize',22)
 ylim([-25000,10000]) 
-xlim([1,10])
+xlim([1,5])
 set(gca,'fontsize',20)
-lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31','Location','northwest');
-lgd.FontSize = 10;
+lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31');
+lgd.FontSize = 9;
 hold off
+
+
+figure(3)
+plot(Q_Dot_Environment_T2([1,2,3,4,5],1:10)')
+hold on
+plot([2,2],[-30000,10000],'k')
+text(2.1,-10000,'Optimal Pod Thickness')
+ylabel('Heat Transfer (J/s)','FontSize',22)
+xlabel('Material Thickness (mm)','FontSize',22)
+text(2.15,0,'Takeoff Temperature','Color','r')
+ylim([-25000,10000]) 
+xlim([1,5])
+set(gca,'fontsize',20)
+lgd = legend('Aluminum','Carbon Fiber','Fiberglass','Magnesium AZ61','Magnesium AZ31');
+lgd.FontSize = 9;
+hold off
+
 
 % Q dot needed for correct refrigeration at takeoff and Apogee (Worst case scenarios
 Q_Takeoff_Fiberglass = Q_Dot_Environment_T2(3,2)

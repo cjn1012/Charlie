@@ -66,7 +66,7 @@ v_PVC = mdot/(1380*pi*.03^2);
 volume_PVC = pi*((.03+.0008)^2-.03^2)*1.5*Num_Pipes_PVC;
 mass_PVC = 1380*volume_PVC
 
-Num_Pipes = r/.03/1.5 % Length of pipe equals 1.5;
+Num_Pipes = r/.03/1.5; % Length of pipe equals 1.5;
 
 figure(1)
 plot(Q_Copper,Num_Pipes,'r')
@@ -77,7 +77,7 @@ ylim([0,30])
 plot([7300,7300],[0,30],'k')
 set(gca,'fontsize',18)
 xlabel('Heat Transfer for Cooling','FontSize',20)
-ylabel('Number of 1.5 Meter-Long Pipes','FontSize',20)
+ylabel('Number of 1.5 Meter Pipes','FontSize',20)
 lgd = legend('\color{red} Copper Piping','\color{blue} PVC Piping','Location','northwest');
 lgd.FontSize = 10;
 text(7400,5,'Required Heat Transfer for Takeoff','Color','k','FontSize',9)
