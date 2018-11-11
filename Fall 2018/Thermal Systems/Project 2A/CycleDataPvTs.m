@@ -79,7 +79,7 @@ P_Combustor = zeros(1000,1);
 s_Combustor = zeros(1000,1);
 
 for index = 1:1000
-    s_Combustor(index) = Cp*log(T_Combustor(index)/T2);
+    s_Combustor(index) = s2 + Cp*log(T_Combustor(index)/T2);
     P_Combustor(index) = P2;
 end
 
@@ -99,7 +99,7 @@ end
 v_Nozzle = linspace(v4,v5,1000)';
 T_Nozzle = linspace(T4,T5,1000)';
 P_Nozzle = zeros(1000,1);
-s_Nozzle = linspace(s4,s5,1000)';
+s_Nozzle = linspace(s3,s4,1000)';
 
 for index = 1:1000
     P_Nozzle(index) = C2/(v_Nozzle(index)^n);
@@ -112,8 +112,8 @@ P_Reset = linspace(P5,P1,1000)';
 T_Reset = linspace(T5,T1,1000)';
 s_Reset = zeros(1000,1);
 for index = 1:1000
-    P_Nozzle(index) = C2/(v_Nozzle(index)^n);
-    s_Reset(index)  = Cp*log(T_Reset(index)/T5);
+    P_Reset(index) = P5;
+    s_Reset(index)  = s4 + Cp*log(T_Reset(index)/T5);
 end
 
 % Data Compiled for Output - 1000 points per process

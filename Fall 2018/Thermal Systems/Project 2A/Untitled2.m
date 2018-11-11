@@ -1,5 +1,6 @@
+clear all;
+close all;
 
-function [Pressure_Cycle,SpecificVolume_Cycle,Temperature_Cycle,SpecificEntropy_Cycle] = CycleDataPv(PR,MaxT)
 
 % Thermal Systems - Project 2A   
 % Function to obtain P-v and T-s data
@@ -11,7 +12,8 @@ R=0.287;     % Constant
 n=1.4;       % Constant
 k = (1/0.4); % Constant
 Cp = 1.005; % kJ/Kg
-
+PR = 25;
+MaxT = 1500;
 %%%%%%
 % State Calculations
 %%%%%%
@@ -79,7 +81,7 @@ P_Combustor = zeros(1000,1);
 s_Combustor = zeros(1000,1);
 
 for index = 1:1000
-    s_Combustor(index) = Cp*log(T_Combustor(index)/T2);
+    s_Combustor(index) = s2 + Cp*log(T_Combustor(index)/T2);
     P_Combustor(index) = P2;
 end
 
@@ -99,7 +101,7 @@ end
 v_Nozzle = linspace(v4,v5,1000)';
 T_Nozzle = linspace(T4,T5,1000)';
 P_Nozzle = zeros(1000,1);
-s_Nozzle = linspace(s4,s5,1000)';
+s_Nozzle = linspace(s3,s4,1000)';
 
 for index = 1:1000
     P_Nozzle(index) = C2/(v_Nozzle(index)^n);
@@ -112,8 +114,8 @@ P_Reset = linspace(P5,P1,1000)';
 T_Reset = linspace(T5,T1,1000)';
 s_Reset = zeros(1000,1);
 for index = 1:1000
-    P_Nozzle(index) = C2/(v_Nozzle(index)^n);
-    s_Reset(index)  = Cp*log(T_Reset(index)/T5);
+    P_Reset(index) = C2/(v_Nozzle(index)^n);
+    s_Reset(index)  = s4 + Cp*log(T_Reset(index)/T5);
 end
 
 % Data Compiled for Output - 1000 points per process
@@ -121,10 +123,10 @@ Pressure_Cycle        = [P_Compressor;P_Combustor;P_Turbine;P_Nozzle;P_Reset];
 SpecificVolume_Cycle  = [v_Compressor;v_Combustor;v_Turbine;v_Nozzle;v_Reset];
 Temperature_Cycle     = [T_Compressor;T_Combustor;T_Turbine;T_Nozzle;T_Reset];
 SpecificEntropy_Cycle = [s_Compressor;s_Combustor;s_Turbine;s_Nozzle;s_Reset];
-end
 
 
 
+plot(SpecificEntropy_Cycle,Temperature_Cycle)
 
 
 
