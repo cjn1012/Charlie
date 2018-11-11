@@ -1,8 +1,13 @@
 
-function [Pressure_Cycle,SpecificVolume_Cycle,Temperature_Cycle,SpecificEntropy_Cycle] = CycleDataPvTs(PR,MaxT)
+function [Pressure_Cycle,SpecificVolume_Cycle,Temperature_Cycle,SpecificEntropy_Cycle] = CycleDataPvTsCp(PR,MaxT)
 
 % Thermal Systems - Project 2A   
-% Function to obtain P-v and T-s data
+% Function to obtain P-v and T-s data for constant cp
+
+Air_Data = xlsread('air_data1.xls');
+Temperatures    = Air_Data(:,1);
+Specific_Enthalpy = Air_Data(:,3);
+Specific_Entropy = Air_Data(:,4);
 
 %%%%%%
 % Definition of Constants
@@ -12,22 +17,23 @@ n=1.4;       % Constant
 k = (1/0.4); % Constant
 Cp = 1.005; % kJ/Kg
 
+
 %%%%%%
 % State Calculations
 %%%%%%
 
 % State 1 % Inlet of Compressor 
 T1 = 300;       % Inlet Temperature
-P1=100;         % Inlet Pressure
+P1 = 100;       % Inlet Pressure
 v1 = (R*T1)/P1; 
-s1 = 1;
+s1 = interp1(Temperatures,Specific_Entropy,T1);
 C=(P1*(v1^n));  % Isentropic Constant
  
 % State 2 % Inlet of Combuster  
 P2 = PR*P1; 
 v2 = (C/P2)^(1/n);   
 T2= (P2*v2)/R;  
-s2 = 1;
+s2 = s1;
 
 % State 3 % Inlet of Turbine   
 P3 = P2; % Isobaric Process
@@ -99,10 +105,11 @@ end
 v_Nozzle = linspace(v4,v5,1000)';
 T_Nozzle = linspace(T4,T5,1000)';
 P_Nozzle = zeros(1000,1);
-s_Nozzle = linspace(s3,s4,1000)';
+s_Nozzle = zeros(1000,1);
 
 for index = 1:1000
     P_Nozzle(index) = C2/(v_Nozzle(index)^n);
+    s_Nozzle(index) = s4;
 end
 
 % Reset Process - 4 to 1 - Isobaric

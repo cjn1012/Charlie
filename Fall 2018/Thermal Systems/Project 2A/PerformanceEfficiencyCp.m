@@ -2,7 +2,7 @@
 function [Performance,Thermal_Efficiency] = PerformanceEfficiencyCp(T1,P1,PR,MaxT)
 
 % Thermal Systems - Project 2A   
-% Function to obtain performance and efficient of a jet engine with particular parameters
+% Function to obtain performance and efficient of a jet engine with particular parameters for constant cp
 
 %%%%%%
 % Definition of Constants
@@ -32,7 +32,6 @@ s2 = 1;
 P3 = P2; % Isobaric Process
 v3 = (R * MaxT)/P3; 
 s3 = s2 + Cp*log(MaxT/T2);
-C2=(P3*(v3^n));
 
 % State 4 % Inlet of Nozzle
 T4 = MaxT - (T2-T1);   
