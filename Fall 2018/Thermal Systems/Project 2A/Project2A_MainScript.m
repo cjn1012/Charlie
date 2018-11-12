@@ -82,7 +82,7 @@ MaxT4 = 1500;
 
 % Bonus Problem, calculating efficiency and performance as a function of PR and MaxT
 
-Res = 10;
+Res = 20;
 
 PR2   = linspace(1,50,Res)';
 MaxT3 = linspace(1000,2000,Res)';
@@ -112,7 +112,7 @@ set(gca,'fontsize',18)
 xlabel('Compressor Pressure Ratio ([])','FontSize',20)
 set(gca,'fontsize',18)
 lgd = legend('\color{red} Non-Constant Cp','\color{blue} Constant Cp','Location','northwest');
-lgd.FontSize = 14;
+lgd.FontSize = 12;
 hold off
 
 
@@ -121,12 +121,14 @@ figure(2)
 plot(PR,PerformancePRNonCp,'r')
 hold on
 plot(PR,PerformancePRCp,'b')
-ylabel('Performance ([m^2/s^2])','FontSize',20)
+ylabel('Performance [m^2/s^2]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Compressor Pressure Ratio ([])','FontSize',20)
+xlabel('Compressor Pressure Ratio [ ]','FontSize',20)
 set(gca,'fontsize',18)
+xlim([0,50])
+ylim([0,700])
 lgd = legend('\color{red} Non-Constant Cp','\color{blue} Constant Cp','Location','northwest');
-lgd.FontSize = 14;
+lgd.FontSize = 12;
 hold off
 
 % Plot of Efficiency vs. Maximum Temperature
@@ -134,12 +136,14 @@ figure(3)
 plot(MaxT,EfficiencyMaxTNonCp,'r')
 hold on
 plot(MaxT,EfficiencyMaxTCp,'b')
-ylabel('Efficiency ([])','FontSize',20)
+ylabel('Efficiency [ ]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Combustion Maximum Temperature [K])','FontSize',20)
+xlabel('Combustion Maximum Temperature [K]','FontSize',20)
 set(gca,'fontsize',18)
+xlim([1000,2000])
+ylim([.55,.62])
 lgd = legend('\color{red} Non-Constant Cp','\color{blue} Constant Cp','Location','northwest');
-lgd.FontSize = 14;
+lgd.FontSize = 12;
 hold off
 
 % Plot of Performance vs. Maximum Temperature
@@ -147,12 +151,12 @@ figure(4)
 plot(MaxT,PerformanceMaxTNonCp,'r')
 hold on
 plot(MaxT,PerformanceMaxTCp,'b')
-ylabel('Performance ([m^2/s^2])','FontSize',20)
+ylabel('Performance [m^2/s^2]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Combustion Maximum Temperature [K])','FontSize',20)
+xlabel('Combustion Maximum Temperature [K]','FontSize',20)
 set(gca,'fontsize',18)
 lgd = legend('\color{red} Non-Constant Cp','\color{blue} Constant Cp','Location','northwest');
-lgd.FontSize = 14;
+lgd.FontSize = 12;
 hold off
 
 
@@ -162,21 +166,21 @@ hold off
 
 figure(5)
 mesh(PRx,MaxTy,Thermal_Efficiency)
-xlabel('Pressure Ratio [ ])','Rotation',15,'FontSize',15)
+xlabel('Pressure Ratio [ ]','Rotation',15,'FontSize',15)
 set(gca,'fontsize',14)
-ylabel('Maximum Temperature [K])', 'Rotation',-25,'FontSize',15)
+ylabel('Maximum Temperature [K]', 'Rotation',-25,'FontSize',15)
 set(gca,'fontsize',14)
-zlabel('Efficiency [ ])', 'Interpreter', 'none','FontSize',15)
+zlabel('Efficiency [ ]', 'Interpreter', 'none','FontSize',15)
 set(gca,'fontsize',14)
 hold off
 
 figure(6)
 mesh(PRx,MaxTy,Performance)
-xlabel('Pressure Ratio [ ])','Rotation',15,'FontSize',15)
+xlabel('Pressure Ratio [ ]','Rotation',15,'FontSize',15)
 set(gca,'fontsize',14)
-ylabel('Maximum Temperature [K])', 'Rotation',-25,'FontSize',15)
+ylabel('Maximum Temperature [K]', 'Rotation',-25,'FontSize',15)
 set(gca,'fontsize',14)
-zlabel('Performance [m^2/s^2])','FontSize',15)
+zlabel('Performance [m^2/s^2]','FontSize',15)
 set(gca,'fontsize',14)
 hold off
 
@@ -188,22 +192,26 @@ hold off
 % Plot of Pressure vs. Specific Volume
 figure(7)
 plot(SpecificVolumesBase,PressuresBase,'k',SpecificVolumesMaxT,PressuresMaxT,'r',SpecificVolumesPR,PressuresPR,'b')
-ylabel('Pressure [KPa])','FontSize',20)
+ylabel('Pressure [KPa]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Specific Volume [m^3/kg])','FontSize',20)
+xlabel('Specific Volume [m^3/kg]','FontSize',20)
 set(gca,'fontsize',18)
-lgd = legend('\color{black} Baseline Cycle','\color{red} Increased Max Temperature Cycle','\color{blue} Increased Compressor Pressure Ratio Cycle');
+xlim([0,1])
+ylim([0,4500])
+lgd = legend('\color{black} Baseline','\color{red} Increased Max Temperature','\color{blue} Increased Pressure Ratio');
 lgd.FontSize = 12;
 hold off
 
 % Plot of Temperature vs. Specific Entropy
 figure(8)
 plot(SpecificEntropysBase,TemperaturesBase,'k',SpecificEntropysMaxT,TemperaturesMaxT,'r',SpecificEntropysPR,TemperaturesPR,'b')
-ylabel('Temperature [K])','FontSize',20)
+ylabel('Temperature [K]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Specific Entropy [KJ/KG])','FontSize',20)
+xlabel('Specific Entropy [KJ/KG]','FontSize',20)
 set(gca,'fontsize',18)
-lgd = legend('\color{black} Baseline Cycle','\color{red} Increased Max Temperature Cycle','\color{blue} Increased Compressor Pressure Ratio Cycle');
+xlim([1.5,3])
+ylim([0,2500])
+lgd = legend('\color{black} Baseline','\color{red} Increased Max Temperature','\color{blue} Increased Pressure Ratio','Location','northwest');
 lgd.FontSize = 12;
 hold off
 
@@ -214,37 +222,29 @@ hold off
 
 % Plot of Pressure vs. Specific Volume
 figure(9)
-
 plot(SpecificVolumesBase2,PressuresBase2,'k',SpecificVolumesMaxT2,PressuresMaxT2,'r',SpecificVolumesPR2,PressuresPR2,'b')
-ylabel('Pressure [KPa])','FontSize',20)
+ylabel('Pressure [KPa]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Specific Volume [m^3/kg])','FontSize',20)
+xlabel('Specific Volume [m^3/kg]','FontSize',20)
 set(gca,'fontsize',18)
-lgd = legend('\color{black} Baseline Cycle','\color{red} Increased Max Temperature Cycle','\color{blue} Increased Compressor Pressure Ratio Cycle');
+xlim([0,1])
+ylim([0,4500])
+lgd = legend('\color{black} Baseline','\color{red} Increased Max Temperature','\color{blue} Increased Pressure Ratio');
 lgd.FontSize = 12;
 hold off
 
 % Plot of Temperature vs. Specific Entropy
 figure(10)
 plot(SpecificEntropysBase2,TemperaturesBase2,'k',SpecificEntropysMaxT2,TemperaturesMaxT2,'r',SpecificEntropysPR2,TemperaturesPR2,'b')
-ylabel('Temperature [K])','FontSize',20)
+ylabel('Temperature [K]','FontSize',20)
 set(gca,'fontsize',18)
-xlabel('Specific Entropy [KJ/kg])','FontSize',20)
+xlabel('Specific Entropy [KJ/kg]','FontSize',20)
 set(gca,'fontsize',18)
-lgd = legend('\color{black} Baseline Cycle','\color{red} Increased Max Temperature Cycle','\color{blue} Increased Compressor Pressure Ratio Cycle');
+xlim([1.5,3])
+ylim([0,2500])
+lgd = legend('\color{black} Baseline','\color{red} Increased Max Temperature','\color{blue} Increased Pressure Ratio','Location','northwest');
 lgd.FontSize = 12;
 hold off
 
-
-% Plot of Temperature vs. Specific Entropy
-figure(11)
-plot(SpecificEntropysBase,TemperaturesBase,'k')
-ylabel('Temperature [K])','FontSize',20)
-set(gca,'fontsize',18)
-xlabel('Specific Entropy [KJ/KG])','FontSize',20)
-set(gca,'fontsize',18)
-lgd = legend('\color{black} Baseline Cycle');
-lgd.FontSize = 12;
-hold off
 
 
