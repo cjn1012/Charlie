@@ -1,15 +1,14 @@
-function [Performance,efficiency] = Efficiency(PR,MaxT)
-
-
+clear all
+close all
 % Thermal Systems - Project 2A   
 % Function to obtain performance and efficient of a jet engine with particular parameters for non constant cp
 
 T1 = 300;
 P1 = 100;
-Eff_Comp = .90;
-Eff_Turb = .72;
-Eff_Nozz = .98;
-PD=0.03;
+PR = 20;
+MaxT = 1500;
+
+PD=0.03
 %%%%%%
 % Definition of Constants
 %%%%%%
@@ -17,7 +16,6 @@ Air_Data = xlsread('air_data1.xls');
 Temperatures    = Air_Data(:,1);
 Specific_Enthalpy = Air_Data(:,3);
 Specific_Entropy = Air_Data(:,4);
-
 R=0.287;     % Constant
 
 %%%%%%
@@ -92,22 +90,80 @@ s4n = st4n - st3n - R*log(P4n/P3n) + s3n;
 
 % State 5 % Outlet of Nozzle
 P5n = P1;
-s5n = s4n/Eff_Nozz;
+s5n = s4n/Eff_Nozz
 h5n = (h5-h4n)*Eff_Nozz + h4n; 
 T5n = interp1(Specific_Entropy,Temperatures,s5n);
+%st5n = interp1(Specific_Enthalpy,Specific_Entropy,h5n);
+%s5n = st5n - st4n - R*log(P5n/P4n) + s4n;
 
 
 
-Q_Add    = h3n - h2n;
-Q_Remove = h5n - h1;
 
-W_Compressor = h2n - h1;
-W_Turbine    = h4n - h3n;
-
-Performance = W_Compressor + Q_Add - Q_Remove + W_Turbine;
-efficiency = Performance/Q_Add;
-
+% Combustor Process - Isobaric - T as a function of s
+T_Combustor = linspace(T2,MaxT,1000)';
+s_Combustor = zeros(1000,1);
+for index = 1:1000
+    s_Combustor(index) = (interp1(Temperatures,Specific_Entropy,T_Combustor(index)))-st2+s2;
 end
+
+% Reset Process - 4 to 1 - Isobaric
+T_Reset = linspace(T5,T1,1000)';
+s_Reset = zeros(1000,1);
+for index = 1:1000
+    s_Reset(index) = interp1(Temperatures,Specific_Entropy,T_Reset(index))-st1+s1;
+end
+
+% Combustor Process - Isobaric - T as a function of s
+T_Combustorn = linspace(T2n,MaxT,1000)';
+s_Combustorn = zeros(1000,1);
+for index = 1:1000
+    s_Combustorn(index) = (interp1(Temperatures,Specific_Entropy,T_Combustorn(index)))-st2n+s2n+(PD/1000)*index;
+end
+
+% Reset Process - 4 to 1 - Isobaric
+T_Resetn = linspace(T5n,T1,1000)';
+s_Resetn = linspace(s5n,s1,1000)';
+for index = 1:1000
+    T_Resetn(index) = interp1(Specific_Entropy,Temperatures,s_Resetn(index));
+end
+
+
+
+
+
+
+linesy = [T1;T2];
+lines2y = [MaxT;T5];
+linesx = [s1;s2];
+lines2x= [s3;s5];
+
+linesny = [T1;T2n];
+linesn2y = [MaxT;T4n];
+linesn3y = [T4n,T5n]';
+linesnx = [s1;s2n];
+linesn2x= [s3n;s4n];
+linesn3x = [s4n,s5n]';
+
+
+EntropyIdeal = vertcat(linesx,s_Combustor,lines2x,s_Reset);
+TemperatureIdeal = vertcat(linesy,T_Combustor,lines2y,T_Reset);
+EntropyActual = vertcat(linesnx,s_Combustorn,linesn2x,linesn3x,s_Resetn);
+TemperatureActual = vertcat(linesny,T_Combustorn,linesn2y,linesn3y,T_Resetn);
+
+
+
+
+
+figure(1)
+plot(EntropyIdeal,TemperatureIdeal,'b')
+hold on
+plot(EntropyActual,TemperatureActual,'r')
+
+Q_Comb = h3-h2; % = 930
+
+
+
+
 
 
 

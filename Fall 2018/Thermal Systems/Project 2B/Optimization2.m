@@ -1,15 +1,15 @@
-function [Performance,efficiency] = Efficiency(PR,MaxT)
+function Q = Optimization2(Eff_Comp,Eff_Turb,Eff_Nozz,T1,P1)
 
 
 % Thermal Systems - Project 2A   
 % Function to obtain performance and efficient of a jet engine with particular parameters for non constant cp
 
-T1 = 300;
-P1 = 100;
-Eff_Comp = .90;
-Eff_Turb = .72;
-Eff_Nozz = .98;
-PD=0.03;
+T1 = T1+273;
+
+PR = 20;
+MaxT = 1500;
+
+
 %%%%%%
 % Definition of Constants
 %%%%%%
@@ -66,36 +66,35 @@ h5 = interp1(Temperatures,Specific_Enthalpy,T5);
 % State Calculations Non-Ideal
 %%%%%%
 
-% State 2 % Inlet of Combuster
+
+% State 2 % Inlet of Combuster  
 P2n = PR*P1; 
 h2n = (h2-h1)/Eff_Comp + h1;
 T2n = interp1(Specific_Enthalpy,Temperatures,h2n);
-st2n = interp1(Specific_Enthalpy,Specific_Entropy,h2n);
-s2n  = st2n - st1 -R*log(PR) + s1;
+st2n = st1 + R*log(PR);
+s2n  = interp1(Specific_Enthalpy,Specific_Entropy,h2n)-st2+s1;
 
 % State 3 % Inlet of Turbine
-P3n = P2; % Isobaric Process
-s3n = interp1(Temperatures,Specific_Entropy,MaxT)-st2n+s2n+PD;
+P3n = P2-300; % Isobaric Process
+s3n = interp1(Temperatures,Specific_Entropy,MaxT)-st2n+s2n;
 st3n = interp1(Temperatures,Specific_Entropy,MaxT);
 h3n = interp1(Temperatures,Specific_Enthalpy,MaxT);
 
 % State 4 % Inlet of Nozzle
-h4n = h3n-(h2n-h1) ; 
-h4s = ((h4n-h3n)/Eff_Turb) + h3n;
-T4n = interp1(Specific_Enthalpy,Temperatures,h4n);
-T4s = interp1(Specific_Enthalpy,Temperatures,h4s);
+h4n = -Eff_Turb * (h3n-h4) + h3n ; 
 st4n = interp1(Specific_Enthalpy,Specific_Entropy,h4n);
-st4s = interp1(Specific_Enthalpy,Specific_Entropy,h4s);
-P4s = P3*exp((st4s-st3)/R);
-P4n = P4s;
-s4n = st4n - st3n - R*log(P4n/P3n) + s3n;
+s4n = interp1(Specific_Enthalpy,Specific_Entropy,h4n)-st3n+s3n;
+
+T4n = interp1(Specific_Enthalpy,Temperatures,h4n);
+P4n = P4;
+
 
 % State 5 % Outlet of Nozzle
+h5n = -Eff_Nozz * (h4n-h5) + h4n ; 
+s5n = interp1(Specific_Enthalpy,Specific_Entropy,h5n);
+st5n = interp1(Specific_Enthalpy,Specific_Entropy,h5n);
+T5n = interp1(Specific_Enthalpy,Temperatures,h5n);
 P5n = P1;
-s5n = s4n/Eff_Nozz;
-h5n = (h5-h4n)*Eff_Nozz + h4n; 
-T5n = interp1(Specific_Entropy,Temperatures,s5n);
-
 
 
 Q_Add    = h3n - h2n;
@@ -106,7 +105,7 @@ W_Turbine    = h4n - h3n;
 
 Performance = W_Compressor + Q_Add - Q_Remove + W_Turbine;
 efficiency = Performance/Q_Add;
-
+Q = h3-h2;
 end
 
 

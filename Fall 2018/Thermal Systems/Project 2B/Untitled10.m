@@ -1,6 +1,8 @@
-function Range = Range(V,Air_D,Q)
 
-Efficiency = .9;
+V = 150;
+Air_D = .6;
+Q = 43000000;
+Efficiency = .5129;
 Q = Q*Efficiency;
 
 
@@ -9,7 +11,7 @@ Alpha  = NACA(12:end,1);
 Clv    = NACA(12:end,2);
 Cdv    = NACA(12:end,3);
 A = 10;
-M_Equipment = 150;
+M_Equipment =  150;
 M_Fuel_i = 150;
 Fl_NoCl = .5*Air_D*V^2*A;
 W_i = (1500+M_Equipment+M_Fuel_i)*9.8;
@@ -19,7 +21,7 @@ W_i = (1500+M_Equipment+M_Fuel_i)*9.8;
 ranges = zeros(150,1);
 
 for index = 1:150
-    W = W_i - index*9.8;
+    W = W_i - index;
     Cl = W/Fl_NoCl;
     for index2 = 1:150
         if Cl>Clv(index)
@@ -32,8 +34,14 @@ for index = 1:150
     ranges(index) = Q/F_Drag;
 end
 
-Range = sum(ranges);
+Range = sum(ranges)
 
 
 
-end
+
+
+
+
+
+
+
