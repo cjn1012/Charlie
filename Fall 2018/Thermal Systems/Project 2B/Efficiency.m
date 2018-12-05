@@ -1,11 +1,10 @@
-function [Performance,efficiency] = Efficiency(PR,MaxT)
+function [Performance,efficiency] = Efficiency(PR,MaxT,P1,T1)
 
 
 % Thermal Systems - Project 2A   
 % Function to obtain performance and efficient of a jet engine with particular parameters for non constant cp
 
-T1 = 300;
-P1 = 100;
+
 Eff_Comp = .90;
 Eff_Turb = .72;
 Eff_Nozz = .98;

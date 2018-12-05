@@ -1,7 +1,7 @@
 function Range = Range(V,Air_D,Q)
 Efficiency = .5019*.9;
 Q = Q*Efficiency;
-NACA   = xlsread('xf-naca0015-il-500000.csv');
+NACA   = xlsread('xf-naca0015-il-1000000.csv');
 Alpha  = NACA(12:end,1);
 Clv    = NACA(12:end,2);
 Cdv    = NACA(12:end,3);
@@ -19,5 +19,5 @@ for index = 1:100
     F_Drag = .5 * Air_D * V^2 * A * Cd; % kgm3/s2 kgm2/s2
     ranges(index) = Q/F_Drag;
 end
-Range = nansum(ranges);
+Range = nansum(ranges)/1000;
 end
