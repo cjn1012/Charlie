@@ -8,7 +8,6 @@ T1 = 300;
 P1 = 100;
 PR = 20;
 MaxT = 1500;
-
 PD=0.03;
 %%%%%%
 % Definition of Constants

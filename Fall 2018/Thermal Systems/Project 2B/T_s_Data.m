@@ -131,17 +131,17 @@ end
 
 
 
-linesy = [T1;T2];
-lines2y = [MaxT;T5];
-linesx = [s1;s2];
-lines2x= [s3;s5];
+linesy = linspace(T1,T2,1000)';
+lines2y = linspace(MaxT,T5,1000)';
+linesx = linspace(s1,s2,1000)';
+lines2x= linspace(s3,s5,1000)';
 
-linesny = [T1;T2n];
-linesn2y = [MaxT;T4n];
-linesn3y = [T4n,T5n]';
-linesnx = [s1;s2n];
-linesn2x= [s3n;s4n];
-linesn3x = [s4n,s5n]';
+linesny = linspace(T1,T2n,1000)';
+linesn2y = linspace(MaxT,T4n,1000)';
+linesn3y = linspace(T4n,T5n,1000)';
+linesnx = linspace(s1,s2n,1000)';
+linesn2x= linspace(s3n,s4n,1000)';
+linesn3x = linspace(s4n,s5n,1000)';
 
 
 EntropyIdeal = vertcat(linesx,s_Combustor,lines2x,s_Reset);

@@ -42,11 +42,33 @@ Eff_Nozz = Sorted(end,3);
 [EntropyIdeal,TemperatureIdeal,EntropyActual,TemperatureActual,h3,h2] = T_s_Data(Eff_Comp,Eff_Turb,Eff_Nozz);
 
 figure(1)
-plot(EntropyIdeal,TemperatureIdeal,'b')
+plot(EntropyIdeal,TemperatureIdeal,'b',EntropyActual,TemperatureActual,'r')
 hold on
-plot(EntropyActual,TemperatureActual,'r')
+plot(EntropyIdeal(3001:4000),TemperatureIdeal(3001:4000),'m')
+text(EntropyActual(1)+.01   ,TemperatureActual(1)-10   , '\leftarrow Compressor Inlet','FontSize',12)
+text(EntropyActual(1001)+.01,TemperatureActual(1001)-7, '\leftarrow Combustor Inlet','FontSize',12)
+text(EntropyActual(2001)+.01,TemperatureActual(2001), '\leftarrow Turbine Inlet','FontSize',12)
+text(EntropyActual(3001)+.01,TemperatureActual(3001), '\leftarrow Nozzle Inlet','FontSize',12)
+text(EntropyActual(4001)+.01,TemperatureActual(4001), '\leftarrow Nozzle Outlet','FontSize',12)
+annotation('textarrow',[.26,.28],[.25,.4],'String','Cycle Direction','FontSize',10)
+xlabel('Specific Entropy [KJ/kg]','FontSize',20)
+set(gca,'fontsize',18)
+ylabel('Temperature [K]','FontSize',20)
+set(gca,'fontsize',18)
+lgd = legend('\color{blue} Ideal Cycle','Location','northwest','\color{red} Actual Cycle');
+lgd.FontSize = 14;
+xlim([1.25,3.5])
+ylim([0,1600])
+hold off
 
-Q_Comb = h3-h2; % = 930
+
+
+
+
+
+
+
+Q = h3-h2
 
 %% Part 2
 
@@ -76,7 +98,15 @@ end
 
 figure(2)
 plot(PR,Efficiency_PR)
-
+xlabel('Pressure Ratio [KJ/kg]','FontSize',20)
+set(gca,'fontsize',18)
+ylabel('Temperature [K]','FontSize',20)
+set(gca,'fontsize',18)
+lgd = legend('\color{blue} Ideal Cycle','Location','northwest','\color{red} Actual Cycle');
+lgd.FontSize = 14;
+xlim([1.25,3.5])
+ylim([0,1600])
+hold off
 figure(3)
 plot(MaxT,Efficiency_MaxT)
 
@@ -99,12 +129,12 @@ close all
 % Qadded?cycle ? Wdrag. The mass of the UAV is expected to be approximately 1500
 % kg [without fuel and equipment]. Assuming a fixed amount of fuel that can be stored
 % aboard, evaluate the ranges of the aircraft as a function of cruising speed.
-Vv = linspace(100,1000,100);
+Vv = linspace(0,300,100);
 range_kero = zeros(100,1)';
-Q_Kero = 42000000;
+Q_Kero = 24000000
 x=1;
 for index = Vv
-    range_kero(x) = Range(index,.6,Q_Kero) ;
+    range_kero(x) = Range(index,.9,Q_Kero) ;
     x = x+1;
 end
 
@@ -128,10 +158,10 @@ plot(Vv,range_kero)
 % The gases - Kerosene, Kerosene gasoline, Avgas
 
 
-Vv = linspace(100,1000,50);
-range_kero = zeros(50,1)';
-range_methanol = zeros(50,1)';
-range_TNT = zeros(50,1)';
+Vv = linspace(30,100,100);
+range_kero = zeros(100,1)';
+range_methanol = zeros(100,1)';
+range_TNT = zeros(100,1)';
 Q_kero = 42000000;
 Q_methanol = 19700000;
 Q_TNT = 4610000;
@@ -139,19 +169,19 @@ Q_Fuels = [Q_kero,Q_methanol,Q_TNT];
 
 x=1;
 for index = Vv
-    range_kero(x) = Range(index,.6,Q_Fuels(1)) ;
+    range_kero(x) = Range(index,.9,Q_Fuels(1)) ;
     x = x+1;
 end
 
 x=1;
 for index = Vv
-    range_methanol(x) = Range(index,.6,Q_Fuels(2)) ;
+    range_methanol(x) = Range(index,.9,Q_Fuels(2)) ;
     x = x+1;
 end
 
 x=1;
 for index = Vv
-    range_TNT(x) = Range(index,.6,Q_Fuels(3)) ;
+    range_TNT(x) = Range(index,.9,Q_Fuels(3)) ;
     x = x+1;
 end
 
@@ -174,18 +204,18 @@ Q_methanol = 19700000;
 Q_TNT = 4610000;
 Q_Fuels = [Q_kero,Q_methanol,Q_TNT];
 
-Altitudes = Air_Data(5:43,6);
-Densities = Air_Data(5:43,10);
-Pressures = Air_Data(5:43,8);
-Temperatures = Air_Data(5:43,7);
-range_altitudes = zeros(39,1)';
+Altitudes = Air_Data(1:43,6);
+Densities = Air_Data(1:43,10);
+Pressures = Air_Data(1:43,8);
+Temperatures = Air_Data(1:43,7);
+range_altitudes = zeros(43,1)';
 
-for index = 1:30
-    range_altitudes(index) = Range(300,Densities(index),Q_Fuels(1));
+for index = 1:43
+    range_altitudes(index) = Range(100,Densities(index),Q_Fuels(1));
 end
 
 figure(8)
-plot(Altitudes(1:30),range_altitudes(1:30))
+plot(Altitudes(1:43),range_altitudes(1:43))
 
 
 
