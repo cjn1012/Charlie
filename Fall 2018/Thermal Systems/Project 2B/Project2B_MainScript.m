@@ -222,8 +222,7 @@ hold off
 
 %% Part 5
 
-clear all 
-close all
+
 Air_Data = xlsread('air_data1.xls');
 
 Q_kero = 42000000;
@@ -269,6 +268,22 @@ xlabel('Altitude [m]','FontSize',20)
 % ? The task should require analysis using Matlab.
 
 
+
+Altitudes = Air_Data(1:43,6);
+Densities = Air_Data(1:43,10);
+Masses = linspace(50,500,43);
+Range2 = zeros(5,5);
+Performance = zeros(5,5);
+x=1
+y=1
+
+for index = 1:9:43
+    for index2 = 1:9:43
+        [Range2(x,y),Performance(x,y) ]= RangeExtra(100,Densities(index),43000000,Masses(index2));
+        y=y+1
+    end
+    x=x+1
+end
 
 
 

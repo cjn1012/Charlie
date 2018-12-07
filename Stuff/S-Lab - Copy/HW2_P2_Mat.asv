@@ -1,0 +1,9 @@
+clear all
+close all
+clc
+%% Variables
+R1=10000;
+R2=1e6;
+C=10e-6;
+
+%% Transfer Function
