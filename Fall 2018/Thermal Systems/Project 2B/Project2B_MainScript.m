@@ -1,5 +1,5 @@
 %% Part 1
-% eff = .6016
+
 % A study of the effects of compressor, turbine and nozzle efficiencity to the overall cycle
 
 % Sum of efficiencies cannot exceed 260%
@@ -85,7 +85,6 @@ for index = MaxT
     [Performance_MaxT(x),Efficiency_MaxT(x)] = Efficiency(20,index,100,300);
     x=x+1;
 end
-
 
 figure(2)
 
@@ -267,38 +266,28 @@ xlabel('Altitude [m]','FontSize',20)
 % Additional task. Perform an additional tasks of similar complexity to tasks 1, 3 or 4.
 % ? The task should require analysis using Matlab.
 
-
+Air_Data = xlsread('air_data1.xls');
 
 Altitudes = Air_Data(1:43,6);
 Densities = Air_Data(1:43,10);
-Masses = linspace(50,500,43);
-Range2 = zeros(5,5);
-Performance = zeros(5,5);
-x=1
-y=1
+Masses = linspace(50,470,43);
+Range2 = zeros(43,43);
+Performance = zeros(43,43);
+x=1;
+y=1;
 
-for index = 1:9:43
-    for index2 = 1:9:43
-        [Range2(x,y),Performance(x,y) ]= RangeExtra(100,Densities(index),43000000,Masses(index2));
-        y=y+1
+for index = 1:43
+    y=1;
+    for index2 = 1:43
+        [Range2(x,y),Performance(x,y) ]= RangeExtraFuel(100,Densities(index),43000000,Masses(index2));
+        MassesV(x,y) = Masses(index2);
+        y=y+1;
     end
     x=x+1
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+figure(7)
+surf(MassesV,Range2,Performance)
+xlabel('Fuel Mass')
+ylabel('Range')
+zlabel('Performance')
