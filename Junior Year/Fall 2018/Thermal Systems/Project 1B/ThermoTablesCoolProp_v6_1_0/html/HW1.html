@@ -1,0 +1,820 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HW1</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-10-01"><meta name="DC.source" content="HW1.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>
+clc;
+
+<span class="comment">%Problem Statement</span>
+<span class="comment">% %A refrigerator in a meat warehouse located in Durham, NH has a cooling capacity of 5kW. It must maintain</span>
+<span class="comment">% the cold space at -15?C throughout the entire year. Quantify and compare the flow rate required, compressor</span>
+<span class="comment">% power, and coefficient of performance (COP) for the best and worst case scenarios, assuming an ideal, standard</span>
+<span class="comment">% vapor compression refrigeration cycle with ?TL = 5?C and ?TH = 2?C. Plot the two scenarios on both a T-s</span>
+<span class="comment">% and a P-h diagram (include the vapor dome). Label the state points and indicate the cycle direction. Note that</span>
+<span class="comment">% ?TL and ?TH refer to the temperature differences between the cycle and environments needed for the heat transfer.</span>
+<span class="comment">% Please submit a single pdf file with the solution. You need to include all the figures and the entire code in the file.</span>
+<span class="comment">% The code should follow the solution.</span>
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Constants for the Refridgeration Cycle for Durham, NH</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+T_L = 5; <span class="comment">% Kelvin - Amount of temperature away from the Evaporator Process</span>
+T_H = 2; <span class="comment">% Kevlin - Amount of temperature away from the second part of the Condensor Process</span>
+Cold_Space = 273-15; <span class="comment">% Kelvin - Temperature of Cold Space of Refridgerator</span>
+Hot_Space_Summer  = 273 + 30; <span class="comment">% Hottest recorded temperature of Durham NH in the Summer</span>
+Hot_Space_Winter  = 273 + 10; <span class="comment">% Hottest recorded temperature of Durham NH in the Winter</span>
+T_Outside = linspace(250,Hot_Space_Summer,1000); <span class="comment">% Kelvin - Record high and low temperatures in Durham that the outside temperature would reach, 1000 Length Array</span>
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Location 1 - Between Evaporator and Compressor</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% Finding all values of the fluid at location 1</span>
+Q_1 = 1; <span class="comment">% Saturated Vapor</span>
+T_1 = Cold_Space + T_L; <span class="comment">% Temperature from 4 to 1</span>
+P_1 = CoolProp.PropsSI(<span class="string">'P'</span>, <span class="string">'T'</span>, T_1, <span class="string">'Q'</span>, Q_1, <span class="string">'R410a'</span>);
+H_1 = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'T'</span>, T_1, <span class="string">'Q'</span>, Q_1, <span class="string">'R410a'</span>);
+U_1 = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'T'</span>, T_1, <span class="string">'Q'</span>, Q_1, <span class="string">'R410a'</span>);
+S_1 = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'T'</span>, T_1, <span class="string">'Q'</span>, Q_1, <span class="string">'R410a'</span>);
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Location 3 - Between Condensor and Expansion Valve - Saturated Liquid</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% Finding all values of the fluid at location 3</span>
+Q_3 = 0; <span class="comment">% Saturated Liquid</span>
+T_3_Summer = Hot_Space_Summer + T_H; <span class="comment">% Temperature from 4 to 1</span>
+P_3_Summer = CoolProp.PropsSI(<span class="string">'P'</span>, <span class="string">'T'</span>, T_3_Summer, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+H_3_Summer = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'T'</span>, T_3_Summer, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+U_3_Summer = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'T'</span>, T_3_Summer, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+S_3_Summer = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'T'</span>, T_3_Summer, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+
+T_3_Winter = Hot_Space_Winter + T_H; <span class="comment">% Temperature from 4 to 1</span>
+P_3_Winter = CoolProp.PropsSI(<span class="string">'P'</span>, <span class="string">'T'</span>, T_3_Winter, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+H_3_Winter = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'T'</span>, T_3_Winter, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+U_3_Winter = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'T'</span>, T_3_Winter, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+S_3_Winter = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'T'</span>, T_3_Winter, <span class="string">'Q'</span>, Q_3, <span class="string">'R410a'</span>);
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Location 2 - Between Condensor and Expansion Valve Super-Heated Vapor</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% Finding all values of the fluid at location 2</span>
+S_2_Summer = S_1; <span class="comment">% Constant Entropy</span>
+P_2_Summer = P_3_Summer; <span class="comment">% Constant Pressure Isobar</span>
+T_2_Summer = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_2_Summer, <span class="string">'S'</span>, S_2_Summer, <span class="string">'R410a'</span>);
+H_2_Summer = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_2_Summer, <span class="string">'S'</span>, S_2_Summer, <span class="string">'R410a'</span>);
+U_2_Summer = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_2_Summer, <span class="string">'S'</span>, S_2_Summer, <span class="string">'R410a'</span>);
+
+
+P_2_Winter = P_3_Winter; <span class="comment">% Constant Pressure Isobar</span>
+S_2_Winter = S_1; <span class="comment">% Constant Entropy</span>
+T_2_Winter = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_2_Winter, <span class="string">'S'</span>, S_2_Winter, <span class="string">'R410a'</span>);
+H_2_Winter = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_2_Winter, <span class="string">'S'</span>, S_2_Winter, <span class="string">'R410a'</span>);
+U_2_Winter = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_2_Winter, <span class="string">'S'</span>, S_2_Winter, <span class="string">'R410a'</span>);
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Location 2a - On Vapor Dome During the process 2 to 3 in condensor</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% Finding all values of the fluid at location 2a</span>
+Q_2a=1; <span class="comment">% On Vapor Dome as Saturdated Vapor</span>
+P_2a_Summer = P_2_Summer; <span class="comment">% Isobar = Constant Pressure</span>
+T_2a_Summer = T_3_Summer; <span class="comment">% Constant Temperature from T3</span>
+S_2a_Summer = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_2a_Summer, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+H_2a_Summer = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_2a_Summer, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+U_2a_Summer = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_2a_Summer, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+
+
+P_2a_Winter = P_2_Winter; <span class="comment">% Isobar = Constant Pressure</span>
+T_2a_Winter = T_3_Winter; <span class="comment">% Constant Temperature from T3</span>
+S_2a_Winter = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_2a_Winter, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+H_2a_Winter = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_2a_Winter, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+U_2a_Winter = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_2a_Winter, <span class="string">'Q'</span>, Q_2a, <span class="string">'R410a'</span>);
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Location 4 - Mixture between the expansion valve and evaporator</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% Finding all values of the fluid at location 4</span>
+T_4 = T_1; <span class="comment">% Constant Temperature from 4 to 1 Process</span>
+H_4_Summer = H_3_Summer; <span class="comment">% Expansion Valve is ~ constant enthalpy process</span>
+P_4_Summer = P_1; <span class="comment">% Isobaric Process</span>
+U_4_Summer = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_4_Summer, <span class="string">'H'</span>, H_4_Summer, <span class="string">'R410a'</span>);
+S_4_Summer = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_4_Summer, <span class="string">'H'</span>, H_4_Summer, <span class="string">'R410a'</span>);
+
+H_4_Winter = H_3_Winter; <span class="comment">% Expansion Valve is ~ constant enthalpy process</span>
+P_4_Winter = P_1; <span class="comment">% Isobaric Process</span>
+U_4_Winter = CoolProp.PropsSI(<span class="string">'U'</span>, <span class="string">'P'</span>, P_4_Winter, <span class="string">'H'</span>, H_4_Winter, <span class="string">'R410a'</span>);
+S_4_Winter = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_4_Winter, <span class="string">'H'</span>, H_4_Winter, <span class="string">'R410a'</span>);
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Calculations of the Vapor Dome for the Refridgeration Cycle</span>
+<span class="comment">% Will be plotted as a T-s and P-h Diagram</span>
+<span class="comment">% Two curves will be plotted for each graph, one for the Saturated Liquid and one for Saturdated Vapor Sections</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+
+<span class="comment">% Constant Variables and Pressure Array to Calculate Graph Values</span>
+Q_SL = 0; <span class="comment">% Saturated Liquid</span>
+Q_SV = 1; <span class="comment">% Saturated Vapor</span>
+P_SL_SV = linspace(100000,4900000,1000);  <span class="comment">% Pressures for the Saturated Liquid Curve</span>
+
+T_SL = zeros(length(P_SL_SV));
+S_SL = zeros(length(P_SL_SV));
+H_SL = zeros(length(P_SL_SV));
+T_SV = zeros(length(P_SL_SV));
+S_SV = zeros(length(P_SL_SV));
+H_SV = zeros(length(P_SL_SV));
+
+
+<span class="comment">% Looping 1000 times to provide values for the Vapor Dome Curves for T, s and h. P array will be graphed with them</span>
+<span class="keyword">for</span> index=1:1000
+    T_SL(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SL, <span class="string">'R410a'</span>) -273;
+    S_SL(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SL, <span class="string">'R410a'</span>);
+    H_SL(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SL, <span class="string">'R410a'</span>);
+    T_SV(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SV, <span class="string">'R410a'</span>) -273;
+    S_SV(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SV, <span class="string">'R410a'</span>);
+    H_SV(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_SL_SV(index), <span class="string">'Q'</span>, Q_SV, <span class="string">'R410a'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Calculations of Every Point during the Refridgeration Cycle</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+
+<span class="comment">% Compressor Points - Points 1 to 2 - Constant Entropy</span>
+
+S_Compressor = S_1; <span class="comment">% Constant Entropy Process</span>
+P_Compressor_Summer = linspace(P_1,P_2_Summer,1000);
+P_Compressor_Winter = linspace(P_1,P_2_Winter,1000);
+T_Compressor_Summer = zeros(length(P_Compressor_Summer));
+T_Compressor_Winter = zeros(length(P_Compressor_Summer));
+S_Compressor_Summer = zeros(length(P_Compressor_Summer));
+S_Compressor_Winter = zeros(length(P_Compressor_Summer));
+H_Compressor_Summer = zeros(length(P_Compressor_Summer));
+H_Compressor_Winter = zeros(length(P_Compressor_Summer));
+<span class="keyword">for</span> index = 1:1000
+    T_Compressor_Summer(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_Compressor_Summer(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>) - 273;
+    T_Compressor_Winter(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'P'</span>, P_Compressor_Winter(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>) - 273;
+    S_Compressor_Summer(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_Compressor_Summer(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>);
+    S_Compressor_Winter(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'P'</span>, P_Compressor_Winter(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>);
+    H_Compressor_Summer(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_Compressor_Summer(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>);
+    H_Compressor_Winter(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'P'</span>, P_Compressor_Winter(index), <span class="string">'S'</span>, S_Compressor, <span class="string">'R410a'</span>);
+<span class="keyword">end</span>
+
+
+<span class="comment">% Condensor - Points 2 to 2a - Constant Pressure</span>
+
+P_Condensor_Summer = P_2_Summer; <span class="comment">% Constant Pressure Process</span>
+P_Condensor_Winter = P_2_Winter; <span class="comment">% Constant Pressure Process</span>
+T_Condensor_Summer = linspace(T_2_Summer,T_2a_Summer+.25,1000); <span class="comment">% Added constant .5 so it does not go to the mixture</span>
+T_Condensor_Winter = linspace(T_2_Winter,T_2a_Winter+.25,1000); <span class="comment">% Added constant .5 so it does not go to the mixture</span>
+S_Condensor_Summer = zeros(length(P_Condensor_Summer));
+S_Condensor_Winter = zeros(length(P_Condensor_Summer));
+H_Condensor_Summer = zeros(length(P_Condensor_Summer));
+H_Condensor_Winter = zeros(length(P_Condensor_Summer));
+<span class="keyword">for</span> index = 1:1000
+    S_Condensor_Summer(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'T'</span>, T_Condensor_Summer(index), <span class="string">'P'</span>, P_Condensor_Summer, <span class="string">'R410a'</span>);
+    S_Condensor_Winter(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'T'</span>, T_Condensor_Winter(index), <span class="string">'P'</span>, P_Condensor_Winter, <span class="string">'R410a'</span>);
+    H_Condensor_Summer(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'T'</span>, T_Condensor_Summer(index), <span class="string">'P'</span>, P_Condensor_Summer, <span class="string">'R410a'</span>);
+    H_Condensor_Winter(index) = CoolProp.PropsSI(<span class="string">'H'</span>, <span class="string">'T'</span>, T_Condensor_Winter(index), <span class="string">'P'</span>, P_Condensor_Winter, <span class="string">'R410a'</span>);
+<span class="keyword">end</span>
+
+<span class="comment">% Condensor - Points 2a to 3 - Constant Pressure - Straight Line inside Vapor Dome</span>
+
+T_Condensora_Summer = [T_2a_Summer,T_3_Summer]; <span class="comment">% Constant Temperature</span>
+T_Condensora_Winter = [T_2a_Winter,T_3_Winter]; <span class="comment">% Constant Temperature</span>
+P_Condensora_Summer = [P_2a_Summer,P_3_Summer];
+P_Condensora_Winter = [P_2a_Winter,P_3_Winter];
+S_Condensora_Summer = [S_2a_Summer,S_3_Summer];
+S_Condensora_Winter = [S_2a_Winter,S_3_Winter];
+H_Condensora_Summer = [H_2a_Summer,H_3_Summer];
+H_Condensora_Winter = [H_2a_Winter,H_3_Winter];
+
+
+
+
+
+
+<span class="comment">% Expansion Valve - Points 3 to 4 - Constant Enthalpy</span>
+
+H_Valve_Summer = H_3_Summer; <span class="comment">% Constant Enthlpy Process</span>
+H_Valve_Winter = H_3_Winter; <span class="comment">% Constant Enthlpy Process</span>
+P_Valve_Summer = linspace(P_3_Summer,P_4_Summer,1000); <span class="comment">% Added constant .5 so it does not go to the mixture</span>
+P_Valve_Winter = linspace(P_3_Winter,P_4_Winter,1000); <span class="comment">% Added constant .5 so it does not go to the mixture</span>
+S_Valve_Summer = zeros(length(P_Valve_Summer));
+S_Valve_Winter = zeros(length(P_Valve_Summer));
+T_Valve_Summer = zeros(length(P_Valve_Summer));
+T_Valve_Winter = zeros(length(P_Valve_Summer));
+<span class="keyword">for</span> index = 1:1000
+    S_Valve_Summer(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'H'</span>, H_Valve_Summer, <span class="string">'P'</span>, P_Valve_Summer(index), <span class="string">'R410a'</span>);
+    S_Valve_Winter(index) = CoolProp.PropsSI(<span class="string">'S'</span>, <span class="string">'H'</span>, H_Valve_Winter, <span class="string">'P'</span>, P_Valve_Winter(index), <span class="string">'R410a'</span>);
+    T_Valve_Summer(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'H'</span>, H_Valve_Summer, <span class="string">'P'</span>, P_Valve_Summer(index), <span class="string">'R410a'</span>);
+    T_Valve_Winter(index) = CoolProp.PropsSI(<span class="string">'T'</span>, <span class="string">'H'</span>, H_Valve_Winter, <span class="string">'P'</span>, P_Valve_Winter(index), <span class="string">'R410a'</span>);
+<span class="keyword">end</span>
+
+
+
+<span class="comment">% Evaporator - Points 4 to 1 - Constant Temperature - Straight Line inside Vapor Dome</span>
+
+T_Evaporator_Summer = [T_4,T_1]; <span class="comment">% Constant Temperature</span>
+T_Evaporator_Winter = [T_4,T_1]; <span class="comment">% Constant Temperature</span>
+P_Evaporator_Summer = [P_4_Summer,P_1];
+P_Evaporator_Winter = [P_4_Winter,P_1];
+S_Evaporator_Summer = [S_4_Summer,S_1];
+S_Evaporator_Winter = [S_4_Winter,S_1];
+H_Evaporator_Summer = [H_4_Summer,H_1];
+H_Evaporator_Winter = [H_4_Winter,H_1];
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Graphing the T-s and P-h Graphs with Vapor Dome and Labels</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+<span class="comment">% T-s Graph for the Summer</span>
+figure(1)
+<span class="comment">% Vapor Dome</span>
+plot(S_SL/1000,T_SL,<span class="string">'k'</span>,S_SV/1000,T_SV,<span class="string">'k'</span>)
+hold <span class="string">on</span>
+<span class="comment">% Processes</span>
+
+<span class="comment">% Winter</span>
+plot(S_Compressor_Winter/1000,T_Compressor_Winter,<span class="string">'b'</span>,S_Condensor_Winter/1000, T_Condensor_Winter-273.15,<span class="string">'b'</span>,S_Condensora_Winter/1000, T_Condensora_Winter-273.15,<span class="string">'b'</span>,S_Valve_Winter/1000,T_Valve_Winter-273.15,<span class="string">'b'</span>,S_Evaporator_Winter/1000, T_Evaporator_Winter-273.15,<span class="string">'b'</span>)
+text(S_1/1000,T_1-273.15, <span class="string">'\leftarrow State 1'</span>)
+text(S_2_Winter/1000,T_2_Winter-273.15, <span class="string">'\leftarrow State 2'</span>)
+text(S_2a_Winter/1000,T_2a_Winter-273.15, <span class="string">'\leftarrow State 2a'</span>,<span class="string">'FontSize'</span>, 8)
+text(S_3_Winter/1000-.04,T_3_Winter-273.15, <span class="string">'State 3'</span>)
+text(S_4_Winter/1000-.04,T_4-273.15, <span class="string">'State 4'</span>)
+
+<span class="comment">% Summer</span>
+plot(S_Compressor_Summer/1000,T_Compressor_Summer,<span class="string">'r'</span>,S_Condensor_Summer/1000, T_Condensor_Summer-273.15,<span class="string">'r'</span>,S_Condensora_Summer/1000, T_Condensora_Summer-273.15,<span class="string">'r'</span>,S_Valve_Summer/1000,T_Valve_Summer-273.15,<span class="string">'r'</span>,S_Evaporator_Summer/1000, T_Evaporator_Summer-273.15,<span class="string">'m'</span>)
+plot(S_Compressor_Winter/1000,T_Compressor_Winter,<span class="string">'m'</span>) <span class="comment">% plotting winter 1 to 2 for color correction</span>
+text(S_1/1000,T_1-273.15, <span class="string">'\leftarrow State 1'</span>)
+text(S_2_Summer/1000,T_2_Summer-273.15, <span class="string">'\leftarrow State 2'</span>)
+text(S_2a_Summer/1000,T_2a_Summer-273.15, <span class="string">'\leftarrow State 2a'</span>)
+text(S_3_Summer/1000-.04,T_3_Summer-273.15, <span class="string">'State 3'</span>)
+text(S_4_Summer/1000-.04,T_4-273.15-2, <span class="string">'State 4'</span>)
+text(1.3,40,<span class="string">'Cycle Starts at State 1 towards State 2'</span>,<span class="string">'FontSize'</span>,16)
+
+title(<span class="string">'Refrigeration Cycle during the Summer in Durham, NH'</span>)
+xlabel(<span class="string">'Entropy (KJ/K)'</span>)
+ylabel(<span class="string">'Temperature (Celcius)'</span>)
+xlim([.8 2])
+ylim([-20 80])
+hold <span class="string">off</span>
+
+<span class="comment">% Syntax</span>
+title(<span class="string">'Refridgeration Cycle during the Winter in Durham, NH'</span>,<span class="string">'FontSize'</span>,20)
+xlabel(<span class="string">'Entropy (J/K)'</span>,<span class="string">'FontSize'</span>,20)
+ylabel(<span class="string">'Temperature (Celcius)'</span>,<span class="string">'FontSize'</span>,20)
+lgd = legend(<span class="string">'\color{red} Summer'</span>,<span class="string">'\color{blue} Winter'</span>,<span class="string">'\color{black} Vapor Dome'</span>);
+lgd.FontSize = 20;
+xlim([.8 2])
+ylim([-20 80])
+hold <span class="string">off</span>
+
+
+
+
+
+<span class="comment">% P-h Graph for the Summer</span>
+figure(2)
+<span class="comment">% Vapor Dome</span>
+plot(H_SL/1000,P_SL_SV/1000,<span class="string">'k'</span>,H_SV/1000,P_SL_SV/1000,<span class="string">'k'</span>)
+hold <span class="string">on</span>
+<span class="comment">% Processes</span>
+
+<span class="comment">%Winter</span>
+P_Condensor_Winter = [P_2_Winter,P_2a_Winter];
+H_Condensor_Winter = [H_2_Winter,H_2a_Winter];
+P_Valve_Winter = [P_3_Winter,P_4_Winter];
+H_Valve_Winter = [H_3_Winter,H_4_Winter];
+plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,<span class="string">'b'</span>,H_Condensor_Winter/1000, P_Condensor_Winter/1000,<span class="string">'b'</span>,H_Condensora_Winter/1000, P_Condensora_Winter/1000,<span class="string">'b'</span>,H_Valve_Winter/1000,P_Valve_Winter/1000,<span class="string">'b'</span>,H_Evaporator_Winter/1000, P_Evaporator_Winter/1000,<span class="string">'b'</span>)
+text(H_1/1000,P_1/1000, <span class="string">'\leftarrow State 1'</span>)
+text(H_2_Winter/1000,P_2_Winter/1000, <span class="string">'\leftarrow State 2'</span>)
+text(H_2a_Winter/1000-20,P_2a_Winter/1000-100, <span class="string">'State 2a'</span>)
+text(H_3_Winter/1000-20,P_3_Winter/1000, <span class="string">'State 3'</span>)
+text(H_4_Winter/1000-20,P_4_Winter/1000, <span class="string">'State 4'</span>)
+
+<span class="comment">% Summer</span>
+P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
+H_Condensor_Summer = [H_2_Summer,H_2a_Summer];
+P_Valve_Summer = [P_3_Summer,P_4_Summer];
+H_Valve_Summer = [H_3_Summer,H_4_Summer];
+plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,<span class="string">'r'</span>,H_Condensor_Summer/1000, P_Condensor_Summer/1000,<span class="string">'r'</span>,H_Condensora_Summer/1000, P_Condensora_Summer/1000,<span class="string">'r'</span>,H_Valve_Summer/1000,P_Valve_Summer/1000,<span class="string">'r'</span>,H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,<span class="string">'m'</span>)
+plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,<span class="string">'m'</span>) <span class="comment">% plotting winter 1 to 2 for color correction</span>
+text(H_2_Summer/1000,P_2_Summer/1000, <span class="string">'\leftarrow State 2'</span>)
+text(H_2a_Summer/1000-25,P_2a_Summer/1000-100, <span class="string">'State 2a'</span>)
+text(H_3_Summer/1000-20,P_3_Summer/1000, <span class="string">'State 3'</span>)
+text(H_4_Summer/1000-20,P_4_Summer/1000-50, <span class="string">'State 4'</span>)
+text(275,2500, <span class="string">'Cycle Starts at State 1 towards State 2'</span>,<span class="string">'FontSize'</span>,16)
+
+<span class="comment">% Plot Syntax</span>
+title(<span class="string">'Refrigeration Cycle during the Summer and Winter in Durham, NH'</span>,<span class="string">'FontSize'</span>,20)
+xlabel(<span class="string">'Enthalpy (KJ/K)'</span>,<span class="string">'FontSize'</span>,20)
+ylabel(<span class="string">'Pressure (KPa)'</span>,<span class="string">'FontSize'</span>,20)
+lgd = legend(<span class="string">'\color{red} Summer'</span>,<span class="string">'\color{blue} Winter'</span>,<span class="string">'\color{black} Vapor Dome'</span>);
+lgd.FontSize = 20;
+xlim([0 500])
+ylim([0 5000])
+hold <span class="string">off</span>
+
+
+
+<span class="comment">%%%%%%%%%%%%%</span>
+<span class="comment">% Calculating Flow-Rate Required, Compressor Power and Coefficient of Performance for Summer and Winter Conditions</span>
+<span class="comment">%%%%%%%%%%%%%</span>
+
+
+<span class="comment">% Co-Efficient of Performance where COP = (QL/Wnet) = ((h1-h4)/(h2-h1))</span>
+
+COP_Summer = (H_1 - H_4_Summer)/(H_2_Summer - H_1);
+COP_Winter = (H_1 - H_4_Winter)/(H_2_Winter - H_1);
+
+<span class="comment">% Mass Flow Rate where flow rate = Cooling Capacity / Q_L</span>
+
+
+dH_Evaporator_Summer = H_1 - H_4_Summer;
+dH_Evaporator_Winter = H_1 - H_4_Winter;
+Cooling_Capacity = 5000; <span class="comment">% Watts</span>
+Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
+Mass_Flow_Rate_Winter = Cooling_Capacity / dH_Evaporator_Winter;
+
+
+<span class="comment">% Compressor Power</span>
+
+Compressor_Power_Summer = Mass_Flow_Rate_Summer * (H_2_Summer - H_1); <span class="comment">% [J/s]</span>
+Compressor_Power_Winter = Mass_Flow_Rate_Winter * (H_2_Winter - H_1); <span class="comment">% [J/s]</span>
+
+
+
+Final_Data_Names  = [<span class="string">'COP_Summer'</span>,<span class="string">' COP_Winter'</span>,<span class="string">' Mass_Flow_Rate_Summer'</span>,<span class="string">' Mass_Flow_Rate_Winter'</span>,<span class="string">' Compressor_Power_Summer'</span>,<span class="string">' Compressor_Power_Winter'</span>];
+Final_Data_Values = [COP_Summer,COP_Winter,Mass_Flow_Rate_Summer,Mass_Flow_Rate_Winter,Compressor_Power_Summer,Compressor_Power_Winter];
+
+
+disp(<span class="string">'Final Data'</span>), disp(Final_Data_Names); disp(Final_Data_Values)
+</pre><pre class="codeoutput">Final Data
+COP_Summer COP_Winter Mass_Flow_Rate_Summer Mass_Flow_Rate_Winter Compressor_Power_Summer Compressor_Power_Winter
+   1.0e+03 *
+
+    0.0048    0.0105    0.0000    0.0000    1.0369    0.4754
+
+</pre><img vspace="5" hspace="5" src="HW1_01.png" alt=""> <img vspace="5" hspace="5" src="HW1_02.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; close all
+clc;
+
+%Problem Statement
+% %A refrigerator in a meat warehouse located in Durham, NH has a cooling capacity of 5kW. It must maintain
+% the cold space at -15?C throughout the entire year. Quantify and compare the flow rate required, compressor
+% power, and coefficient of performance (COP) for the best and worst case scenarios, assuming an ideal, standard
+% vapor compression refrigeration cycle with ?TL = 5?C and ?TH = 2?C. Plot the two scenarios on both a T-s
+% and a P-h diagram (include the vapor dome). Label the state points and indicate the cycle direction. Note that
+% ?TL and ?TH refer to the temperature differences between the cycle and environments needed for the heat transfer.
+% Please submit a single pdf file with the solution. You need to include all the figures and the entire code in the file.
+% The code should follow the solution.
+
+
+
+%%%%%%%%%%%%%
+% Constants for the Refridgeration Cycle for Durham, NH
+%%%%%%%%%%%%%
+
+T_L = 5; % Kelvin - Amount of temperature away from the Evaporator Process
+T_H = 2; % Kevlin - Amount of temperature away from the second part of the Condensor Process
+Cold_Space = 273-15; % Kelvin - Temperature of Cold Space of Refridgerator
+Hot_Space_Summer  = 273 + 30; % Hottest recorded temperature of Durham NH in the Summer
+Hot_Space_Winter  = 273 + 10; % Hottest recorded temperature of Durham NH in the Winter
+T_Outside = linspace(250,Hot_Space_Summer,1000); % Kelvin - Record high and low temperatures in Durham that the outside temperature would reach, 1000 Length Array
+
+
+
+%%%%%%%%%%%%%
+% Location 1 - Between Evaporator and Compressor
+%%%%%%%%%%%%%
+
+% Finding all values of the fluid at location 1
+Q_1 = 1; % Saturated Vapor
+T_1 = Cold_Space + T_L; % Temperature from 4 to 1
+P_1 = CoolProp.PropsSI('P', 'T', T_1, 'Q', Q_1, 'R410a');
+H_1 = CoolProp.PropsSI('H', 'T', T_1, 'Q', Q_1, 'R410a');
+U_1 = CoolProp.PropsSI('U', 'T', T_1, 'Q', Q_1, 'R410a');
+S_1 = CoolProp.PropsSI('S', 'T', T_1, 'Q', Q_1, 'R410a');
+
+
+
+%%%%%%%%%%%%%
+% Location 3 - Between Condensor and Expansion Valve - Saturated Liquid
+%%%%%%%%%%%%%
+
+% Finding all values of the fluid at location 3
+Q_3 = 0; % Saturated Liquid
+T_3_Summer = Hot_Space_Summer + T_H; % Temperature from 4 to 1
+P_3_Summer = CoolProp.PropsSI('P', 'T', T_3_Summer, 'Q', Q_3, 'R410a');
+H_3_Summer = CoolProp.PropsSI('H', 'T', T_3_Summer, 'Q', Q_3, 'R410a');
+U_3_Summer = CoolProp.PropsSI('U', 'T', T_3_Summer, 'Q', Q_3, 'R410a');
+S_3_Summer = CoolProp.PropsSI('S', 'T', T_3_Summer, 'Q', Q_3, 'R410a');
+
+T_3_Winter = Hot_Space_Winter + T_H; % Temperature from 4 to 1
+P_3_Winter = CoolProp.PropsSI('P', 'T', T_3_Winter, 'Q', Q_3, 'R410a');
+H_3_Winter = CoolProp.PropsSI('H', 'T', T_3_Winter, 'Q', Q_3, 'R410a');
+U_3_Winter = CoolProp.PropsSI('U', 'T', T_3_Winter, 'Q', Q_3, 'R410a');
+S_3_Winter = CoolProp.PropsSI('S', 'T', T_3_Winter, 'Q', Q_3, 'R410a');
+
+
+
+%%%%%%%%%%%%%
+% Location 2 - Between Condensor and Expansion Valve Super-Heated Vapor
+%%%%%%%%%%%%%
+
+% Finding all values of the fluid at location 2
+S_2_Summer = S_1; % Constant Entropy
+P_2_Summer = P_3_Summer; % Constant Pressure Isobar
+T_2_Summer = CoolProp.PropsSI('T', 'P', P_2_Summer, 'S', S_2_Summer, 'R410a');
+H_2_Summer = CoolProp.PropsSI('H', 'P', P_2_Summer, 'S', S_2_Summer, 'R410a');
+U_2_Summer = CoolProp.PropsSI('U', 'P', P_2_Summer, 'S', S_2_Summer, 'R410a');
+
+
+P_2_Winter = P_3_Winter; % Constant Pressure Isobar
+S_2_Winter = S_1; % Constant Entropy
+T_2_Winter = CoolProp.PropsSI('T', 'P', P_2_Winter, 'S', S_2_Winter, 'R410a');
+H_2_Winter = CoolProp.PropsSI('H', 'P', P_2_Winter, 'S', S_2_Winter, 'R410a');
+U_2_Winter = CoolProp.PropsSI('U', 'P', P_2_Winter, 'S', S_2_Winter, 'R410a');
+
+
+
+%%%%%%%%%%%%%
+% Location 2a - On Vapor Dome During the process 2 to 3 in condensor
+%%%%%%%%%%%%%
+
+% Finding all values of the fluid at location 2a
+Q_2a=1; % On Vapor Dome as Saturdated Vapor
+P_2a_Summer = P_2_Summer; % Isobar = Constant Pressure
+T_2a_Summer = T_3_Summer; % Constant Temperature from T3
+S_2a_Summer = CoolProp.PropsSI('S', 'P', P_2a_Summer, 'Q', Q_2a, 'R410a');
+H_2a_Summer = CoolProp.PropsSI('H', 'P', P_2a_Summer, 'Q', Q_2a, 'R410a');
+U_2a_Summer = CoolProp.PropsSI('U', 'P', P_2a_Summer, 'Q', Q_2a, 'R410a');
+
+
+P_2a_Winter = P_2_Winter; % Isobar = Constant Pressure
+T_2a_Winter = T_3_Winter; % Constant Temperature from T3
+S_2a_Winter = CoolProp.PropsSI('S', 'P', P_2a_Winter, 'Q', Q_2a, 'R410a');
+H_2a_Winter = CoolProp.PropsSI('H', 'P', P_2a_Winter, 'Q', Q_2a, 'R410a');
+U_2a_Winter = CoolProp.PropsSI('U', 'P', P_2a_Winter, 'Q', Q_2a, 'R410a');
+
+
+
+%%%%%%%%%%%%%
+% Location 4 - Mixture between the expansion valve and evaporator
+%%%%%%%%%%%%%
+
+% Finding all values of the fluid at location 4
+T_4 = T_1; % Constant Temperature from 4 to 1 Process
+H_4_Summer = H_3_Summer; % Expansion Valve is ~ constant enthalpy process
+P_4_Summer = P_1; % Isobaric Process
+U_4_Summer = CoolProp.PropsSI('U', 'P', P_4_Summer, 'H', H_4_Summer, 'R410a');
+S_4_Summer = CoolProp.PropsSI('S', 'P', P_4_Summer, 'H', H_4_Summer, 'R410a');
+
+H_4_Winter = H_3_Winter; % Expansion Valve is ~ constant enthalpy process
+P_4_Winter = P_1; % Isobaric Process
+U_4_Winter = CoolProp.PropsSI('U', 'P', P_4_Winter, 'H', H_4_Winter, 'R410a');
+S_4_Winter = CoolProp.PropsSI('S', 'P', P_4_Winter, 'H', H_4_Winter, 'R410a');
+
+
+
+%%%%%%%%%%%%%
+% Calculations of the Vapor Dome for the Refridgeration Cycle
+% Will be plotted as a T-s and P-h Diagram
+% Two curves will be plotted for each graph, one for the Saturated Liquid and one for Saturdated Vapor Sections
+%%%%%%%%%%%%%
+
+
+% Constant Variables and Pressure Array to Calculate Graph Values
+Q_SL = 0; % Saturated Liquid
+Q_SV = 1; % Saturated Vapor
+P_SL_SV = linspace(100000,4900000,1000);  % Pressures for the Saturated Liquid Curve
+
+T_SL = zeros(length(P_SL_SV));
+S_SL = zeros(length(P_SL_SV));
+H_SL = zeros(length(P_SL_SV));
+T_SV = zeros(length(P_SL_SV));
+S_SV = zeros(length(P_SL_SV));
+H_SV = zeros(length(P_SL_SV));
+
+
+% Looping 1000 times to provide values for the Vapor Dome Curves for T, s and h. P array will be graphed with them
+for index=1:1000
+    T_SL(index) = CoolProp.PropsSI('T', 'P', P_SL_SV(index), 'Q', Q_SL, 'R410a') -273;
+    S_SL(index) = CoolProp.PropsSI('S', 'P', P_SL_SV(index), 'Q', Q_SL, 'R410a');
+    H_SL(index) = CoolProp.PropsSI('H', 'P', P_SL_SV(index), 'Q', Q_SL, 'R410a');
+    T_SV(index) = CoolProp.PropsSI('T', 'P', P_SL_SV(index), 'Q', Q_SV, 'R410a') -273;
+    S_SV(index) = CoolProp.PropsSI('S', 'P', P_SL_SV(index), 'Q', Q_SV, 'R410a');
+    H_SV(index) = CoolProp.PropsSI('H', 'P', P_SL_SV(index), 'Q', Q_SV, 'R410a');
+end
+
+
+%%%%%%%%%%%%%
+% Calculations of Every Point during the Refridgeration Cycle
+%%%%%%%%%%%%%
+
+
+% Compressor Points - Points 1 to 2 - Constant Entropy
+
+S_Compressor = S_1; % Constant Entropy Process
+P_Compressor_Summer = linspace(P_1,P_2_Summer,1000);
+P_Compressor_Winter = linspace(P_1,P_2_Winter,1000);
+T_Compressor_Summer = zeros(length(P_Compressor_Summer));
+T_Compressor_Winter = zeros(length(P_Compressor_Summer));
+S_Compressor_Summer = zeros(length(P_Compressor_Summer));
+S_Compressor_Winter = zeros(length(P_Compressor_Summer));
+H_Compressor_Summer = zeros(length(P_Compressor_Summer));
+H_Compressor_Winter = zeros(length(P_Compressor_Summer));
+for index = 1:1000
+    T_Compressor_Summer(index) = CoolProp.PropsSI('T', 'P', P_Compressor_Summer(index), 'S', S_Compressor, 'R410a') - 273;
+    T_Compressor_Winter(index) = CoolProp.PropsSI('T', 'P', P_Compressor_Winter(index), 'S', S_Compressor, 'R410a') - 273;
+    S_Compressor_Summer(index) = CoolProp.PropsSI('S', 'P', P_Compressor_Summer(index), 'S', S_Compressor, 'R410a');
+    S_Compressor_Winter(index) = CoolProp.PropsSI('S', 'P', P_Compressor_Winter(index), 'S', S_Compressor, 'R410a');
+    H_Compressor_Summer(index) = CoolProp.PropsSI('H', 'P', P_Compressor_Summer(index), 'S', S_Compressor, 'R410a');
+    H_Compressor_Winter(index) = CoolProp.PropsSI('H', 'P', P_Compressor_Winter(index), 'S', S_Compressor, 'R410a');
+end
+
+
+% Condensor - Points 2 to 2a - Constant Pressure
+
+P_Condensor_Summer = P_2_Summer; % Constant Pressure Process
+P_Condensor_Winter = P_2_Winter; % Constant Pressure Process
+T_Condensor_Summer = linspace(T_2_Summer,T_2a_Summer+.25,1000); % Added constant .5 so it does not go to the mixture
+T_Condensor_Winter = linspace(T_2_Winter,T_2a_Winter+.25,1000); % Added constant .5 so it does not go to the mixture
+S_Condensor_Summer = zeros(length(P_Condensor_Summer));
+S_Condensor_Winter = zeros(length(P_Condensor_Summer));
+H_Condensor_Summer = zeros(length(P_Condensor_Summer));
+H_Condensor_Winter = zeros(length(P_Condensor_Summer));
+for index = 1:1000
+    S_Condensor_Summer(index) = CoolProp.PropsSI('S', 'T', T_Condensor_Summer(index), 'P', P_Condensor_Summer, 'R410a');
+    S_Condensor_Winter(index) = CoolProp.PropsSI('S', 'T', T_Condensor_Winter(index), 'P', P_Condensor_Winter, 'R410a');
+    H_Condensor_Summer(index) = CoolProp.PropsSI('H', 'T', T_Condensor_Summer(index), 'P', P_Condensor_Summer, 'R410a');
+    H_Condensor_Winter(index) = CoolProp.PropsSI('H', 'T', T_Condensor_Winter(index), 'P', P_Condensor_Winter, 'R410a');
+end
+
+% Condensor - Points 2a to 3 - Constant Pressure - Straight Line inside Vapor Dome
+
+T_Condensora_Summer = [T_2a_Summer,T_3_Summer]; % Constant Temperature
+T_Condensora_Winter = [T_2a_Winter,T_3_Winter]; % Constant Temperature
+P_Condensora_Summer = [P_2a_Summer,P_3_Summer];
+P_Condensora_Winter = [P_2a_Winter,P_3_Winter];
+S_Condensora_Summer = [S_2a_Summer,S_3_Summer];
+S_Condensora_Winter = [S_2a_Winter,S_3_Winter];
+H_Condensora_Summer = [H_2a_Summer,H_3_Summer];
+H_Condensora_Winter = [H_2a_Winter,H_3_Winter];
+
+
+
+
+
+
+% Expansion Valve - Points 3 to 4 - Constant Enthalpy
+
+H_Valve_Summer = H_3_Summer; % Constant Enthlpy Process
+H_Valve_Winter = H_3_Winter; % Constant Enthlpy Process
+P_Valve_Summer = linspace(P_3_Summer,P_4_Summer,1000); % Added constant .5 so it does not go to the mixture
+P_Valve_Winter = linspace(P_3_Winter,P_4_Winter,1000); % Added constant .5 so it does not go to the mixture
+S_Valve_Summer = zeros(length(P_Valve_Summer));
+S_Valve_Winter = zeros(length(P_Valve_Summer));
+T_Valve_Summer = zeros(length(P_Valve_Summer));
+T_Valve_Winter = zeros(length(P_Valve_Summer));
+for index = 1:1000
+    S_Valve_Summer(index) = CoolProp.PropsSI('S', 'H', H_Valve_Summer, 'P', P_Valve_Summer(index), 'R410a');
+    S_Valve_Winter(index) = CoolProp.PropsSI('S', 'H', H_Valve_Winter, 'P', P_Valve_Winter(index), 'R410a');
+    T_Valve_Summer(index) = CoolProp.PropsSI('T', 'H', H_Valve_Summer, 'P', P_Valve_Summer(index), 'R410a');
+    T_Valve_Winter(index) = CoolProp.PropsSI('T', 'H', H_Valve_Winter, 'P', P_Valve_Winter(index), 'R410a');
+end
+
+
+
+% Evaporator - Points 4 to 1 - Constant Temperature - Straight Line inside Vapor Dome
+
+T_Evaporator_Summer = [T_4,T_1]; % Constant Temperature
+T_Evaporator_Winter = [T_4,T_1]; % Constant Temperature
+P_Evaporator_Summer = [P_4_Summer,P_1];
+P_Evaporator_Winter = [P_4_Winter,P_1];
+S_Evaporator_Summer = [S_4_Summer,S_1];
+S_Evaporator_Winter = [S_4_Winter,S_1];
+H_Evaporator_Summer = [H_4_Summer,H_1];
+H_Evaporator_Winter = [H_4_Winter,H_1];
+
+
+%%%%%%%%%%%%%
+% Graphing the T-s and P-h Graphs with Vapor Dome and Labels
+%%%%%%%%%%%%%
+
+% T-s Graph for the Summer
+figure(1)
+% Vapor Dome
+plot(S_SL/1000,T_SL,'k',S_SV/1000,T_SV,'k')
+hold on
+% Processes
+
+% Winter
+plot(S_Compressor_Winter/1000,T_Compressor_Winter,'b',S_Condensor_Winter/1000, T_Condensor_Winter-273.15,'b',S_Condensora_Winter/1000, T_Condensora_Winter-273.15,'b',S_Valve_Winter/1000,T_Valve_Winter-273.15,'b',S_Evaporator_Winter/1000, T_Evaporator_Winter-273.15,'b')
+text(S_1/1000,T_1-273.15, '\leftarrow State 1')
+text(S_2_Winter/1000,T_2_Winter-273.15, '\leftarrow State 2')
+text(S_2a_Winter/1000,T_2a_Winter-273.15, '\leftarrow State 2a','FontSize', 8)
+text(S_3_Winter/1000-.04,T_3_Winter-273.15, 'State 3')
+text(S_4_Winter/1000-.04,T_4-273.15, 'State 4')
+
+% Summer
+plot(S_Compressor_Summer/1000,T_Compressor_Summer,'r',S_Condensor_Summer/1000, T_Condensor_Summer-273.15,'r',S_Condensora_Summer/1000, T_Condensora_Summer-273.15,'r',S_Valve_Summer/1000,T_Valve_Summer-273.15,'r',S_Evaporator_Summer/1000, T_Evaporator_Summer-273.15,'m')
+plot(S_Compressor_Winter/1000,T_Compressor_Winter,'m') % plotting winter 1 to 2 for color correction
+text(S_1/1000,T_1-273.15, '\leftarrow State 1')
+text(S_2_Summer/1000,T_2_Summer-273.15, '\leftarrow State 2')
+text(S_2a_Summer/1000,T_2a_Summer-273.15, '\leftarrow State 2a')
+text(S_3_Summer/1000-.04,T_3_Summer-273.15, 'State 3')
+text(S_4_Summer/1000-.04,T_4-273.15-2, 'State 4')
+text(1.3,40,'Cycle Starts at State 1 towards State 2','FontSize',16)
+
+title('Refrigeration Cycle during the Summer in Durham, NH')
+xlabel('Entropy (KJ/K)')
+ylabel('Temperature (Celcius)')
+xlim([.8 2])
+ylim([-20 80])
+hold off
+
+% Syntax
+title('Refridgeration Cycle during the Winter in Durham, NH','FontSize',20)
+xlabel('Entropy (J/K)','FontSize',20)
+ylabel('Temperature (Celcius)','FontSize',20)
+lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
+lgd.FontSize = 20;
+xlim([.8 2])
+ylim([-20 80])
+hold off
+
+
+
+
+
+% P-h Graph for the Summer
+figure(2)
+% Vapor Dome
+plot(H_SL/1000,P_SL_SV/1000,'k',H_SV/1000,P_SL_SV/1000,'k')
+hold on
+% Processes
+
+%Winter
+P_Condensor_Winter = [P_2_Winter,P_2a_Winter];
+H_Condensor_Winter = [H_2_Winter,H_2a_Winter];
+P_Valve_Winter = [P_3_Winter,P_4_Winter];
+H_Valve_Winter = [H_3_Winter,H_4_Winter];
+plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'b',H_Condensor_Winter/1000, P_Condensor_Winter/1000,'b',H_Condensora_Winter/1000, P_Condensora_Winter/1000,'b',H_Valve_Winter/1000,P_Valve_Winter/1000,'b',H_Evaporator_Winter/1000, P_Evaporator_Winter/1000,'b')
+text(H_1/1000,P_1/1000, '\leftarrow State 1')
+text(H_2_Winter/1000,P_2_Winter/1000, '\leftarrow State 2')
+text(H_2a_Winter/1000-20,P_2a_Winter/1000-100, 'State 2a')
+text(H_3_Winter/1000-20,P_3_Winter/1000, 'State 3')
+text(H_4_Winter/1000-20,P_4_Winter/1000, 'State 4')
+
+% Summer
+P_Condensor_Summer = [P_2_Summer,P_2a_Summer];
+H_Condensor_Summer = [H_2_Summer,H_2a_Summer];
+P_Valve_Summer = [P_3_Summer,P_4_Summer];
+H_Valve_Summer = [H_3_Summer,H_4_Summer];
+plot(H_Compressor_Summer/1000,P_Compressor_Summer/1000,'r',H_Condensor_Summer/1000, P_Condensor_Summer/1000,'r',H_Condensora_Summer/1000, P_Condensora_Summer/1000,'r',H_Valve_Summer/1000,P_Valve_Summer/1000,'r',H_Evaporator_Summer/1000, P_Evaporator_Summer/1000,'m')
+plot(H_Compressor_Winter/1000,P_Compressor_Winter/1000,'m') % plotting winter 1 to 2 for color correction
+text(H_2_Summer/1000,P_2_Summer/1000, '\leftarrow State 2')
+text(H_2a_Summer/1000-25,P_2a_Summer/1000-100, 'State 2a')
+text(H_3_Summer/1000-20,P_3_Summer/1000, 'State 3')
+text(H_4_Summer/1000-20,P_4_Summer/1000-50, 'State 4')
+text(275,2500, 'Cycle Starts at State 1 towards State 2','FontSize',16)
+
+% Plot Syntax
+title('Refrigeration Cycle during the Summer and Winter in Durham, NH','FontSize',20)
+xlabel('Enthalpy (KJ/K)','FontSize',20)
+ylabel('Pressure (KPa)','FontSize',20)
+lgd = legend('\color{red} Summer','\color{blue} Winter','\color{black} Vapor Dome');
+lgd.FontSize = 20;
+xlim([0 500])
+ylim([0 5000])
+hold off
+
+
+
+%%%%%%%%%%%%%
+% Calculating Flow-Rate Required, Compressor Power and Coefficient of Performance for Summer and Winter Conditions
+%%%%%%%%%%%%%
+
+
+% Co-Efficient of Performance where COP = (QL/Wnet) = ((h1-h4)/(h2-h1))
+
+COP_Summer = (H_1 - H_4_Summer)/(H_2_Summer - H_1);
+COP_Winter = (H_1 - H_4_Winter)/(H_2_Winter - H_1);
+
+% Mass Flow Rate where flow rate = Cooling Capacity / Q_L
+
+
+dH_Evaporator_Summer = H_1 - H_4_Summer;
+dH_Evaporator_Winter = H_1 - H_4_Winter;
+Cooling_Capacity = 5000; % Watts
+Mass_Flow_Rate_Summer = Cooling_Capacity / dH_Evaporator_Summer;
+Mass_Flow_Rate_Winter = Cooling_Capacity / dH_Evaporator_Winter;
+
+
+% Compressor Power 
+
+Compressor_Power_Summer = Mass_Flow_Rate_Summer * (H_2_Summer - H_1); % [J/s]
+Compressor_Power_Winter = Mass_Flow_Rate_Winter * (H_2_Winter - H_1); % [J/s]
+
+
+
+Final_Data_Names  = ['COP_Summer',' COP_Winter',' Mass_Flow_Rate_Summer',' Mass_Flow_Rate_Winter',' Compressor_Power_Summer',' Compressor_Power_Winter'];
+Final_Data_Values = [COP_Summer,COP_Winter,Mass_Flow_Rate_Summer,Mass_Flow_Rate_Winter,Compressor_Power_Summer,Compressor_Power_Winter];
+
+
+disp('Final Data'), disp(Final_Data_Names); disp(Final_Data_Values)
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
