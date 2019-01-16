@@ -1,0 +1,16 @@
+#!/bin/sh 
+cd ${0%/*} || exit 1    # run from this directory 
+ 
+# Source tutorial run functions 
+. $WM_PROJECT_DIR/bin/tools/RunFunctions 
+ 
+runApplication blockMesh 
+runApplication potentialFoam 
+mv system systempot 
+mv systemko system 
+runApplication decomposePar 
+runParallel simpleFoam 4 
+runApplication reconstructPar 
+rm -rf processor* 
+
+ 

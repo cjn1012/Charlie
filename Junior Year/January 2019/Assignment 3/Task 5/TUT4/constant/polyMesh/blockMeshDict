@@ -1,0 +1,103 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+vertices 
+
+(
+(0 0 0)		//This is point 0. Not 1!
+(10 0 0)		//This is point 1
+(10 1 0)		//point 2
+(0 2 0)		//This is point 3. 
+(0 0 2)		//This is point 4
+(10 0 1)		//point 5
+
+);
+
+
+blocks 
+
+(
+hex (0 1 2 3 4 5 5 4) (100 10 10) simpleGrading (1 1 1) 
+);
+
+edges 
+(
+);
+
+boundary 
+  ( 
+      leftWall 
+      { 
+          type wall; 
+          faces 
+          ( 
+              (2 3 4 5) 
+          ); 
+      } 
+      rightWall 
+      { 
+          type wall; 
+          faces 
+          ( 
+              (0 3 2 1) 
+          ); 
+      } 
+      lowerWall 
+      { 
+          type wall; 
+          faces 
+          ( 
+              (0 1 5 4) 
+          ); 
+      } 
+      atmosphere 
+      { 
+          type empty; 
+          faces 
+          ( 
+//              (1 2 5)
+//              (0 4 3)
+          ); 
+      } 
+); 
+   
+mergePatchPairs 
+( 
+); 
+
+
+
+
+//patches
+//(
+//
+//    wall fixedWalls		//choose a name for the boundary
+//    (
+//        (2 3 4 5)	//list the faces; vertices should be listed in clockwise direction, as seen from the block
+//        (0 3 2 1)
+//        (0 1 5 4)
+//    )
+//    
+//    patch frontAndBack
+//    (
+//        (1 2 5)
+//        (0 4 3)
+//	  )	  
+//    
+//);
+// ************************************************** *********************** //

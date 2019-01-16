@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;	// This tells me that all numbers are in meters
+
+vertices		// these verticies make the geometry with minimum and maximum x,y,x defined from problem
+(
+    (-0.01 -0.01 -0.01)		// the minimum point
+    (0.25 -0.01 -0.01)		// moving in the x direction to the maximum x point
+    (0.25 0.02 -0.01)		  // keeping that max x but moving to the max y
+    (-0.01 0.02 -0.01)		// completing the square surface
+    (-0.01 -0.01 0.1)		  // this defined the z direction going to max z coord
+    (0.25 -0.01 0.1)		  // second corner piece in second face
+    (0.25 0.02 0.1)		    // maximum point opposite to the 0th point
+    (-0.01 0.02 0.1)      // completing the final square surface completing the geometry
+);
+
+blocks			//defining the block which the geometry is made out of
+(
+    hex (0 1 2 3 4 5 6 7) 
+    (100 10 50) // we got .25, .02 and .1, so beed most in x, then y, then z, so 100, 10,50
+    simpleGrading (1 1 1) // I am going to keep same grading and adjust the cell counts in each direction for size
+);
+
+edges
+(
+);
+
+boundary   // this section is same as its a square so all the walls, inlet and outlet are same!
+(
+    walls		
+    {
+        type wall;
+        faces
+        (
+            (0 4 5 1)	
+            (2 6 7 3)
+        );
+    }
+
+    
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (3 7 4 0)
+	);
+    }	   	
+
+
+    outlet
+    {
+	type patch;
+	faces
+	(
+            (2 1 5 6)
+	);
+    }
+
+
+
+    frontAndBack
+    {
+        type empty;
+        faces
+        (
+            (1 2 3 0)
+            (7 6 5 4)
+        );
+    }
+);
+
+
+// ************************************************************************* //

@@ -1,0 +1,14 @@
+This problem is a little more complex...
+
+For one, I need to account for this taper by just averaging the diameters to find how much water is in the tank.
+
+I will then need to account for that change in height a little differently, which shouldnt be that bad.
+
+Once I get that, I have to create new variables to get the time for more then half of the water is gone.
+
+The table is the same as the last problem but more inserts
+
+I then have to graph the cup and lable the water levels with text to make sure it is reasonable what the data printed and gives a real picture of what it would look like
+if i looked at snapshots of the times
+
+

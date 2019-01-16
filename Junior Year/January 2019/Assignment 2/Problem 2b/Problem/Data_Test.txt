@@ -1,0 +1,2 @@
+Desired_Fraction,Initial_Water_Height,Cup_Diameter,Hole_Diameter,Time_to_Level
+0.5,1,0.5,0.1,13.224821257868

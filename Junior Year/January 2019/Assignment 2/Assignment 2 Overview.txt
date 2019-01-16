@@ -1,0 +1,14 @@
+This folder contains MATLAB work regarding 3 different subfolders each with a different problem.
+
+Folder 'Problem 2a' contains a code to take in a text file of an assortment of numbers and randomly picks one and prints it on MATLAB.
+	There are two subfolders in that, one regarding notes to the problem that were written down as it was being completed, and the other containing
+	the problem and the text document needed to run.
+
+Folder 'Problem 2b' contains code to take in a cylindrical cup of water and predict the time it will take to reach half of its initial water height with a 
+given diameter at the bottom.
+	There are two subfolder, one containing the notes and docs I used to do the problem, and the other being the matlab files needed to complete the task and
+	any supporting material that was used.
+
+Folder 'Problem 2c' was very similar to 'Problem 2b', but the program is able to account for a slight tapered cup where the insert parameters can be changed within the script
+in the constant section. It also predicts the time to reach a 1/4, 1/8 and 1/16 of its initial water level and print a picture showing these times in a pdf file containing a drawn picture of the cup.
+	There are two subfolders in this file, like the others, containing a notes folder and the overall work folder to do the problem. 

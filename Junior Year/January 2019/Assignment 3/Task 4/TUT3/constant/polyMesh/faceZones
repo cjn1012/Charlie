@@ -1,0 +1,157 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+/*   Windows 32 and 64 bit porting by blueCAPE: http://www.bluecape.com.pt   *\
+|  Based on Windows porting (2.0.x v4) by Symscape: http://www.symscape.com   |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       regIOobject;
+    location    "constant/polyMesh";
+    object      faceZones;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+3
+(
+i2i10MasterZone
+{
+    type faceZone;
+faceLabels      List<label> 
+40
+(
+99
+102
+105
+108
+110
+210
+213
+216
+219
+221
+321
+324
+327
+330
+332
+396
+398
+400
+402
+403
+1096
+1097
+1098
+1099
+1100
+1101
+1102
+1103
+1104
+1105
+1106
+1107
+1108
+1109
+1110
+1111
+1112
+1113
+1114
+1115
+)
+;
+flipMap         List<bool> 
+40
+(
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+)
+;
+}
+
+i2i10SlaveZone
+{
+    type faceZone;
+faceLabels      List<label> 
+20
+(
+1076
+1077
+1078
+1079
+1080
+1081
+1082
+1083
+1084
+1085
+1086
+1087
+1088
+1089
+1090
+1091
+1092
+1093
+1094
+1095
+)
+;
+flipMap         List<bool> 20{0};
+}
+
+i2i10CutFaceZone
+{
+    type faceZone;
+faceLabels      0();
+flipMap         0();
+}
+)
+
+// ************************************************************************* //

@@ -1,0 +1,5 @@
+I need to pull in every number in a test file (seperated by commas or enter key) and then pick a random one.
+
+I am thinking I will use randi to randomly pick an integer of all the indicies I can pick in the vector of numbers
+
+

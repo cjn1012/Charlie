@@ -1,0 +1,4 @@
+The values below do make sense because the time increases as it needs to get more water out
+You also see the difference between the times to descrease as it needs to get less water out
+But it also is not directly linear, as it doesnt percicely get cut in half because the flow
+of water out is decrease as the height of the water decreases through time

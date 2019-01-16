@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+/*   Windows 32 and 64 bit porting by blueCAPE: http://www.bluecape.com.pt   *\
+|  Based on Windows porting (2.0.x v4) by Symscape: http://www.symscape.com   |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+8
+(
+    inlet
+    {
+        type            patch;
+        nFaces          32;
+        startFace       788;
+    }
+    upper
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          40;
+        startFace       820;
+    }
+    lower
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          56;
+        startFace       860;
+    }
+    front
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          80;
+        startFace       916;
+    }
+    back
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          80;
+        startFace       996;
+    }
+    i1
+    {
+        type            patch;
+        nFaces          20;
+        startFace       1076;
+    }
+    i2
+    {
+        type            patch;
+        nFaces          20;
+        startFace       1096;
+    }
+    i3
+    {
+        type            patch;
+        nFaces          16;
+        startFace       1116;
+    }
+)
+
+// ************************************************************************* //
