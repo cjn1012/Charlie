@@ -1,0 +1,114 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.0254;
+
+vertices
+(
+// Creating 2D shape of contracting rectangular flow
+    (-10 0 -1) 
+    (  0 0 -1)
+    ( 10 0 -1)
+    (-10 1 -1)
+    (  0 1 -1)
+    ( 10 1 -1)
+    (-10 4 -1)
+    (  0 4 -1)
+// Creating second 2D shape 2 inches away from original, will be made 2D below
+    (-10 0  1)
+    (  0 0  1)
+    ( 10 0  1)
+    (-10 1  1)
+    (  0 1  1)
+    ( 10 1  1)
+    (-10 4  1)
+    (  0 4  1)
+);
+
+blocks
+(
+// Creating 3 blocks of verticies that completly define the geometry
+    hex (0 1 4 3  8  9 12 11) (25 10 1) simpleGrading (1 1 1)
+    hex (1 2 5 4  9 10 13 12) (25 10 1) simpleGrading (1 1 1)
+    hex (3 4 7 6 11 12 15 14) (25 10 1) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    inlet // Two inlets are provided as the entire entrace is defined within 2 different blocks
+    {
+        type patch;
+        faces
+        (
+            (0 3 11 8)
+            (3 6 14 11)
+        );
+    }
+
+    walls // There are three defined wall serving the top closure to the geometry
+    {
+        type wall;
+        faces
+        (
+            (6 7 15 14)
+            (7 4 12 15)
+            (4 5 13 12)
+        );
+    }
+
+    outlet // With the desired contraction to show how the fluid direction changes, one outlet is necessary and is within just one block
+    {
+        type patch;
+        faces
+        (
+            (2 5 13 10)
+        );
+    }
+
+    centreline // The bottom walls of the geometry being defined as symmetryPlane to represent symmetry condition on the walls
+    {
+        type symmetryPlane;
+        faces
+        (
+            (0 1 9 8)
+            (1 2 10 9)
+        );
+    }
+
+    frontAndBack // 6 different wall segments are defined as empty to make the problem 2D (6 because some are in different blocks!)
+    {
+        type empty;
+        faces
+        (
+            (0 1 4 3)
+            (3 4 7 6)
+            (1 2 5 4)
+            (8 9 12 11)
+            (11 12 15 14)
+            (9 10 13 12)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //
