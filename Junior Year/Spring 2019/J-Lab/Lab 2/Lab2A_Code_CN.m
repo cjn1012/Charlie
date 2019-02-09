@@ -171,7 +171,7 @@ title('Ice Bath Temperature Calculation with Confidence Intervals')
           %   %            %                  %              %        %         %  %       %%            %        %             
 %%%%%%%%%%%   %%%%%%%%%%%  %%%%%%%%%%%        %        %%%%%%%%%%%%%  %%%%%%%%%%%  %        %       %%%%%%%%%%%%%%%%%%%%%
 
-%% Data Upload
+%% Part 1 
 
 % BIB = Bare Ice Boil
 % BBI = Bare Boil Ice
@@ -439,7 +439,6 @@ xlim([-5,20])
 text(SIB_Time(startfitSIB)+1,SIB_Temp_Smooth(startfitSIB),strcat('T_{initial} = ' ,num2str(SIB_Temp_Smooth(startfitSIB)),'°C'))
 
 
-
 figure(9)
 plot(SBI_Time,SBI_Temp_Smooth)
 hold on
@@ -455,9 +454,216 @@ text(SBI_Time(startfitSBI)+1,SBI_Temp_Smooth(startfitSBI),strcat('T_{initial} = 
 
 %% Part 2
 
+% BIB = Bare Ice Boil
+% BBI = Bare Boil Ice
+% BIA = Bare Ice Air
+% BIW = Bare Ice Water
+% AIB = Aluminum Ice Boil
+% ABI = Aluminum Boil Ice
+% SIB = Steel Ice Boil
+% SBI = Steel Boil Ice
+
+% Calculate Final Temperature Average for each Curve
+BIB_Temp_Final = mean(BIB_Temp_Smooth(end-1000:end));
+BBI_Temp_Final = mean(BBI_Temp_Smooth(end-1000:end));
+BIW_Temp_Final = mean(BIW_Temp_Smooth(end-100:end));
+
+% Calculating Gamma Values for BIB
+GammaBIB = zeros(length(BIB_Time),1);
+for i = 1:length(BIB_Time)
+    GammaBIB(i) = (BIB_Temp_Final-BIB_Temp_Smooth(i))/(BIB_Temp_Final-BIB_Temp_Smooth(startfitBIB));
+end
 
 
 
+% Obtaining the indicies of the Gamma vector corresponding to specific values
+for i = 1:length(BIB_Time)
+    if GammaBIB(i) < 1
+        GammaBIB_1 = i;
+        break
+    end
+end
+
+for i = 1:length(BIB_Time)
+    if GammaBIB(i) < 0.7
+        GammaBIB_7 = i;
+        break
+    end
+end
+
+for i = 1:length(BIB_Time)
+    if GammaBIB(i) < 0.2
+        GammaBIB_2 = i;
+        break
+    end
+end
+
+for i = 1:length(BIB_Time)
+    if GammaBIB(i) < 0
+        GammaBIB_0 = i;
+        break
+    end
+end
+
+
+% Calculating Gamma Values for BBI
+GammaBBI = zeros(length(BBI_Time),1);
+for i = 1:length(BBI_Time)
+    GammaBBI(i) = (BBI_Temp_Final-BBI_Temp_Smooth(i))/(BBI_Temp_Final-BBI_Temp_Smooth(startfitBBI));
+end
+
+
+% Obtaining the indicies of the Gamma vector corresponding to specific values
+for i = 1:length(BBI_Time)
+    if GammaBBI(i) < 1
+        GammaBBI_1 = i;
+        break
+    end
+end
+
+for i = 1:length(BBI_Time)
+    if GammaBBI(i) < 0.7
+        GammaBBI_7 = i;
+        break
+    end
+end
+
+for i = 1:length(BBI_Time)
+    if GammaBBI(i) < 0.2
+        GammaBBI_2 = i;
+        break
+    end
+end
+
+for i = 1:length(BBI_Time)
+    if GammaBBI(i) < 0
+        GammaBBI_0 = i;
+        break
+    end
+end
+
+
+% Calculating Gamma Values for BIW
+GammaBIW = zeros(length(BIW_Time),1);
+for i = 1:length(BIW_Time)
+    GammaBIW(i) = (BIW_Temp_Final-BIW_Temp_Smooth(i))/(BIW_Temp_Final-BIW_Temp_Smooth(startfitBIW));
+end
+
+
+% Obtaining the indicies of the Gamma vector corresponding to specific values
+for i = 1:length(BIW_Time)
+    if GammaBIW(i) < 1
+        GammaBIW_1 = i;
+        break
+    end
+end
+
+for i = 1:length(BIW_Time)
+    if GammaBIW(i) < 0.7
+        GammaBIW_7 = i;
+        break
+    end
+end
+
+for i = 1:length(BIW_Time)
+    if GammaBIW(i) < 0.2
+        GammaBIW_2 = i;
+        break
+    end
+end
+
+for i = 1:length(BIW_Time)
+    if GammaBIW(i) < 0
+        GammaBIW_0 = i;
+        break
+    end
+end
+
+% Creating Specific Gamma Log vectors using the indicies from above
+
+GammaBIB_01 = GammaBIB(GammaBIB_1:GammaBIB_0);
+BIB_Time_01 = BIB_Time(GammaBIB_1:GammaBIB_0);
+GammaBBI_01 = GammaBBI(GammaBBI_1:GammaBBI_0);
+BBI_Time_01 = BBI_Time(GammaBBI_1:GammaBBI_0);
+GammaBIW_01 = GammaBIW(GammaBIW_1:GammaBIW_0);
+BIW_Time_01 = BIW_Time(GammaBIW_1:GammaBIW_0);
+GammaBIB_27 = GammaBIB(GammaBIB_7:GammaBIB_2);
+BIB_Time_27 = BIB_Time(GammaBIB_7:GammaBIB_2);
+GammaBBI_27 = GammaBBI(GammaBBI_7:GammaBBI_2);
+BBI_Time_27 = BBI_Time(GammaBBI_7:GammaBBI_2);
+GammaBIW_27 = GammaBIW(GammaBIW_7:GammaBIW_2);
+BIW_Time_27 = BIW_Time(GammaBIW_7:GammaBIW_2);
+
+
+
+% Creating Log values of Gamma
+GammaBIB_Log_01 = log(GammaBIB_01);
+GammaBBI_Log_01 = log(GammaBBI_01);
+GammaBIW_Log_01 = log(GammaBIW_01);
+GammaBIB_Log_27 = log(GammaBIB_27);
+GammaBBI_Log_27 = log(GammaBBI_27);
+GammaBIW_Log_27 = log(GammaBIW_27);
+
+% Finding the Fit line forced to the origin
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBIB_Log_01)
+    SumX = GammaBIB_01(i) * BIB_Time_01(i) + SumX;
+    SumY = BIB_Time_01(i)^2 + SumY;
+end
+CoBIB = SumX/SumY;
+FitBIB_01 = CoBIB.*BIB_Time_01;
+
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBBI_Log_01)
+    SumX = GammaBBI_01(i) * BBI_Time_01(i) + SumX;
+    SumY = BBI_Time_01(i)^2 + SumY;
+end
+CoBBI = SumX/SumY;
+FitBBI_01 = CoBBI.*BBI_Time_01;
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBIW_Log_01)
+    SumX = GammaBIW_01(i) * BIW_Time_01(i) + SumX;
+    SumY = BIW_Time_01(i)^2 + SumY;
+end
+CoBIW = SumX/SumY;
+FitBIW_01 = CoBIW.*BIW_Time_01;
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBIB_Log_27)
+    SumX = GammaBIB_27(i) * BIB_Time_27(i) + SumX;
+    SumY = BIB_Time_27(i)^2 + SumY;
+end
+CoBIB = SumX/SumY;
+FitBIB_27 = CoBIB.*BIB_Time_27;
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBBI_Log_27)
+    SumX = GammaBBI_01(i) * BBI_Time_27(i) + SumX;
+    SumY = BBI_Time_27(i)^2 + SumY;
+end
+CoBBI = SumX/SumY;
+FitBBI_27 = CoBBI.*BBI_Time_27;
+
+
+SumX = 0;
+SumY = 0;
+for i = 1:length(GammaBIW_Log_27)
+    SumX = GammaBIW_27(i) * BIW_Time_27(i) + SumX;
+    SumY = BIW_Time_27(i)^2 + SumY;
+end
+CoBIW = SumX/SumY;
+FitBIW_27 = CoBIW.*BIW_Time_27;
+
+
+plot(BIW_Time_01,GammaBIW_Log_01)
 
 
 
