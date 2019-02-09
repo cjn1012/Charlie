@@ -208,7 +208,7 @@ SBI_Volt = xlsread('Part2Data.xlsx','steelboilice','B9:B5008');
 
 % Done
 
-
+%% Part 1
 
 % Using the previous calibration curve to convert all voltage measurements to temperature
 
@@ -239,44 +239,44 @@ BBI_Time = BBI_Time(1000:end-1000);
 Span   = 100;
 Window = ones(Span,1)/Span;
 BIA_Temp_Smooth = conv(BIA_Temp,Window,'same');
-BIA_Temp_Smooth = BIA_Temp_Smooth(250:end-250);
-BIA_Time = BIA_Time(250:end-250);
+BIA_Temp_Smooth = BIA_Temp_Smooth(500:end-500);
+BIA_Time = BIA_Time(500:end-500);
 
 Span   = 100;
 Window = ones(Span,1)/Span;
 BIW_Temp_Smooth = conv(BIW_Temp,Window,'same');
-BIW_Temp_Smooth = BIW_Temp_Smooth(250:end-250);
-BIW_Time = BIW_Time(250:end-250);
+BIW_Temp_Smooth = BIW_Temp_Smooth(500:end-500);
+BIW_Time = BIW_Time(500:end-500);
 
 Span   = 50;
 Window = ones(Span,1)/Span;
 AIB_Temp_Smooth = conv(AIB_Temp,Window,'same');
-AIB_Temp_Smooth = AIB_Temp_Smooth(100:end-100);
-AIB_Time = AIB_Time(100:end-100);
+AIB_Temp_Smooth = AIB_Temp_Smooth(250:end-250);
+AIB_Time = AIB_Time(250:end-250);
 
 Span   = 50;
 Window = ones(Span,1)/Span;
 ABI_Temp_Smooth = conv(ABI_Temp,Window,'same');
-ABI_Temp_Smooth = ABI_Temp_Smooth(100:end-100);
-ABI_Time = ABI_Time(100:end-100);
+ABI_Temp_Smooth = ABI_Temp_Smooth(250:end-250);
+ABI_Time = ABI_Time(250:end-250);
 
 Span   = 50;
 Window = ones(Span,1)/Span;
 SIB_Temp_Smooth = conv(SIB_Temp,Window,'same');
-SIB_Temp_Smooth = SIB_Temp_Smooth(100:end-100);
-SIB_Time = SIB_Time(100:end-100);
+SIB_Temp_Smooth = SIB_Temp_Smooth(250:end-250);
+SIB_Time = SIB_Time(250:end-250);
 
 Span   = 50;
 Window = ones(Span,1)/Span;
 SBI_Temp_Smooth = conv(SBI_Temp,Window,'same');
-SBI_Temp_Smooth = SBI_Temp_Smooth(100:end-100);
-SBI_Time = SBI_Time(100:end-100);
+SBI_Temp_Smooth = SBI_Temp_Smooth(250:end-250);
+SBI_Time = SBI_Time(250:end-250);
 
 
 % Using a sliding, first order polynomial to determine time of maximum slope
 
 %BIB
-Window = 15;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(BIB_Time)-Window-1
     p = polyfit(BIB_Time(i-Window:i+Window),BIB_Temp_Smooth(i-Window:i+Window),1);
@@ -285,11 +285,9 @@ for i = Window+1:length(BIB_Time)-Window-1
         startfitBIB = i;
     end
 end
-BIB_Time = BIB_Time - BIB_Time(startfitBIB);
-
 
 %BBI
-Window = 15;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(BBI_Time)-Window-1
     p = polyfit(BBI_Time(i-Window:i+Window),BBI_Temp_Smooth(i-Window:i+Window),1);
@@ -298,11 +296,9 @@ for i = Window+1:length(BBI_Time)-Window-1
         startfitBBI = i;
     end
 end
-BBI_Time = BBI_Time - BBI_Time(startfitBBI);
-
 
 %BIA
-Window = 10;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(BIA_Time)-Window-1
     p = polyfit(BIA_Time(i-Window:i+Window),BIA_Temp_Smooth(i-Window:i+Window),1);
@@ -311,10 +307,9 @@ for i = Window+1:length(BIA_Time)-Window-1
         startfitBIA = i;
     end
 end
-BIA_Time = BIA_Time - BIA_Time(startfitBIA);
 
 %BIW
-Window = 10;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(BIW_Time)-Window-1
     p = polyfit(BIW_Time(i-Window:i+Window),BIW_Temp_Smooth(i-Window:i+Window),1);
@@ -323,10 +318,9 @@ for i = Window+1:length(BIW_Time)-Window-1
         startfitBIW = i;
     end
 end
-BIW_Time = BIW_Time - BIW_Time(startfitBIW);
 
 %AIB
-Window = 5;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(AIB_Time)-Window-1
     p = polyfit(AIB_Time(i-Window:i+Window),AIB_Temp_Smooth(i-Window:i+Window),1);
@@ -335,11 +329,9 @@ for i = Window+1:length(AIB_Time)-Window-1
         startfitAIB = i;
     end
 end
-AIB_Time = AIB_Time - AIB_Time(startfitAIB);
-
 
 %ABI
-Window = 5;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(ABI_Time)-Window-1
     p = polyfit(ABI_Time(i-Window:i+Window),ABI_Temp_Smooth(i-Window:i+Window),1);
@@ -348,11 +340,9 @@ for i = Window+1:length(ABI_Time)-Window-1
         startfitABI = i;
     end
 end
-ABI_Time = ABI_Time - ABI_Time(startfitABI);
-
 
 %SIB
-Window = 5;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(SIB_Time)-Window-1
     p = polyfit(SIB_Time(i-Window:i+Window),SIB_Temp_Smooth(i-Window:i+Window),1);
@@ -361,10 +351,9 @@ for i = Window+1:length(SIB_Time)-Window-1
         startfitSIB = i;
     end
 end
-SIB_Time = SIB_Time - SIB_Time(startfitSIB);
 
 %SBI
-Window = 5;
+Window = 2;
 MaxSlope = 0;
 for i = Window+1:length(SBI_Time)-Window-1
     p = polyfit(SBI_Time(i-Window:i+Window),SBI_Temp_Smooth(i-Window:i+Window),1);
@@ -373,87 +362,41 @@ for i = Window+1:length(SBI_Time)-Window-1
         startfitSBI = i;
     end
 end
-SBI_Time = SBI_Time - SBI_Time(startfitSBI);
 
-
-
-% Plotting
-
-figure(4)
+figure(1)
 plot(BIB_Time,BIB_Temp_Smooth)
 hold on
 plot(BIB_Time(startfitBIB),BIB_Temp_Smooth(startfitBIB),'o')
-title('Bare Thermocouple Ice Bath to Boiling')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-2,2])
-text(BIB_Time(startfitBIB)+.1,BIB_Temp_Smooth(startfitBIB),strcat('T_{initial} = ' ,num2str(BIB_Temp_Smooth(startfitBIB)),'°C'))
 
-
-figure(5)
+figure(2)
 plot(BBI_Time,BBI_Temp_Smooth)
 hold on
 plot(BBI_Time(startfitBBI),BBI_Temp_Smooth(startfitBBI),'o')
-title('Bare Thermocouple Boiling to Ice Bath')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-2,2])
-text(BBI_Time(startfitBBI)+.1,BBI_Temp_Smooth(startfitBBI),strcat('T_{initial} = ' ,num2str(BBI_Temp_Smooth(startfitBBI)),'°C'))
 
-
-figure(6)
+figure(3)
 plot(AIB_Time,AIB_Temp_Smooth)
 hold on
 plot(AIB_Time(startfitAIB),AIB_Temp_Smooth(startfitAIB),'o')
-title('Aluminum-Insulated Thermocouple Ice Bath to Boiling')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-10,30])
-text(AIB_Time(startfitAIB)+1,AIB_Temp_Smooth(startfitAIB),strcat('T_{initial} = ' ,num2str(AIB_Temp_Smooth(startfitAIB)),'°C'))
 
-
-figure(7)
+figure(4)
 plot(ABI_Time,ABI_Temp_Smooth)
 hold on
 plot(ABI_Time(startfitABI),ABI_Temp_Smooth(startfitABI),'o')
-title('Aluminum-Insulated Thermocouple Boiling to Ice Bath')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-10,40])
-text(ABI_Time(startfitABI)+1,ABI_Temp_Smooth(startfitABI),strcat('T_{initial} = ' ,num2str(ABI_Temp_Smooth(startfitABI)),'°C'))
 
-
-figure(8)
+figure(5)
 plot(SIB_Time,SIB_Temp_Smooth)
 hold on
 plot(SIB_Time(startfitSIB),SIB_Temp_Smooth(startfitSIB),'o')
-title('Steel-Insulated Thermocouple Ice Bath to Boiling')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-5,20])
-text(SIB_Time(startfitSIB)+1,SIB_Temp_Smooth(startfitSIB),strcat('T_{initial} = ' ,num2str(SIB_Temp_Smooth(startfitSIB)),'°C'))
 
-
-
-figure(9)
+figure(6)
 plot(SBI_Time,SBI_Temp_Smooth)
 hold on
 plot(SBI_Time(startfitSBI),SBI_Temp_Smooth(startfitSBI),'o')
-title('Steel-Insulated Thermocouple Boiling to Ice Bath')
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-ylim([-10,110])
-xlim([-5,40])
-text(SBI_Time(startfitSBI)+1,SBI_Temp_Smooth(startfitSBI),strcat('T_{initial} = ' ,num2str(SBI_Temp_Smooth(startfitSBI)),'°C'))
 
 
 
-%% Part 2
+
+
 
 
 
