@@ -811,7 +811,8 @@ plot(BIB_Time_01,GammaBIB_Log_01)
 hold on
 plot(BIB_Time_01,FitBIB_01)
 plot(BIB_Time_01,FitBIB_27)
-title('Bare Thermocouple Ice to Boil Transition from 0-1 Gamma')
+title('Bare Thermocouple Ice to Boil Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -820,7 +821,8 @@ plot(BBI_Time_01,GammaBBI_Log_01)
 hold on
 plot(BBI_Time_01,FitBBI_01)
 plot(BBI_Time_01,FitBBI_27)
-title('Bare Thermocouple Boil to Ice Transition from 0-1 Gamma')
+title('Bare Thermocouple Boil to Ice Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -829,7 +831,8 @@ plot(AIB_Time_01,GammaAIB_Log_01)
 hold on
 plot(AIB_Time_01,FitAIB_01)
 plot(AIB_Time_01,FitAIB_27)
-title('Bare Thermocouple Ice to Boil Transition from 0-1 Gamma')
+title('Aluminum-Insulated Thermocouple Ice to Boil Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -838,7 +841,8 @@ plot(ABI_Time_01,GammaABI_Log_01)
 hold on
 plot(ABI_Time_01,FitABI_01)
 plot(ABI_Time_01,FitABI_27)
-title('Bare Thermocouple Boil to Ice Transition from 0-1 Gamma')
+title('Aluminum-Insulated  Thermocouple Boil to Ice Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -847,7 +851,8 @@ plot(SIB_Time_01,GammaSIB_Log_01)
 hold on
 plot(SIB_Time_01,FitSIB_01)
 plot(SIB_Time_01,FitSIB_27)
-title('Bare Thermocouple Ice to Boil Transition from 0-1 Gamma')
+title('Steel-Insulated Thermocouple Ice to Boil Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -856,7 +861,8 @@ plot(SBI_Time_01,GammaSBI_Log_01)
 hold on
 plot(SBI_Time_01,FitSBI_01)
 plot(SBI_Time_01,FitSBI_27)
-title('Bare Thermocouple Boil to Ice Transition from 0-1 Gamma')
+title('Steel-Insulated Thermocouple Boil to Ice Transition with Various Gamma Fits')
+legend('Data Points', 'Best Fit - Gamma = 0:1' , 'Best Fit - Gamma = 0.2:0.7', 'Location', 'northeast') 
 xlabel('Time (s)')
 ylabel('ln(\Gamma)')
 
@@ -1342,7 +1348,7 @@ ylabel('Residuals (^oC)')
 text(3,5,strcat('s_{yx} = ', num2str(S_yx_BIB_01), 'K',' For Gamma = (0,1)'))
 text(3,4,strcat('s_{yx} = ', num2str(S_yx_BIB_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Bare Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'northeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7', 'Location', 'northeast') 
 grid minor
 
 figure(23)
@@ -1354,7 +1360,7 @@ ylabel('Residuals (^oC)')
 text(1.5,1,strcat('s_{yx} = ', num2str(S_yx_BBI_01), 'K',' For Gamma = (0,1)'))
 text(1.5,0,strcat('s_{yx} = ', num2str(S_yx_BBI_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Bare Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'northeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7', 'Location', 'northeast') 
 grid minor
 
 figure(24)
@@ -1366,7 +1372,7 @@ ylabel('Residuals (^oC)')
 text(15,-2,strcat('s_{yx} = ', num2str(S_yx_AIB_01), 'K',' For Gamma = (0,1)'))
 text(15,-3,strcat('s_{yx} = ', num2str(S_yx_AIB_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Aluminum-Insulated Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'southeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7', 'Location', 'southeast') 
 grid minor
 
 figure(25)
@@ -1378,7 +1384,7 @@ ylabel('Residuals (^oC)')
 text(15,-1,strcat('s_{yx} = ', num2str(S_yx_ABI_01), 'K',' For Gamma = (0,1)'))
 text(15,-2,strcat('s_{yx} = ', num2str(S_yx_ABI_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Aluminum-Insulated Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'northeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7', 'Location', 'northeast') 
 grid minor
 
 figure(26)
@@ -1390,7 +1396,7 @@ ylabel('Residuals (^oC)')
 text(15,-2,strcat('s_{yx} = ', num2str(S_yx_SIB_01), 'K',' For Gamma = (0,1)'))
 text(15,-3,strcat('s_{yx} = ', num2str(S_yx_SIB_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Steel-Insulated Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'northeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7' , 'Location', 'northeast') 
 grid minor
 
 figure(27)
@@ -1402,7 +1408,7 @@ ylabel('Residuals (^oC)')
 text(15,-4,strcat('s_{yx} = ', num2str(S_yx_SBI_01), 'K',' For Gamma = (0,1)'))
 text(15,-6,strcat('s_{yx} = ', num2str(S_yx_SBI_27), 'K',' For Gamma = (0.2,0.7)'))
 title('Residuals for Steel-Insulated Thermocouple with Different Gamma Fits') 
-legend('Residuals to Actual Data - Gamma = 0.2:0.7', 'Residuals to Actual Data - Gamma = 0:1', 'Location', 'southeast') 
+legend('Residuals to Actual Data - Gamma = 0:1', 'Residuals to Actual Data - Gamma = 0.2:0.7', 'Location', 'southeast') 
 grid minor
 
 %% Part 4
@@ -1412,7 +1418,7 @@ figure(28)
 plot(BIA_Time ,BIA_Temp_Smooth)
 hold on
 plot(BIW_Time,BIW_Temp_Smooth)
-plot(linspace(-20,120,100),22.*ones(100,1))
+plot(linspace(-20,120,100),24.*ones(100,1))
 xlabel('Time (s)') 
 ylabel('Temperature (^oC)')
 title('Bare Thermocouple Transition Data from Ice to Air and Water') 
