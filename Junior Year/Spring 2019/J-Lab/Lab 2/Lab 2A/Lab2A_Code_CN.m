@@ -366,6 +366,7 @@ ylabel('Temperature (°C)')
 ylim([-10,110])
 xlim([-2,2])
 text(BBI_Time(startfitBBI)+.1,BBI_Temp_Smooth(startfitBBI),strcat('T_{initial} = ' ,num2str(BBI_Temp_Smooth(startfitBBI)),'°C'))
+text(BBI_Time(startfitBBI)+.1,BBI_Temp_Smooth(startfitBBI),strcat('T_{initial} = ' ,num2str(BBI_Temp_Smooth(startfitBBI)),'°C'))
 
 figure(6)
 plot(AIB_Time,AIB_Temp_Smooth)
