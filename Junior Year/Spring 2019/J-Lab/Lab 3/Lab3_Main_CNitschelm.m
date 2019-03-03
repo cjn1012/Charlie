@@ -220,35 +220,39 @@ Natural_Freq_Actu = sqrt(k_Exp/Mass_Effective)
 
 %% Part 3
 
+nheaderlines=29;
+wave = importdata('sinAvsF.lvm','\t',nheaderlines); %You may have to adjust this
+wave1=importdata('triAvsF.lvm','\t',nheaderlines);
+%the lvm file has four columns
+
+t = wave.data(:,1);   %time vector
+v1 = wave.data(:,2);  %waveform 1
+v2 = wave1.data(:,2);  %waveform 2
+figure(7)
+subplot(2,1,1)
+plot (t,v1,t,v2); grid
+title('Sine vs. Triangle wave')
+xlabel ('Time (sec)')
+ylabel ('Volts (V)')
+T = t(2)-t(1);         % Time per sample
+Fs = 1/T;              % Sampling frequency
+L = size(v1);          % Length of signal - # of points
+NFFT = 2^nextpow2(L(1)); % Next power of 2 from length of y - need for FFT 
+Y1 = fft(v1,NFFT)./L(1); % this is a vector with complex number elements
+Y2 = fft(v2,NFFT)./L(1); % this is a vector with complex number elements
 
 
+f = Fs/2*linspace(0,1,NFFT/2+1); % linspace generates linearly spaced points
 
+subplot(2,1,2)
+AY1=20*log10(abs(Y1(1:NFFT/2+1)));
+AY2=20*log10(abs(Y2(1:NFFT/2+1)));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+semilogx(f,AY1,f,AY2);grid  % abs(Y) = (Re(Y)^2 + Im(Y)^2)^1/2
+axis([10 10000 -100 -20])
+title('Single Sided Amplitude Spectrum')
+xlabel ('Frequency (Hz.)')
+ylabel ('Log Magnitude (dBv)')
 
 
 
