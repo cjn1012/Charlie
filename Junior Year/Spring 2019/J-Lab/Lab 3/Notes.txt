@@ -17,3 +17,5 @@ Part 3-
 Part 4-
 	did 4b but must do the rest
 
+a fast fourier transfer is nearly the same as a discrete fouerir transform, only its faster.
+				-Todd Gross

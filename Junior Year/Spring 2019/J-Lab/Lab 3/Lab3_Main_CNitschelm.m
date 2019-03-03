@@ -57,12 +57,12 @@ E = 1.93e11; % Elastic Modulus
 
 Strain_P=(2.*Load_Volts./100)./(G_F*E_i);
 Load_Theo=(12.*Load.*(Beam_Length-Width)*(Thickness/2))./(E*(Width*Thickness^3));
-[p1,s]=polyfit(Load,Strain_P,1);
-Best_Fit_1=p1(1)*Load+p1(2);
+[h1,s]=polyfit(Load,Strain_P,1);
+Best_Fit_1=h1(1)*Load+h1(2);
 
 figure(2)
 plot(Load,Strain_P,'o',Load,Best_Fit_1,'--',Load,Load_Theo)
-xlabel('Load (kg)')
+xlabel('Load (N)')
 ylabel('Strain (\epsilon)')
 title('Applied Load vs. Strain')
 legend('Data','Best Fit Line','Theoretical Data','Location','Northwest')
@@ -86,6 +86,7 @@ title('Force vs. Strain with Confidence Intervals')
 legend('Data','Bestfit','Upper Confidence Interval for Fit','Lower Confidence Interval for Fit','Upper Confidence Interval for Measurement','Lower Confidence Interval for Measurement','Location','Northwest')
 text(1.5,2e-4,strcat('t','  ', '=' ,'  ', '3.184'))
 text(1.5,1.5e-4,'v=3')
+text(1.5,1e-4,'Fit Points = 5')
 
 % Strain vs. Displacement
 
@@ -122,8 +123,8 @@ ylabel('Strain (/epsilon)')
 title('Displacement vs. Strain Confidence')
 legend('Data','Bestfit','Upper Confidence Interval for Fit','Lower Confidence Interval for Fit','Upper Confidence Interval for Measurement','Lower Confidence Interval for Measurement','Location','Northwest')
 text(4e-03,1e-4,strcat('t' , '  ','=','  ','3.1824'))
-text(4e-03,.5e-4,'v=20')
-
+text(4e-03,.66e-4,'v=20')
+text(4e-03,.33e-4,'Fit Points = 11')
 
 
 % Hysteresis Calculations
@@ -233,13 +234,13 @@ Tri_Voltage = Tri_Wave.data(:,2);
 
 T = Time_Wave(2)-Time_Wave(1); % Calculated time interval between data points
 Freq = 1/T; % Sampling Frequency
-Length = size(Sin_Voltage);          % Number of points
-Power_2 = 2^nextpow2(Length(1)); % Next power of 2 from length of y - need for FFT 
-Sin_FFT = fft(Sin_Voltage,Power_2)./Length(1); % this is a vector with complex number elements
-Tri_FFT = fft(Tri_Voltage,Power_2)./Length(1); % this is a vector with complex number elements
-Spaced_Points = Freq/2*linspace(0,1,Power_2/2+1); % linspace generates linearly spaced points
-Sin_FFT_A = 20*log10(abs(Sin_FFT(1:Power_2/2+1)));
-Tri_FFT_A = 20*log10(abs(Tri_FFT(1:Power_2/2+1)));
+Length = size(Sin_Voltage); % Number of points in vector
+Power_2 = 2^nextpow2(Length(1)); % power of 2 from length y
+Sin_FFT = fft(Sin_Voltage,Power_2)./Length(1); % fft bull
+Tri_FFT = fft(Tri_Voltage,Power_2)./Length(1); % fft bull
+Spaced_Points = Freq/2*linspace(0,1,Power_2/2+1); % spaced point vector using length
+Sin_FFT_A = 20*log10(abs(Sin_FFT(1:Power_2/2+1))); % amplitude
+Tri_FFT_A = 20*log10(abs(Tri_FFT(1:Power_2/2+1))); % amplitude
 
 figure(7)
 
