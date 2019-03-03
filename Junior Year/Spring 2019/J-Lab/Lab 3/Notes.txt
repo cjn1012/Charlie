@@ -1,0 +1,19 @@
+Deliverables
+
+Part 1-
+	Need to do 1A - Diagram
+	Need to do 1bii and 1biii using matlab and put into doc
+	Need to do 1c in doc
+	Need to do 1d by getting equations in doc and explid, plots are done, got to add hysteresis, in MATLAB
+	
+Part 2-
+	done with everything up to g, in doc work
+
+Part 3-
+	3a need to answer in doc but plot done
+	need to do 3b, find equations
+	need to do 3c too in doc
+
+Part 4-
+	did 4b but must do the rest
+

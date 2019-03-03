@@ -324,27 +324,18 @@ ylabel ('Log Magnitude (dBv)')
 Ffs=100; %lbf
 Slc=3400; %MV/V
 G1=1000;
-vout1=3.0012; %Volts
-vout2=5.994; %volts
+vout1=3.00; %Volts
+vout2=6.00; %volts
 
 Fin3v=(vout1*Ffs)/(Slc*Ei*G1);  %tension in string
 Fin6v=(vout2*Ffs)/(Slc*Ei*G1);  %tension in string
 
 L=24.1250;
-rho=6.805;
+Linear_Density=6.805; %g/m
 N=[1:1:4];
 
-Rfreq1=(1/2*L)*(sqrt(Fin3v/rho)).*N;
-Rfreq2=(1/2*L)*(sqrt(Fin6v/rho)).*N;
-
-
-
-
-
-
-
-
-
+Rfreq1=(1/2*L)*(sqrt(Fin3v/Linear_Density)).*N;
+Rfreq2=(1/2*L)*(sqrt(Fin6v/Linear_Density)).*N;
 
 
 
