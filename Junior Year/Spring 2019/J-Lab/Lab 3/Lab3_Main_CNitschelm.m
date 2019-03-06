@@ -119,7 +119,7 @@ Con_Measure_2 = (t_95_2*s_yx_2*(1+1/length(Disp)+(Disp-x_Bar_2).^2/Denom_2).^.5)
 figure(5)
 plot(Disp,St_2,'o',Disp,Best_Fit_2,'--',Disp,Best_Fit_2+Con_Fit_2,'r',Disp,Best_Fit_2-Con_Fit_2,'r',Disp,Best_Fit_2+Con_Measure_2,'b',Disp,Best_Fit_2-Con_Measure_2,'b')
 xlabel('Displacement (m)')
-ylabel('Strain (/epsilon)')
+ylabel('Strain (\epsilon)')
 title('Displacement vs. Strain Confidence')
 legend('Data','Bestfit','Upper Confidence Interval for Fit','Lower Confidence Interval for Fit','Upper Confidence Interval for Measurement','Lower Confidence Interval for Measurement','Location','Northwest')
 text(4e-03,1e-4,strcat('t' , '  ','=','  ','3.1824'))
@@ -133,7 +133,7 @@ Decreasing = [-.0004,.0182,.0388,.0590,.0800,.0998,.1210,.1418,.1622,.1850,.2070
 Y_Range = Increasing(end)-Increasing(1);
 Difference = Increasing-Decreasing;
 Hysteresis_Max = (max(abs(Difference))./(Y_Range))*100;
-
+Hyst = (Difference/Y_Range)*100
 
 
 
@@ -171,6 +171,9 @@ Constant=0.015;
 
 figure(6)
 plot(New_Time,New_Strain,New_Time(Locations),Values,'d')
+xlabel('Time (s)')
+ylabel('Strain ()')
+title('Strain vs. Time of a Cantilever Beam')
 
 
 % 2b
@@ -191,8 +194,15 @@ Con = transpose(2:length(Values));
 Best_Fit_3 = mb(1)*Con+mb(2);
 alpha = mb(1);
 Damp_Ratio = (alpha/sqrt(4*pi^2+alpha^2));
+
+
 figure(7)
 plot(Con,Log,'o',Con,Best_Fit_3)
+xlabel('n-1')
+ylabel('ln(y_1/y_n)')
+title('Calibration curve to Determine the Dampening Ratio')
+text(5,.3,strcat('Damping Ratio = 0.002'))
+legend('Data','BestFit','Location','Northwest')
 
 
 
@@ -211,7 +221,7 @@ Damp_Std = std(Damp(3:length(Damp)));
 
 %2e
 k_Theo = (3*E*((Width*Thickness^3)/12))/Beam_Length^3;
-k_Exp = p2(1)/p1(1);
+k_Exp = p2(1)/h1(1)
 
 %2f
 Natural_Freq_Theo = sqrt(k_Theo/Mass_Effective);
@@ -235,6 +245,7 @@ Tri_Voltage = Tri_Wave.data(:,2);
 T = Time_Wave(2)-Time_Wave(1); % Calculated time interval between data points
 Freq = 1/T; % Sampling Frequency
 Length = size(Sin_Voltage); % Number of points in vector
+Length_2 = length(Sin_Voltage);
 Power_2 = 2^nextpow2(Length(1)); % power of 2 from length y
 Sin_FFT = fft(Sin_Voltage,Power_2)./Length(1); % fft bull
 Tri_FFT = fft(Tri_Voltage,Power_2)./Length(1); % fft bull
@@ -242,7 +253,7 @@ Spaced_Points = Freq/2*linspace(0,1,Power_2/2+1); % spaced point vector using le
 Sin_FFT_A = 20*log10(abs(Sin_FFT(1:Power_2/2+1))); % amplitude
 Tri_FFT_A = 20*log10(abs(Tri_FFT(1:Power_2/2+1))); % amplitude
 
-figure(7)
+figure(8)
 
 subplot(2,1,1)
 plot (Time_Wave,Sin_Voltage,Time_Wave,Tri_Voltage); grid
@@ -253,11 +264,15 @@ xlim([0,.01])
 
 subplot(2,1,2)
 semilogx(Spaced_Points,Sin_FFT_A,Spaced_Points,Tri_FFT_A);grid  % abs(Y) = (Re(Y)^2 + Im(Y)^2)^1/2
-axis([10 10000 -100 -20])
+axis([10 10000 -110 -10])
 title('Single Sided Amplitude Spectrum')
-xlabel ('Frequency (Hz.)')
+xlabel ('Frequency (Hz)')
 ylabel ('Log Magnitude (dBv)')
 
+
+
+% 3b
+Freq_Reso = 1/(Length_2*T);
 
 
 %% Part 4
@@ -281,17 +296,17 @@ Space_Points_1 = Freq1/2*linspace(0,1,Power_2_1/2+1); % linspace generates linea
 Guitar_3_1_A = 20*log10(abs(Guitar_FFT_3_1(1:Power_2_1/2+1)));
 Guitar_3_2_A = 20*log10(abs(Guitar_FFT_3_2(1:Power_2_1/2+1)));
 
-figure(8)
+figure(9)
 
 subplot(2,1,1)
 plot(Time_Guitar,y1,Time_Guitar,y2)
-title('3V')
+title('3V - 0.01 sec/div')
 xlabel ('Time (sec)')
 ylabel ('Volts (V)')
 
 subplot(2,1,2)
 semilogx(Space_Points_1,Guitar_3_1_A,Space_Points_1,Guitar_3_2_A);
-axis([10 10000 -100 -20])
+axis([10 10000 -130 -40])
 title('Single Sided Amplitude Spectrum (3V)')
 xlabel ('Frequency (Hz.)')
 ylabel ('Log Magnitude (dBv)')
@@ -306,37 +321,104 @@ Space_Points_2 = Freq1/2*linspace(0,1,Power_2_2/2+1); % linspace generates linea
 Guitar_6_1_A = 20*log10(abs(Guitar_FFT_6_1(1:Power_2_2/2+1)));
 Guitar_6_2_A = 20*log10(abs(Guitar_FFT_6_2(1:Power_2_2/2+1)));
 
-figure(9)
+figure(10)
 subplot(2,1,1)
 plot(Time_Guitar,y3,Time_Guitar,y4)
-title('6V')
+title('6V - 0.01 sec/div')
 xlabel ('Time (sec)')
 ylabel ('Volts (V)')
 
 subplot(2,1,2)
 semilogx(Space_Points_2,Guitar_6_1_A,Space_Points_2,Guitar_6_2_A);grid  % abs(Y) = (Re(Y)^2 + Im(Y)^2)^1/2
-axis([10 10000 -100 -20])
+axis([10 10000 -130 -30])
 title('Single Sided Amplitude Spectrum (6V)')
 xlabel ('Frequency (Hz)')
 ylabel ('Log Magnitude (dBv)')
 
 
 
-Ffs=100; %lbf
-Slc=3400; %MV/V
-G1=1000;
-vout1=3.00; %Volts
-vout2=6.00; %volts
+%% Part 4 2
 
-Fin3v=(vout1*Ffs)/(Slc*Ei*G1);  %tension in string
-Fin6v=(vout2*Ffs)/(Slc*Ei*G1);  %tension in string
+Header = 32;
+Guitar_Data_3v = importdata('guitar2.lvm','\t',Header);
+Guitar_Data_6v = importdata('guitar6v2.lvm','\t',Header);
+Time_Guitar = Guitar_Data_3v.data(:,1);   
+y1 = Guitar_Data_3v.data(:,2);  
+y2 = Guitar_Data_3v.data(:,4);
+y3=Guitar_Data_6v.data(:,2);
+y4=Guitar_Data_6v.data(:,4);
 
-L=24.1250;
-Linear_Density=6.805; %g/m
+T1 = Time_Guitar(2)-Time_Guitar(1);         % Time per sample
+Freq1 = 1/T1;              % Sampling frequency
+Length1 = size(y1);          % Length of signal - # of points
+Power_2_1 = 2^nextpow2(Length1(1)); % Next power of 2 from length of y - need for FFT 
+Guitar_FFT_3_1 = fft(y1,Power_2_1)./Length1(1); % this is a vector with complex number elements
+Guitar_FFT_3_2 = fft(y2,Power_2_1)./Length1(1); % this is a vector with complex number elements
+Space_Points_1 = Freq1/2*linspace(0,1,Power_2_1/2+1); % linspace generates linearly spaced points
+Guitar_3_1_A = 20*log10(abs(Guitar_FFT_3_1(1:Power_2_1/2+1)));
+Guitar_3_2_A = 20*log10(abs(Guitar_FFT_3_2(1:Power_2_1/2+1)));
+
+figure(11)
+
+subplot(2,1,1)
+plot(Time_Guitar,y1,Time_Guitar,y2)
+
+title('3V - 0.33 sec/div')
+xlabel ('Time (sec)')
+ylabel ('Volts (V)')
+
+subplot(2,1,2)
+semilogx(Space_Points_1,Guitar_3_1_A,Space_Points_1,Guitar_3_2_A);
+
+title('Single Sided Amplitude Spectrum (3V)')
+xlabel ('Frequency (Hz.)')
+ylabel ('Log Magnitude (dBv)')
+
+
+
+Length2 = size(y3);          % Length of signal - # of points
+Power_2_2 = 2^nextpow2(Length2(1)); % Next power of 2 from length of y - need for FFT 
+Guitar_FFT_6_1 = fft(y3,Power_2_2)./Length2(1); % this is a vector with complex number elements
+Guitar_FFT_6_2 = fft(y4,Power_2_2)./Length2(1); % this is a vector with complex number elements
+Space_Points_2 = Freq1/2*linspace(0,1,Power_2_2/2+1); % linspace generates linearly spaced points
+Guitar_6_1_A = 20*log10(abs(Guitar_FFT_6_1(1:Power_2_2/2+1)));
+Guitar_6_2_A = 20*log10(abs(Guitar_FFT_6_2(1:Power_2_2/2+1)));
+
+figure(12)
+subplot(2,1,1)
+plot(Time_Guitar,y3,Time_Guitar,y4)
+
+title('6V - 0.33 sec/div')
+xlabel ('Time (sec)')
+ylabel ('Volts (V)')
+
+subplot(2,1,2)
+semilogx(Space_Points_2,Guitar_6_1_A,Space_Points_2,Guitar_6_2_A);grid  % abs(Y) = (Re(Y)^2 + Im(Y)^2)^1/2
+
+title('Single Sided Amplitude Spectrum (6V)')
+xlabel ('Frequency (Hz)')
+ylabel ('Log Magnitude (dBv)')
+
+
+
+
+%% ye
+Linear_Density=.00608; %g/m
+L=.79;
+Ffs = 448; %N 100 lb load cell
+Gain = 1000;
+mv_V = 3.4; %mV/V
+vout3 = 3000; 
+vout6 = 6000; 
 N=[1:1:4];
 
-Rfreq1=(1/2*L)*(sqrt(Fin3v/Linear_Density)).*N;
-Rfreq2=(1/2*L)*(sqrt(Fin6v/Linear_Density)).*N;
+F_in_3V=(vout3*Ffs)/(mv_V*5*Gain);  %tension in string
+F_in_6V=(vout6*Ffs)/(mv_V*5*Gain);  %tension in string
+
+
+
+Rfreq1=(1/(2*L))*(sqrt(F_in_3V/Linear_Density)).*N;
+Rfreq2=(1/(2*L))*(sqrt(F_in_6V/Linear_Density)).*N;
 
 
 
