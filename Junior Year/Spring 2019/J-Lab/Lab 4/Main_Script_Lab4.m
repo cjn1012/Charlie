@@ -312,6 +312,7 @@ xlim([.01,.15])
 
 
 
+
 %% p-t response and predicted
 
 Volt_Locations_Small;
@@ -367,17 +368,17 @@ for n=2:length(Volt_Locations_Long)
 end
 
 for n=2:length(Volt_Locations_Balloon_Small)
-    Num = (1/(n-1))*abs(log(Volt_Small_Balloon(2)./Volt_Small_Balloon(n)));
+    Num = (1/(n-1))*abs(log(Volt_Small_Balloon(1)./Volt_Small_Balloon(n)));
     Damp_Small_Balloon(n-1) = Num./sqrt(4*pi^2+Num^2);
 end
 
 for n=2:length(Volt_Locations_Balloon_Medium)
-    Num = (1/(n-1))*log(Volt_Medium_Balloon(2)./Volt_Medium_Balloon(n));
+    Num = (1/(n-1))*log(Volt_Medium_Balloon(1)./Volt_Medium_Balloon(n));
     Damp_Medium_Balloon(n-1) = Num./sqrt(4*pi^2+Num^2);
 end
 
 for n=2:length(Volt_Locations_Balloon_Long)
-    Num = (1/(n-1))*abs(log(Volt_Long_Balloon(2)./Volt_Long_Balloon(n)))
+    Num = (1/(n-1))*abs(log(Volt_Long_Balloon(1)./Volt_Long_Balloon(n)));
     Damp_Long_Balloon(n-1) = Num./sqrt(4*pi^2+Num^2);
 end
 
@@ -431,65 +432,75 @@ Natural_Freq_Long_Balloon = Damp_Mean_Long_Balloon/sqrt(1-Ratio_Balloon_Long^2);
 % Ratio_Balloon_Medium = mean(Damp_Medium_Balloon);
 % Ratio_Balloon_Long = mean(Damp_Long_Balloon);
 
+Time_Small_Flood2 = Time_Small_Flood+.05;
 KA = 2.46;
-e = exp((-Ratio_Valve_Small*Natural_Freq_Small_Valve.*Time_Small_Flood));
+e = exp((-Ratio_Valve_Small*Natural_Freq_Small_Valve.*Time_Small_Flood2));
 a = Ratio_Valve_Small/(sqrt(1-Ratio_Valve_Small^2));
-b = Natural_Freq_Small_Valve.*Time_Small_Flood*sqrt(1-Ratio_Valve_Small^2);
-Volt_Predict_Valve_Small = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Small_Valve.*Time_Small_Flood2*sqrt(1-Ratio_Valve_Small^2);
+Volt_Predict_Valve_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(13)
-plot(Time_Small_Flood,Volt_Predict_Valve_Small)
+hold on
+plot(Time_Small_Flood2,Volt_Predict_Valve_Small)
+plot(Time_Small_Flood,Voltage_Small_Flood,Time_Small_Flood(Volt_Locations_Small),Volt_Small,'d')
 
-
+Time_Medium_Flood2 = Time_Medium_Flood+.05;
 KA = 2.46;
-e = exp((-Ratio_Valve_Medium*Natural_Freq_Medium_Valve.*Time_Medium_Flood));
+e = exp((-Ratio_Valve_Medium*Natural_Freq_Medium_Valve.*Time_Medium_Flood2));
 a = Ratio_Valve_Medium/(sqrt(1-Ratio_Valve_Medium^2));
-b = Natural_Freq_Medium_Valve.*Time_Medium_Flood*sqrt(1-Ratio_Valve_Medium^2);
-Volt_Predict_Valve_Medium = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Medium_Valve.*Time_Medium_Flood2*sqrt(1-Ratio_Valve_Medium^2);
+Volt_Predict_Valve_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(14)
-plot(Time_Medium_Flood,Volt_Predict_Valve_Medium)
+hold on
+plot(Time_Medium_Flood2,Volt_Predict_Valve_Medium)
+plot(Time_Medium_Flood,Voltage_Medium_Flood,Time_Medium_Flood(Volt_Locations_Medium),Volt_Medium,'d')
 
-
+Time_Long_Flood2 = Time_Long_Flood+.05;
 KA = 2.46;
-e = exp((-Ratio_Valve_Long*Natural_Freq_Long_Valve.*Time_Long_Flood));
+e = exp((-Ratio_Valve_Long*Natural_Freq_Long_Valve.*Time_Long_Flood2));
 a = Ratio_Valve_Long/(sqrt(1-Ratio_Valve_Long^2));
-b = Natural_Freq_Long_Valve.*Time_Long_Flood*sqrt(1-Ratio_Valve_Long^2);
-Volt_Predict_Valve_Long = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Long_Valve.*Time_Long_Flood2*sqrt(1-Ratio_Valve_Long^2);
+Volt_Predict_Valve_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(15)
-plot(Time_Long_Flood,Volt_Predict_Valve_Long)
+hold on
+plot(Time_Long_Flood2,Volt_Predict_Valve_Long)
+plot(Time_Long_Flood,Voltage_Long_Flood,Time_Long_Flood(Volt_Locations_Long),Volt_Long,'d')
 
 
 
 
-KA = -.012;
-e = exp((-Ratio_Balloon_Small*Natural_Freq_Small_Balloon.*Time_Small_Balloon));
+
+
+Time_Small_Balloon2 = Time_Small_Balloon+.05;
+KA = -.014;
+e = exp((-Ratio_Balloon_Small*Natural_Freq_Small_Balloon.*Time_Small_Balloon2));
 a = Ratio_Balloon_Small/(sqrt(1-Ratio_Balloon_Small.^2));
-b = Natural_Freq_Small_Balloon.*Time_Small_Balloon*sqrt(1-Ratio_Balloon_Small^2);
-Volt_Predict_Balloon_Small = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Small_Balloon.*Time_Small_Balloon2*sqrt(1-Ratio_Balloon_Small^2);
+Volt_Predict_Balloon_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(16)
-plot(Time_Small_Balloon,Volt_Predict_Balloon_Small,Time_Small_Balloon,Voltage_Small_Balloon)
+plot(Time_Small_Balloon2,Volt_Predict_Balloon_Small,Time_Small_Balloon,Voltage_Small_Balloon)
 
-
-KA = -.01;
-e = exp((-Ratio_Balloon_Medium*Natural_Freq_Medium_Balloon.*Time_Medium_Balloon));
+Time_Medium_Balloon2 = Time_Medium_Balloon+.05;
+KA = -.008;
+e = exp((-Ratio_Balloon_Medium*Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2));
 a = Ratio_Balloon_Medium/(sqrt(1-Ratio_Balloon_Medium^2));
-b = Natural_Freq_Medium_Balloon.*Time_Medium_Balloon*sqrt(1-Ratio_Balloon_Medium^2);
-Volt_Predict_Balloon_Medium = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2*sqrt(1-Ratio_Balloon_Medium^2);
+Volt_Predict_Balloon_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(17)
-plot(Time_Medium_Balloon,Volt_Predict_Balloon_Medium)
+plot(Time_Medium_Balloon2,Volt_Predict_Balloon_Medium,Time_Medium_Balloon,Voltage_Medium_Balloon)
 
-
-KA = -.01;
-e = exp((-Ratio_Balloon_Long*Natural_Freq_Long_Balloon.*Time_Long_Balloon));
+Time_Long_Balloon2 = Time_Long_Balloon+.05;
+KA = -.02;
+e = exp((-Ratio_Balloon_Long*Natural_Freq_Long_Balloon.*Time_Long_Balloon2));
 a = Ratio_Balloon_Long/(sqrt(1-Ratio_Balloon_Long^2));
-b = Natural_Freq_Long_Balloon.*Time_Long_Balloon*sqrt(1-Ratio_Balloon_Long^2);
-Volt_Predict_Balloon_Long = KA-KA.*e.*a.*sin(b)+cos(b);
+b = Natural_Freq_Long_Balloon.*Time_Long_Balloon2*sqrt(1-Ratio_Balloon_Long^2);
+Volt_Predict_Balloon_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(18)
-plot(Time_Long_Balloon,Volt_Predict_Balloon_Long)%,Time_Long_Balloon,Voltage_Long_Balloon)
+plot(Time_Long_Balloon2,Volt_Predict_Balloon_Long,Time_Long_Balloon,Voltage_Long_Balloon)
 
 
