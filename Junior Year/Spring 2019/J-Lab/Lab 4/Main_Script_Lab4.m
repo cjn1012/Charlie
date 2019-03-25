@@ -264,7 +264,7 @@ Constant = 1;
 Damping_Ratio_Small_Flood = zeros(length(Volt_Small),1);
 for n = 1:length(Volt_Small)-1
     Period_Small = Time_Small_Flood(Volt_Locations_Small(n+1))-Time_Small_Flood(Volt_Locations_Small(n));
-    Damping_Ratio_Small_Flood(n) = 2*pi/Period_Small;
+    Damping_Ratio_Small_Flood(n) = Period_Small;
 end
 Damp_Mean_Small = mean(Damping_Ratio_Small_Flood);
 figure(7)
@@ -282,7 +282,7 @@ Constant = 0.036;
 Damping_Ratio_Medium_Flood = zeros(length(Volt_Medium),1);
 for n = 1:length(Volt_Medium)-1
     Period_Medium = Time_Medium_Flood(Volt_Locations_Medium(n+1))-Time_Medium_Flood(Volt_Locations_Medium(n));
-    Damping_Ratio_Medium_Flood(n) = 2*pi/Period_Medium;
+    Damping_Ratio_Medium_Flood(n) = Period_Medium;
 end
 Damp_Mean_Medium = mean(Damping_Ratio_Medium_Flood);
 figure(8)
@@ -299,7 +299,7 @@ Constant = 0.035;
 Damping_Ratio_Long_Flood = zeros(length(Volt_Long),1);
 for n = 1:length(Volt_Long)-1
     Period_Long = Time_Long_Flood(Volt_Locations_Long(n+1))-Time_Long_Flood(Volt_Locations_Long(n));
-    Damping_Ratio_Long_Flood(n) = 2*pi/Period_Long;
+    Damping_Ratio_Long_Flood(n) = Period_Long;
 end
 Damp_Mean_Long = mean(Damping_Ratio_Long_Flood);
 figure(9)
@@ -328,22 +328,22 @@ Constant = 0.01;
 [Volt_Locations_Balloon_Small,Volt_Small_Balloon]=peakfinder(Voltage_Small_Balloon,Constant);
 Volt_Locations_Balloon_Small = Volt_Locations_Balloon_Small(2:end-1);
 Volt_Small_Balloon = Volt_Small_Balloon(2:end-1);
-figure(10)
-plot(Time_Small_Balloon,Voltage_Small_Balloon,Time_Small_Balloon(Volt_Locations_Balloon_Small),Volt_Small_Balloon,'d')
+% figure(10)
+% plot(Time_Small_Balloon,Voltage_Small_Balloon,Time_Small_Balloon(Volt_Locations_Balloon_Small),Volt_Small_Balloon,'d')
 
 Constant = 0.02;
 [Volt_Locations_Balloon_Medium,Volt_Medium_Balloon]=peakfinder(Voltage_Medium_Balloon,Constant);
 Volt_Locations_Balloon_Medium = Volt_Locations_Balloon_Medium(3:end);
 Volt_Medium_Balloon = Volt_Medium_Balloon(3:end);
-figure(11)
-plot(Time_Medium_Balloon,Voltage_Medium_Balloon,Time_Medium_Balloon(Volt_Locations_Balloon_Medium),Volt_Medium_Balloon,'d')
+% figure(11)
+% plot(Time_Medium_Balloon,Voltage_Medium_Balloon,Time_Medium_Balloon(Volt_Locations_Balloon_Medium),Volt_Medium_Balloon,'d')
 
 Constant = 0.015;
 [Volt_Locations_Balloon_Long,Volt_Long_Balloon]=peakfinder(Voltage_Long_Balloon,Constant);
 Volt_Locations_Balloon_Long = Volt_Locations_Balloon_Long(3:end);
 Volt_Long_Balloon = Volt_Long_Balloon(3:end);
-figure(12)
-plot(Time_Long_Balloon,Voltage_Long_Balloon,Time_Long_Balloon(Volt_Locations_Balloon_Long),Volt_Long_Balloon,'d')
+% figure(12)
+% plot(Time_Long_Balloon,Voltage_Long_Balloon,Time_Long_Balloon(Volt_Locations_Balloon_Long),Volt_Long_Balloon,'d')
 
 Damp_Small_Valve = zeros(length(Volt_Locations_Small)-1,1);
 Damp_Medium_Valve = zeros(length(Volt_Locations_Medium)-1,1);
@@ -440,8 +440,14 @@ b = Natural_Freq_Small_Valve.*Time_Small_Flood2*sqrt(1-Ratio_Valve_Small^2);
 Volt_Predict_Valve_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(13)
-plot(Time_Small_Flood2,Volt_Predict_Valve_Small)
 plot(Time_Small_Flood,Voltage_Small_Flood)
+title('Small Tube with Valve - No Peaks Recorded')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Actual Data','location','northeast')
+xlim([0.01,.10])
+ylim([2.3,2.6])
+
 
 Time_Medium_Flood2 = Time_Medium_Flood +.0677;
 KA = 2.479;
@@ -452,8 +458,14 @@ Volt_Predict_Valve_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(14)
 hold on
-plot(Time_Medium_Flood2,Volt_Predict_Valve_Medium)
+plot(Time_Medium_Flood2-.002,Volt_Predict_Valve_Medium)
 plot(Time_Medium_Flood,Voltage_Medium_Flood,Time_Medium_Flood(Volt_Locations_Medium),Volt_Medium,'d')
+title('Prediction and Actual Data of Medium Pipe with Valve')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Prediction','Actual Data','location','northeast')
+xlim([0.01,.10])
+ylim([2.3,2.6])
 
 Time_Long_Flood2 = Time_Long_Flood+.0664;
 KA = 2.46;
@@ -464,8 +476,14 @@ Volt_Predict_Valve_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(15)
 hold on
-plot(Time_Long_Flood2,Volt_Predict_Valve_Long)
+plot(Time_Long_Flood2-.006,Volt_Predict_Valve_Long)
 plot(Time_Long_Flood,Voltage_Long_Flood,Time_Long_Flood(Volt_Locations_Long),Volt_Long,'d')
+title('Prediction and Actual Data of Long Pipe with Valve')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Prediction','Actual Data','location','northeast')
+xlim([0.01,.10])
+ylim([2.3,2.6])
 
 
 
@@ -485,7 +503,7 @@ plot(Time_Small_Balloon2+.0025,Volt_Predict_Balloon_Small,Time_Small_Balloon,Vol
 title('Prediction and Actual Data of Small Pipe with Balloon')
 xlabel('Time (s)')
 ylabel('Volts (V)')
-legend('Prediction','Actual Data',location,'northeast')
+legend('Prediction','Actual Data','location','northeast')
 xlim([0,.05])
 ylim([-.08,.04])
 
@@ -501,7 +519,7 @@ plot(Time_Medium_Balloon2+.01,Volt_Predict_Balloon_Medium,Time_Medium_Balloon,Vo
 title('Prediction and Actual Data of Medium Pipe with Balloon')
 xlabel('Time (s)')
 ylabel('Volts (V)')
-legend('Prediction','Actual Data',location,'northeast')
+legend('Prediction','Actual Data','location','northeast')
 xlim([0,.1])
 ylim([-.08,.06])
 
@@ -517,7 +535,7 @@ plot(Time_Long_Balloon2+.01,Volt_Predict_Balloon_Long,'--',Time_Long_Balloon,Vol
 title('Prediction and Actual Data of Long Pipe with Balloon')
 xlabel('Time (s)')
 ylabel('Volts (V)')
-legend('Prediction','Actual Data',location,'northeast')
+legend('Prediction','Actual Data','location','northeast')
 xlim([0,.1])
 ylim([-.08,.06])
 
