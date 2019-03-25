@@ -44,8 +44,8 @@ Freq_Reso_Flood_Small = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .17;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Small_Flood = a/(l*sqrt(0.5+(V/Vt))); % FOR GRAPH
 
 figure(1)
@@ -55,8 +55,8 @@ plot (Time_Small_Flood,Voltage_Small_Flood);
 title('Short Tube Flood Valve Response')
 xlabel ('Time (sec)')
 ylabel ('Volts (V)')
-text(.03,2,strcat('Resolution =',num2str(Freq_Reso_Flood_Small),'1/s'))
-text(.03,1.5,strcat('Damped Natural Frequency = ',num2str(Damp_Natural_Freq_Small_Flood),'Hz'))
+text(.03,2,strcat('Resolution =',num2str(Freq_Reso_Flood_Small),' 1/s'))
+text(.03,1.5,strcat('Damped Natural Frequency = ',num2str(Damp_Natural_Freq_Small_Flood),' Hz'))
 xlim([0,.1])
 
 subplot(2,1,2)
@@ -80,8 +80,8 @@ Freq_Reso_Flood_Medium = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .795;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(2)
@@ -117,8 +117,8 @@ Freq_Reso_Flood_Long = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = 1.05;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Long_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(3)
@@ -155,8 +155,8 @@ Freq_Reso_Balloon_Small = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .17;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Small_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(4)
@@ -191,8 +191,8 @@ Freq_Reso_Balloon_Medium = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .795;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(5)
@@ -228,8 +228,8 @@ Freq_Reso_Balloon_Long = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = 1.05;
-V = l*pi*.0042^2;
-Vt = 6.5*10^-8;
+Vt = l*pi*.0042^2;
+V = 6.5*10^-8;
 Damp_Natural_Freq_Long_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(6)
@@ -259,7 +259,7 @@ ylabel ('Log Magnitude (dBv)')
 %% Peakfinder
 
 % Small Pipe
-Constant = 0.028;
+Constant = 0.05;
 [Volt_Locations_Small,Volt_Small]=peakfinder(Voltage_Small_Flood,Constant);
 Damping_Ratio_Small_Flood = zeros(length(Volt_Small),1);
 for n = 1:length(Volt_Small)-1
