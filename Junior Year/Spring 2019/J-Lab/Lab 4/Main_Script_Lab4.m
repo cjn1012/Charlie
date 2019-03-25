@@ -44,8 +44,8 @@ Freq_Reso_Flood_Small = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .17;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Small_Flood = a/(l*sqrt(0.5+(V/Vt))); % FOR GRAPH
 
 figure(1)
@@ -80,8 +80,8 @@ Freq_Reso_Flood_Medium = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .795;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(2)
@@ -117,8 +117,8 @@ Freq_Reso_Flood_Long = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = 1.05;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Long_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(3)
@@ -155,8 +155,8 @@ Freq_Reso_Balloon_Small = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .17;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Small_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(4)
@@ -191,8 +191,8 @@ Freq_Reso_Balloon_Medium = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = .795;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(5)
@@ -228,8 +228,8 @@ Freq_Reso_Balloon_Long = 1/(Length_2*T); %FOR GRAPH
 
 a = 343;
 l = 1.05;
-Vt = l*pi*.0042^2;
-V = 6.5*10^-8;
+V = l*pi*.0042^2;
+Vt = 6.5*10^-8;
 Damp_Natural_Freq_Long_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
 figure(6)
@@ -259,7 +259,7 @@ ylabel ('Log Magnitude (dBv)')
 %% Peakfinder
 
 % Small Pipe
-Constant = 0.05;
+Constant = 1;
 [Volt_Locations_Small,Volt_Small]=peakfinder(Voltage_Small_Flood,Constant);
 Damping_Ratio_Small_Flood = zeros(length(Volt_Small),1);
 for n = 1:length(Volt_Small)-1
@@ -338,7 +338,7 @@ Volt_Medium_Balloon = Volt_Medium_Balloon(3:end);
 figure(11)
 plot(Time_Medium_Balloon,Voltage_Medium_Balloon,Time_Medium_Balloon(Volt_Locations_Balloon_Medium),Volt_Medium_Balloon,'d')
 
-Constant = 0.02;
+Constant = 0.015;
 [Volt_Locations_Balloon_Long,Volt_Long_Balloon]=peakfinder(Voltage_Long_Balloon,Constant);
 Volt_Locations_Balloon_Long = Volt_Locations_Balloon_Long(3:end);
 Volt_Long_Balloon = Volt_Long_Balloon(3:end);
@@ -354,22 +354,22 @@ Damp_Long_Balloon = zeros(length(Volt_Locations_Balloon_Long)-1,1);
 
 for n=2:length(Volt_Locations_Small)
     Num = (1/(n-1))*log(Volt_Small(2)./Volt_Small(n));
-    Damp_Small_Valve(n-1) = Num./sqrt(4*pi^2+Num^2);
+    Damp_Small_Valve(n-1) = Num./sqrt(4*pi^2+Num.^2);
 end
 
 for n=2:length(Volt_Locations_Medium)
-    Num = (1/(n-1))*log(Volt_Medium(2)./Volt_Medium(n));
-    Damp_Medium_Valve(n-1) = Num./sqrt(4*pi^2+Num^2);
+    Num = 100*(1/(n-1))*log(Volt_Medium(2)/Volt_Medium(n));
+    Damp_Medium_Valve(n-1) = Num/(sqrt(4*pi^2+Num^2));
 end
 
 for n=2:length(Volt_Locations_Long)
-    Num = (1/(n-1))*log(Volt_Long(2)./Volt_Long(n));
+    Num = 100*(1/(n-1))*log(Volt_Long(2)./Volt_Long(n));
     Damp_Long_Valve(n-1) = Num./sqrt(4*pi^2+Num^2);
 end
 
 for n=2:length(Volt_Locations_Balloon_Small)
     Num = (1/(n-1))*abs(log(Volt_Small_Balloon(1)./Volt_Small_Balloon(n)));
-    Damp_Small_Balloon(n-1) = Num./sqrt(4*pi^2+Num^2);
+    Damp_Small_Balloon(n-1) = 0.5*(Num./sqrt(4*pi^2+Num^2));
 end
 
 for n=2:length(Volt_Locations_Balloon_Medium)
@@ -440,13 +440,12 @@ b = Natural_Freq_Small_Valve.*Time_Small_Flood2*sqrt(1-Ratio_Valve_Small^2);
 Volt_Predict_Valve_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
 
 figure(13)
-hold on
 plot(Time_Small_Flood2,Volt_Predict_Valve_Small)
-plot(Time_Small_Flood,Voltage_Small_Flood,Time_Small_Flood(Volt_Locations_Small),Volt_Small,'d')
+plot(Time_Small_Flood,Voltage_Small_Flood)
 
-Time_Medium_Flood2 = Time_Medium_Flood+.05;
-KA = 2.46;
-e = exp((-Ratio_Valve_Medium*Natural_Freq_Medium_Valve.*Time_Medium_Flood2));
+Time_Medium_Flood2 = Time_Medium_Flood +.0677;
+KA = 2.479;
+e = .0677.*exp((-Ratio_Valve_Medium*Natural_Freq_Medium_Valve.*Time_Medium_Flood2));
 a = Ratio_Valve_Medium/(sqrt(1-Ratio_Valve_Medium^2));
 b = Natural_Freq_Medium_Valve.*Time_Medium_Flood2*sqrt(1-Ratio_Valve_Medium^2);
 Volt_Predict_Valve_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
@@ -456,9 +455,9 @@ hold on
 plot(Time_Medium_Flood2,Volt_Predict_Valve_Medium)
 plot(Time_Medium_Flood,Voltage_Medium_Flood,Time_Medium_Flood(Volt_Locations_Medium),Volt_Medium,'d')
 
-Time_Long_Flood2 = Time_Long_Flood+.05;
+Time_Long_Flood2 = Time_Long_Flood+.0664;
 KA = 2.46;
-e = exp((-Ratio_Valve_Long*Natural_Freq_Long_Valve.*Time_Long_Flood2));
+e = .0664*exp((-Ratio_Valve_Long*Natural_Freq_Long_Valve.*Time_Long_Flood2));
 a = Ratio_Valve_Long/(sqrt(1-Ratio_Valve_Long^2));
 b = Natural_Freq_Long_Valve.*Time_Long_Flood2*sqrt(1-Ratio_Valve_Long^2);
 Volt_Predict_Valve_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
@@ -478,29 +477,112 @@ KA = -.014;
 e = exp((-Ratio_Balloon_Small*Natural_Freq_Small_Balloon.*Time_Small_Balloon2));
 a = Ratio_Balloon_Small/(sqrt(1-Ratio_Balloon_Small.^2));
 b = Natural_Freq_Small_Balloon.*Time_Small_Balloon2*sqrt(1-Ratio_Balloon_Small^2);
-Volt_Predict_Balloon_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
+Volt_Predict_Balloon_Small = .05+4.5*(KA-KA.*e.*(a.*sin(b)+cos(b))); % Added addition multiplier to start at peak and multiplier for reaching KA
+
 
 figure(16)
-plot(Time_Small_Balloon2,Volt_Predict_Balloon_Small,Time_Small_Balloon,Voltage_Small_Balloon)
+plot(Time_Small_Balloon2+.0025,Volt_Predict_Balloon_Small,Time_Small_Balloon,Voltage_Small_Balloon)
+title('Prediction and Actual Data of Small Pipe with Balloon')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Prediction','Actual Data',location,'northeast')
+xlim([0,.05])
+ylim([-.08,.04])
 
 Time_Medium_Balloon2 = Time_Medium_Balloon+.05;
 KA = -.008;
 e = exp((-Ratio_Balloon_Medium*Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2));
 a = Ratio_Balloon_Medium/(sqrt(1-Ratio_Balloon_Medium^2));
-b = Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2*sqrt(1-Ratio_Balloon_Medium^2);
-Volt_Predict_Balloon_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
+b = 0.6*Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2*sqrt(1-Ratio_Balloon_Medium^2); % Added multiplier here for aligning data
+Volt_Predict_Balloon_Medium = .05+7.35.*(KA-KA.*e.*(a.*sin(b)+cos(b)));% Added addition multiplier to start at peak and multiplier for reaching KA
 
 figure(17)
-plot(Time_Medium_Balloon2,Volt_Predict_Balloon_Medium,Time_Medium_Balloon,Voltage_Medium_Balloon)
+plot(Time_Medium_Balloon2+.01,Volt_Predict_Balloon_Medium,Time_Medium_Balloon,Voltage_Medium_Balloon)
+title('Prediction and Actual Data of Medium Pipe with Balloon')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Prediction','Actual Data',location,'northeast')
+xlim([0,.1])
+ylim([-.08,.06])
 
 Time_Long_Balloon2 = Time_Long_Balloon+.05;
 KA = -.02;
 e = exp((-Ratio_Balloon_Long*Natural_Freq_Long_Balloon.*Time_Long_Balloon2));
 a = Ratio_Balloon_Long/(sqrt(1-Ratio_Balloon_Long^2));
-b = Natural_Freq_Long_Balloon.*Time_Long_Balloon2*sqrt(1-Ratio_Balloon_Long^2);
-Volt_Predict_Balloon_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
+b = .45.*Natural_Freq_Long_Balloon.*Time_Long_Balloon2*sqrt(1-Ratio_Balloon_Long^2);
+Volt_Predict_Balloon_Long = .05+3.5.*(KA-KA.*e.*(a.*sin(b)+cos(b)));
 
 figure(18)
-plot(Time_Long_Balloon2,Volt_Predict_Balloon_Long,Time_Long_Balloon,Voltage_Long_Balloon)
+plot(Time_Long_Balloon2+.01,Volt_Predict_Balloon_Long,'--',Time_Long_Balloon,Voltage_Long_Balloon)
+title('Prediction and Actual Data of Long Pipe with Balloon')
+xlabel('Time (s)')
+ylabel('Volts (V)')
+legend('Prediction','Actual Data',location,'northeast')
+xlim([0,.1])
+ylim([-.08,.06])
+
+
+
+
+
+
+%% Damping Ratio and Natural Frequency Dependence on Length
+
+
+
+a = 343; % m/s
+nu = 1.81*10^-5; % kg/ms
+density = 1.225; %kg/m3
+l = linspace(.16,1.06,100);
+omega_n = a./(l*sqrt(0.5));
+l_long = 1.05;
+l_medium = .795;
+l_short = .17;
+
+Natural_Freq_Small_Valve;
+Natural_Freq_Medium_Valve;
+Natural_Freq_Long_Valve;
+Natural_Freq_Small_Balloon;
+Natural_Freq_Medium_Balloon;
+Natural_Freq_Long_Balloon;
+
+figure(19)
+plot(1./l,omega_n)
+hold on
+plot(1/l_short,Natural_Freq_Small_Valve,'d',1/l_short,Natural_Freq_Small_Balloon,'d')
+plot(1/l_medium,Natural_Freq_Medium_Valve,'d',1/l_medium,Natural_Freq_Medium_Balloon,'d')
+plot(1/l_long,Natural_Freq_Long_Valve,'d',1/l_long,Natural_Freq_Long_Balloon,'d')
+text(3,3000,'Short Valve has no peaks')
+xlabel('1/Length (1/m)')
+ylabel('\omega_n (1/s)')
+legend('Prediction Curve','Short Valve','Short Balloon','Medium Valve','Medium Balloon','Long Valve','Long Balloon','location','northwest')
+
+
+% Damping Ratio
+l = linspace(.10,1.1,100);
+Damping = ((16*nu.*l)/(a*density*.002^2))*sqrt(.5);
+
+
+
+
+figure(20)
+plot(l,Damping)
+hold on
+plot(l_short,Ratio_Valve_Small,'d',l_short,Ratio_Balloon_Small,'d')
+plot(l_medium,Ratio_Valve_Medium,'d',l_medium,Ratio_Balloon_Medium,'d')
+plot(l_long,Ratio_Valve_Long,'d',l_long,Ratio_Balloon_Long,'d')
+text(.5,.12,'Short Valve has no peaks')
+xlabel('Length')
+ylabel('Damping Ratio \zeta')
+legend('Prediction Curve','Short Valve','Short Balloon','Medium Valve','Medium Balloon','Long Valve','Long Balloon','location','northwest')
+
+
+
+
+
+
+
+
+
 
 
