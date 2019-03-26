@@ -48,7 +48,7 @@ V = l*pi*.0042^2;
 Vt = 6.5*10^-8;
 Damp_Natural_Freq_Small_Flood = a/(l*sqrt(0.5+(V/Vt))); % FOR GRAPH
 
-figure(1)
+f1 = figure(1)
 
 subplot(2,1,1)
 plot (Time_Small_Flood,Voltage_Small_Flood);
@@ -88,7 +88,7 @@ V = l*pi*.0022^2;
 Vt = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
-figure(2)
+f2 = figure(2)
 
 subplot(2,1,1)
 plot (Time_Medium_Flood,Voltage_Medium_Flood);
@@ -129,7 +129,7 @@ V = l*pi*.0022^2;
 Vt = 6.5*10^-8;
 Damp_Natural_Freq_Long_Flood = a/(l*sqrt(0.5+(V/Vt)));
 
-figure(3)
+f3 = figure(3)
 
 subplot(2,1,1)
 plot (Time_Long_Flood,Voltage_Long_Flood);
@@ -171,7 +171,7 @@ V = l*pi*.0042^2;
 Vt = 6.5*10^-8;
 Damp_Natural_Freq_Small_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
-figure(4)
+f4 = figure(4)
 
 subplot(2,1,1)
 plot (Time_Small_Balloon,Voltage_Small_Balloon);
@@ -210,7 +210,7 @@ Vt = l*pi*.0022^2;
 V = 6.5*10^-8;
 Damp_Natural_Freq_Medium_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
-figure(5)
+f5 = figure(5)
 
 subplot(2,1,1)
 plot (Time_Medium_Balloon,Voltage_Medium_Balloon);
@@ -250,7 +250,7 @@ Vt = l*pi*.0022^2;
 V = 6.5*10^-8;
 Damp_Natural_Freq_Long_Balloon = a/(l*sqrt(0.5+(V/Vt)));
 
-figure(6)
+f6 = figure(6)
 
 subplot(2,1,1)
 plot (Time_Long_Balloon,Voltage_Small_Balloon);
@@ -288,7 +288,7 @@ for n = 1:length(Volt_Small)-1
     Damping_Ratio_Small_Flood(n) = (2*pi)/Period_Small;
 end
 Damp_Mean_Small = mean(Damping_Ratio_Small_Flood);
-figure(7)
+f7 = figure(7)
 plot(Time_Small_Flood,Voltage_Small_Flood,Time_Small_Flood(Volt_Locations_Small),Volt_Small,'d')
 title('Short Tube Flood Valve Response with PeakFinder')
 text(.04,2.35,strcat('Damped Natural Frequency =',num2str(Damp_Mean_Small),'Hz'))
@@ -306,7 +306,7 @@ for n = 1:length(Volt_Medium)-1
     Damping_Ratio_Medium_Flood(n) = (2*pi)/Period_Medium;
 end
 Damp_Mean_Medium = mean(Damping_Ratio_Medium_Flood);
-figure(8)
+f8 = figure(8)
 plot(Time_Medium_Flood,Voltage_Medium_Flood,Time_Medium_Flood(Volt_Locations_Medium),Volt_Medium,'d')
 title('Medium Tube Flood Valve Response with PeakFinder')
 text(.04,2.35,strcat('Damped Natural Frequency =',num2str(Damp_Mean_Medium),'Hz'))
@@ -323,7 +323,7 @@ for n = 1:length(Volt_Long)-1
     Damping_Ratio_Long_Flood(n) = (2*pi)/Period_Long;
 end
 Damp_Mean_Long = mean(Damping_Ratio_Long_Flood);
-figure(9)
+f9 = figure(9)
 plot(Time_Long_Flood,Voltage_Long_Flood,Time_Long_Flood(Volt_Locations_Long),Volt_Long,'d')
 title('Long Tube Flood Valve Response with PeakFinder')
 text(.04,2.35,strcat('Damped Natural Frequency =',num2str(Damp_Mean_Long),'Hz'))
@@ -460,7 +460,7 @@ a = Ratio_Valve_Small/(sqrt(1-Ratio_Valve_Small^2));
 b = Natural_Freq_Small_Valve.*Time_Small_Flood2*sqrt(1-Ratio_Valve_Small^2);
 Volt_Predict_Valve_Small = KA-KA.*e.*(a.*sin(b)+cos(b));
 
-figure(13)
+f13 = figure(13)
 plot(Time_Small_Flood,Voltage_Small_Flood)
 text(.02,2.4,'\omega_d = 0')
 text(.02,2.35,'\zeta = 0')
@@ -479,7 +479,7 @@ a = Ratio_Valve_Medium/(sqrt(1-Ratio_Valve_Medium^2));
 b = Natural_Freq_Medium_Valve.*Time_Medium_Flood2*sqrt(1-Ratio_Valve_Medium^2);
 Volt_Predict_Valve_Medium = KA-KA.*e.*(a.*sin(b)+cos(b));
 
-figure(14)
+f14 = figure(14)
 hold on
 plot(Time_Medium_Flood2-.002,Volt_Predict_Valve_Medium,'--')
 plot(Time_Medium_Flood,Voltage_Medium_Flood,Time_Medium_Flood(Volt_Locations_Medium),Volt_Medium,'d')
@@ -499,7 +499,7 @@ a = Ratio_Valve_Long/(sqrt(1-Ratio_Valve_Long^2));
 b = Natural_Freq_Long_Valve.*Time_Long_Flood2*sqrt(1-Ratio_Valve_Long^2);
 Volt_Predict_Valve_Long = KA-KA.*e.*(a.*sin(b)+cos(b));
 
-figure(15)
+f15 = figure(15)
 hold on
 plot(Time_Long_Flood2-.006,Volt_Predict_Valve_Long,'--')
 plot(Time_Long_Flood,Voltage_Long_Flood,Time_Long_Flood(Volt_Locations_Long),Volt_Long,'d')
@@ -525,7 +525,7 @@ b = Natural_Freq_Small_Balloon.*Time_Small_Balloon2*sqrt(1-Ratio_Balloon_Small^2
 Volt_Predict_Balloon_Small = .05+4.5*(KA-KA.*e.*(a.*sin(b)+cos(b))); % Added addition multiplier to start at peak and multiplier for reaching KA
 
 
-figure(16)
+f16 = figure(16)
 plot(Time_Small_Balloon2+.0025,Volt_Predict_Balloon_Small,'--',Time_Small_Balloon,Voltage_Small_Balloon)
 text(.015,-.04,strcat('\omega_d = ',num2str(Natural_Freq_Small_Balloon),'/s'))
 text(.015,-.06,strcat('\zeta = ',num2str(Ratio_Balloon_Small)))
@@ -543,7 +543,7 @@ a = Ratio_Balloon_Medium/(sqrt(1-Ratio_Balloon_Medium^2));
 b = 0.6*Natural_Freq_Medium_Balloon.*Time_Medium_Balloon2*sqrt(1-Ratio_Balloon_Medium^2); % Added multiplier here for aligning data
 Volt_Predict_Balloon_Medium = .05+7.35.*(KA-KA.*e.*(a.*sin(b)+cos(b)));% Added addition multiplier to start at peak and multiplier for reaching KA
 
-figure(17)
+f17 = figure(17)
 plot(Time_Medium_Balloon2+.01,Volt_Predict_Balloon_Medium,'--',Time_Medium_Balloon,Voltage_Medium_Balloon)
 text(.04,-.04,strcat('\omega_d = ',num2str(Natural_Freq_Medium_Balloon),'/s'))
 text(.04,-.06,strcat('\zeta = ',num2str(Ratio_Balloon_Medium)))
@@ -561,7 +561,7 @@ a = Ratio_Balloon_Long/(sqrt(1-Ratio_Balloon_Long^2));
 b = .45.*Natural_Freq_Long_Balloon.*Time_Long_Balloon2*sqrt(1-Ratio_Balloon_Long^2);
 Volt_Predict_Balloon_Long = .05+3.5.*(KA-KA.*e.*(a.*sin(b)+cos(b)));
 
-figure(18)
+f18 = figure(18)
 plot(Time_Long_Balloon2+.01,Volt_Predict_Balloon_Long,'--',Time_Long_Balloon,Voltage_Long_Balloon)
 text(.04,-.05,strcat('\omega_d = ',num2str(Natural_Freq_Long_Balloon),'/s'))
 text(.04,-.07,strcat('\zeta = ',num2str(Ratio_Balloon_Long)))
@@ -597,7 +597,7 @@ Natural_Freq_Small_Balloon;
 Natural_Freq_Medium_Balloon;
 Natural_Freq_Long_Balloon;
 
-figure(19)
+f19 = figure(19)
 plot(1./l,omega_n)
 hold on
 plot(1/l_short,Natural_Freq_Small_Valve,'d',1/l_short,Natural_Freq_Small_Balloon,'d')
@@ -616,7 +616,7 @@ Damping = ((16*nu.*l)/(a*density*.002^2))*sqrt(.5);
 
 
 
-figure(20)
+f20 = figure(20)
 plot(l,Damping)
 hold on
 plot(l_short,Ratio_Valve_Small,'d',l_short,Ratio_Balloon_Small,'d')
@@ -630,9 +630,26 @@ legend('Prediction Curve','Short Valve','Short Balloon','Medium Valve','Medium B
 
 
 
-
-
-
+saveas(f1, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure1.png','png');
+saveas(f2, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure2.png','png');
+saveas(f3, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure3.png','png');
+saveas(f4, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure4.png','png');
+saveas(f5, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure5.png','png');
+saveas(f6, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure6.png','png');
+saveas(f7, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure7.png','png');
+saveas(f8, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure8.png','png');
+saveas(f9, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure9.png','png');
+% saveas(f10, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure10.png','png');
+% saveas(f11, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure11.png','png');
+% saveas(f12, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure12.png','png');
+saveas(f13, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure13.png','png');
+saveas(f14, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure14.png','png');
+saveas(f15, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure15.png','png');
+saveas(f16, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure16.png','png');
+saveas(f17, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure17.png','png');
+saveas(f18, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure18.png','png');
+saveas(f19, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure19.png','png');
+saveas(f20, 'C:\Users\User\Desktop\Classes\Junior Year\Spring 2019\J-Lab\Lab 4\Figures\figure20.png','png');
 
 
 
