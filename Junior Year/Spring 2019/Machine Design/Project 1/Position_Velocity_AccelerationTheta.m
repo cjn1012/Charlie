@@ -1,7 +1,7 @@
 % Position Equations %
-
+degtorad = pi/180
 % Constants - Guessed
-theta = pi/2;
+theta = 5.71*degtorad;
 thetaa = 7*pi/4;
 thetab = pi/2;
 phi = pi/8;
