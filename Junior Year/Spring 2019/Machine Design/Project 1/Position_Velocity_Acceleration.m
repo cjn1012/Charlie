@@ -1,6 +1,10 @@
-% Position Equations %
 clear all
 close all
+
+%%
+% Position Equations %
+
+
 % Constants - Guessed
 
 r_AB = 5.160;
@@ -14,6 +18,8 @@ r_OA = 0.5;
 r_FO = 3;
 x_c  = 5;
 y_c  = 2;
+
+% Position Equations for each Point
 
 i=1;
 for theta = 0:360
@@ -42,29 +48,94 @@ for d = 0:1
     yE(i) = 3;
     i = i+1;
 end
+
 figure(1)
 plot(xA,yA,xB,yB,xD,yD,xE,yE)
-xlim([0,7])
-ylim([0,7])
-
-%%%%%%%%%%%%%%%%%%%%%
+xlim([-1,7])
+ylim([-1,5.5])
 
 
 
 
-
-
+%% Graph 2
 
 i = 1;
 for theta = 0:.01:360
-    xA(i) = sind(theta);
-    xE1(i) = sind(theta-185.7);
+    xA(i) = cosd(theta);
+    xE1(i) = .0074+cosd(theta-185.7);
     i = i+1;
 end
+
+figure
+hold on
 theta = linspace(0,360,36001);
 plot(theta,xA,theta,xE1)
+ylim([-2,10])
+xlim([0,370])
+title('X Position vs Crank Angle')
+legend('X Position of Point A', 'X Position of point E')
+hold off 
 
-xlim([0,360])
+
+%% Graph 3
+
+i = 1;
+for theta = 0:.01:360
+    xA(i) = -sind(theta);
+    xE2(i) = .0074-sind(theta-185.7);
+    i = i+1;
+end
+
+figure
+hold on
+theta = linspace(0,360,36001);
+plot(theta,xA,theta,xE2)
+ylim([-2,10])
+xlim([0,370])
+title('X Velocity vs Crank Angle')
+legend('X Velocity of Point A', 'X Velocity of point E')
+hold off 
+
+%% Graph 4
+
+i = 1;
+for theta = 0:.01:360
+    xA3(i) = -cosd(theta);
+    xE3(i) = .0074-cosd(theta-185.7);
+    aOA(i) = sqrt((0.25*cosd(theta))^2 + (0.25*sind(theta))^2);
+    
+    i = i+1;
+end
+
+
+figure
+hold on
+theta = linspace(0,360,36001);
+plot(theta,xA3,theta,xE3)
+ylim([-2,10])
+xlim([0,370])
+title('X Acceleration vs Crank Angle')
+legend('X Acceleration of Point A', 'X Acceleration of point E')
+hold off 
+
+%%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
