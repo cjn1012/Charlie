@@ -89,36 +89,48 @@ hold on
 plot(.5*cos(theta),.5*sin(theta),'Linewidth', 1)
 plot(1.12*cos(pos(:,2))+x_c , 1.12*sin(pos(:,2))+y_c, 'Linewidth', 1)
 plot(1.12*cos(pos(:,2)+pi)+x_c , 1.12*sin(pos(:,2)+pi)+y_c, 'Linewidth', 1)
-xlabel(' X [inches] ')
-ylabel(' Y [inches] ')
-legend('r EF','r OA','point D','point B','Location','northwest')
+grid minor;
+xlabel(' X Position [in] ')
+ylabel(' Y Position [in] ')
+title('Trajectories of Points')
+legend('Point E','Point A','Point D','Point B','Location','northwest')
 axis([-1 6 -1 3.5])
 
 figure(2);
-title('X pos of (A&E) vs Crank Angle')
+title('X Position of Points A and E Vs. Crank Angle')
 hold on
 plot(theta*(180/pi),.5*cos(theta),theta*(180/pi),pos(:,4))
-legend('A','E')
+xlabel(' Crank Angle [°]  ')
+ylabel(' X Position [in] ')
+title('Trajectories of Points')
+legend('Point A','Point E','Location','northwest')
+xlim([0 360])
 hold off
 
 figure(3)
 hold on
-title('X vel of (A&E) vs Crank Angle')
+title('X-Component Linear Velocities of Points A and E Vs. Crank Angle')
 plot(theta*(180/pi),-.5*sin(theta)*theta_dot)
 plot(theta*(180/pi),vel(:,4))
-legend('A','E')
+xlabel(' Crank Angle [°]  ')
+ylabel(' \nu_x [in/s] ')
+legend('Point A','Point E','Location','northwest')
+xlim([0 360])
 hold off
 
 figure(4)
 hold on
-title('X acc of (A&E) vs Crank Angle')
+title('X-Component Linear Accerlation Vs. Crank Angle')
 plot(theta*(180/pi),-.5*cos(theta))
 plot(theta*(180/pi),acc(:,4))
 plot(theta*(180/pi),pos(:,1)*r_OA/2)
 plot(theta*(180/pi),pos(:,2)*r_AB/2)
 plot(theta*(180/pi),pos(:,3)*r_BC/2)
 plot(theta*(180/pi),pos(:,4)*r_CD/2)
-legend('A','E','1','2','3','4')
+xlabel(' Crank Angle [°]  ')
+ylabel(' \alpha_x [in/s^2] ')
+legend('Point A','Point E','Member 1','Member 2','Member 3','Member 4','position','southeast')
+xlim([0 360])
 hold off
 
 for i = 1:length(theta)
@@ -140,7 +152,10 @@ plot(theta*(180/pi),F_Joint_B)
 plot(theta*(180/pi),F_Joint_C)
 plot(theta*(180/pi),F_Joint_D)
 plot(theta*(180/pi),F_Joint_E)
-legend('O','A','B','C','D','E')
+xlabel(' Crank Angle [°]  ')
+ylabel(' Magnitude of Force [lb] ')
+xlim([0 360])
+legend('Joint O','Joint A','Joint B','Joint C','Joint D','Joint E')
 
 %%  Axial and Shear Force
 
@@ -153,6 +168,7 @@ for i = 1:length(theta)
     for j = 1:length(length_member_OA)
         axial_OA(i,j) = BigBootyBitchz(w(i,1),w(i,3),w(i,2),w(i,4));
         shear_OA(i,j) = real(BigBootyBitchz2(w(i,1),w(i,3),w(i,2),w(i,4)));
+
     end
 end
 
@@ -179,87 +195,194 @@ for i = 1:length(theta)
 end
 
 
+
+
+[Max_Axial_OA,Max_Axial_OA_L] = max(max(axial_OA));
+[Max_Axial_AB,Max_Axial_AB_L] = max(max(axial_AB));
+[Max_Axial_BD,Max_Axial_BD_L] = max(max(axial_BD));
+[Max_Axial_DE,Max_Axial_DE_L] = max(max(axial_DE));
+[Max_Shear_OA,Max_Shear_OA_L] = max(max(shear_OA));
+[Max_Shear_AB,Max_Shear_AB_L] = max(max(shear_AB));
+[Max_Shear_BD,Max_Shear_BD_L] = max(max(shear_BD));
+[Max_Shear_DE,Max_Shear_DE_L] = max(max(shear_DE));
+
+[Min_Axial_OA,Min_Axial_OA_L] = min(min(axial_OA));
+[Min_Axial_AB,Min_Axial_AB_L] = min(min(axial_AB));
+[Min_Axial_BD,Min_Axial_BD_L] = min(min(axial_BD));
+[Min_Axial_DE,Min_Axial_DE_L] = min(min(axial_DE));
+[Min_Shear_OA,Min_Shear_OA_L] = min(min(shear_OA));
+[Min_Shear_AB,Min_Shear_AB_L] = min(min(shear_AB));
+[Min_Shear_BD,Min_Shear_BD_L] = min(min(shear_BD));
+[Min_Shear_DE,Min_Shear_DE_L] = min(min(shear_DE));
+
+
+
+
+
 % Axial
 
 figure(6);
-surf(length_member_OA, theta, axial_OA,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_OA, theta*180/pi, axial_OA,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member OA')
+ylabel('Crank Angle [°]')
+zlabel('Axial Force [lb]')
+title('Axial Force on Member OA')
+ylim([0 360])
 
 figure(7);
-surf(length_member_AB, theta, axial_AB,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_AB, theta*180/pi, axial_AB,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member AB')
+ylabel('Crank Angle [°]')
+zlabel('Axial Force [lb]')
+title('Axial Force on Member AB')
+ylim([0 360])
 
 figure(8);
-surf(length_member_BD, theta, axial_BD,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_BD, theta*180/pi, axial_BD,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member BD')
+ylabel('Crank Angle [°]')
+zlabel('Axial Force [lb]')
+title('Axial Force on Member BD')
+ylim([0 360])
 
 figure(9);
-surf(length_member_DE, theta, axial_DE,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_DE, theta*180/pi, axial_DE,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member DE')
+ylabel('Crank Angle [°]')
+zlabel('Axial Force [lb]')
+title('Axial Force on Member DE')
+ylim([0 360])
 
 
 
 figure(10);
-surf(length_member_OA, theta, shear_OA,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_OA, theta*180/pi, shear_OA,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member OA')
+ylabel('Crank Angle [°]')
+zlabel('Shear Force [lb]')
+title('Shear Force on Member OA')
+ylim([0 360])
+
 
 figure(11);
-surf(length_member_AB, theta, shear_AB,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_AB, theta*180/pi, shear_AB,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member AB')
+ylabel('Crank Angle [°]')
+zlabel('Shear Force [lb]')
+title('Shear Force on Member AB')
+ylim([0 360])
 
 figure(12);
-surf(length_member_BD, theta, shear_BD,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_BD, theta*180/pi, shear_BD,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member BD')
+ylabel('Crank Angle [°]')
+zlabel('Shear Force [lb]')
+title('Shear Force on Member BD')
+ylim([0 360])
+
 
 figure(13);
-surf(length_member_DE, theta, shear_DE,'edgecolor' , 'none', 'facecolor','interp')
+surf(length_member_DE, theta*180/pi, shear_DE,'edgecolor' , 'none', 'facecolor','interp')
 colorbar
 xlabel('Length [in]')
-ylabel('Crank Angle [rad]')
-zlabel('Axial Force [Slugs]')
-title('Member DE')
+ylabel('Crank Angle [°]')
+zlabel('Shear Force [lb]')
+title('Shear Force on Member DE')
+ylim([0 360])
 
 
 
 
+%% Moment
+
+
+
+Moment_OA = shear_OA.*length_member_OA;
+Moment_AB = shear_AB.*length_member_AB;
+Moment_BD = shear_BD.*length_member_BD;
+Moment_DE = shear_DE.*length_member_DE;
+
+
+[Max_Moment_OA,Max_Moment_OA_L] = max(Moment_OA);
+Max_Moment_OA_L = Max_Moment_OA_L(2);
+[Max_Moment_AB,Max_Moment_AB_L] = max(Moment_AB);
+Max_Moment_AB_L = Max_Moment_AB_L(2);
+[Max_Moment_BD,Max_Moment_BD_L] = max(Moment_BD);
+Max_Moment_BD_L = Max_Moment_BD_L(2);
+[Max_Moment_DE,Max_Moment_DE_L] = max(Moment_DE);
+Max_Moment_DE_L = Max_Moment_DE_L(2);
+[Max_Moment_OA2,Max_Moment_OA_L2] = max(Max_Moment_OA);
+[Max_Moment_AB2,Max_Moment_AB_L2] = max(Max_Moment_AB);
+[Max_Moment_BD2,Max_Moment_BD_L2] = max(Max_Moment_BD);
+[Max_Moment_DE2,Max_Moment_DE_L2] = max(Max_Moment_DE);
+
+[Min_Moment_OA,Min_Moment_OA_L] = min(Moment_OA);
+Min_Moment_OA_L = Min_Moment_OA_L(2);
+[Min_Moment_AB,Min_Moment_AB_L] = min(Moment_AB);
+Min_Moment_AB_L = Min_Moment_AB_L(2);
+[Min_Moment_BD,Min_Moment_BD_L] = min(Moment_BD);
+Min_Moment_BD_L = Min_Moment_BD_L(2);
+[Min_Moment_DE,Min_Moment_DE_L] = min(Moment_DE);
+Min_Moment_DE_L = Min_Moment_DE_L(2);
+[Min_Moment_OA2,Min_Moment_OA_L2] = min(Min_Moment_OA);
+[Min_Moment_AB2,Min_Moment_AB_L2] = min(Min_Moment_AB);
+[Min_Moment_BD2,Min_Moment_BD_L2] = min(Min_Moment_BD);
+[Min_Moment_DE2,Min_Moment_DE_L2] = min(Min_Moment_DE);
 
 
 
 
+figure(14);
+surf(length_member_OA, theta*180/pi, Moment_OA,'edgecolor' , 'none', 'facecolor','interp')
+colorbar
+xlabel('Length [in]')
+ylabel('Crank Angle [°]')
+zlabel('Internal Bending Moment [lb-in]')
+title('Internal Bending Moment on Member OA')
+ylim([0 360])
+
+figure(15);
+surf(length_member_AB, theta*180/pi, Moment_AB,'edgecolor' , 'none', 'facecolor','interp')
+colorbar
+xlabel('Length [in]')
+ylabel('Crank Angle [°]')
+zlabel('Internal Bending Moment [lb-in]')
+title('Internal Bending Moment on Member AB')
+ylim([0 360])
+
+figure(16);
+surf(length_member_BD, theta*180/pi, Moment_BD,'edgecolor' , 'none', 'facecolor','interp')
+colorbar
+xlabel('Length [in]')
+ylabel('Crank Angle [°]')
+zlabel('Internal Bending Moment [lb-in]')
+title('Internal Bending Moment on Member BD')
+ylim([0 360])
+
+figure(17);
+surf(length_member_DE, theta*180/pi, Moment_DE,'edgecolor' , 'none', 'facecolor','interp')
+colorbar
+xlabel('Length [in]')
+ylabel('Crank Angle [°]')
+zlabel('Internal Bending Moment [lb-in]')
+title('Internal Bending Moment on Member DE')
+ylim([0 360])
+
+    
 
 
+Table = [Max_Axial_OA,Max_Axial_AB,Max_Axial_BD,Max_Axial_DE,Max_Shear_OA,Max_Shear_AB,Max_Shear_BD,Max_Shear_DE,...
+    Min_Axial_OA,Min_Axial_AB,Min_Axial_BD,Min_Axial_DE,Min_Shear_OA,Min_Shear_AB,Min_Shear_BD,Min_Shear_DE...
+    ,Max_Moment_OA2,Max_Moment_AB2,Max_Moment_BD2,Max_Moment_DE2,Min_Moment_OA2,Min_Moment_AB2,Min_Moment_BD2,Min_Moment_DE2]
 
-
-
-
+Table2 = [max(F_Joint_O),max(F_Joint_A),max(F_Joint_B),max(F_Joint_C),max(F_Joint_D),max(F_Joint_E)]'
 
 
 %%
