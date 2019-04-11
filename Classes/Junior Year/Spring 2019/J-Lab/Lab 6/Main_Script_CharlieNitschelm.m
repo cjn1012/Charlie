@@ -99,7 +99,9 @@ for i = 2:length(y_bot)
 end
 
 F_Bot_y_tot = sum(F_Bot_y)
-F_Top_y_tot = sum(F_Top_y)
+F_Top_y_tot = -sum(F_Top_y)
+
+
 
 F_Bot_Total = sum(F_Bot)
 

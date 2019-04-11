@@ -77,7 +77,7 @@ end
 %% Loop to iterate and calculate the T matrix 5000 times towards final convergence
 T2 = T;
 
-for x = 1:1000
+for x = 1:5000
     for i = 2:(nx-1)
         for j = 2:(ny-1)
             T2(i,j) = (k(i+1,j)*T2(i+1,j) + k(i-1,j)*T2(i-1,j) + k(i,j+1)*T2(i,j+1) + k(i,j-1)*T2(i,j-1)) / (k(i+1,j) + k(i-1,j) + k(i,j+1) + k(i,j-1));
@@ -85,7 +85,11 @@ for x = 1:1000
     end
 end
 
-
+figure(1)
+imagesc(T2)
+xlabel('Number of Cells (x-direction) [ ]')
+ylabel('Number of Cells (y-direction) [ ]')
+colorbar
 
 
 % 
