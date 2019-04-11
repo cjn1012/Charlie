@@ -14,14 +14,14 @@ nx=50;               % Number of steps in space(x)
 ny=50;               % Number of steps in space(y) 
 
 % Length of grid
-L1 = 1.5;
-L2 = 1.0;
-D = 1.2;
+L1 = 1;
+L2 = 0.7;
+D = 0.5;
 
 % Assigning the diffustion coefficient/ viscocity numbers to use for
 % section 1 and 2
-k1 = 1;   % Diffusion coefficient k / viscocity
-k2 = 0.5;   % Diffusion coefficient k / viscocity
+k1 = 200;   % Diffusion coefficient k / viscocity
+k2 = 50;   % Diffusion coefficient k / viscocity
 
 % Time parameters for simulation
 nt=100;              % Number of time steps 
@@ -45,9 +45,9 @@ k = zeros(nx,ny);
 for i=1:nx
     for j=1:ny
         if j > (L2/L1)*nx  %((L1+L2)/nx)*j < L1         % Assigns the k values to their respective cell
-            k(i,j) = k1;
-        else                                      
             k(i,j) = k2;
+        else                                      
+            k(i,j) = k1;
         end
     end
 end
@@ -77,7 +77,7 @@ end
 %% Loop to iterate and calculate the T matrix 5000 times towards final convergence
 T2 = T;
 
-for x = 1:5000
+for x = 1:10000
     for i = 2:(nx-1)
         for j = 2:(ny-1)
             T2(i,j) = (k(i+1,j)*T2(i+1,j) + k(i-1,j)*T2(i-1,j) + k(i,j+1)*T2(i,j+1) + k(i,j-1)*T2(i,j-1)) / (k(i+1,j) + k(i-1,j) + k(i,j+1) + k(i,j-1));

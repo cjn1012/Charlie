@@ -1,18 +1,18 @@
-
 clear all
 close all
 clc
+%% This Script Pulls from the MatrixMaker and MatrixSolver Functions and displays a steady 2D temperature figure
 
-ResX = 100;
-ResY = 100;
-
+% Input Parameters
+ResX = 30;
+ResY = 30;
 T_0 = 20; % C
 T_1 = 100; % C
-L1 = 1; % Centimeters
-L2 = .70; % cmeters
-D = .50; % height cm
-k1 = 2; % W/cmK
-k2 = .50;  % W/cmK
+L1 = 1; % Meters
+L2 = .70; % Meters
+D = .50; % Meters
+k1 = 200; % W/mK
+k2 = 50;  % W/mK
 
 %% call first function
 
@@ -22,9 +22,9 @@ k2 = .50;  % W/cmK
 [x] = func2(A, B);
 
 bb = reshape(x, cc, rr)';
-% h = A\NodeType
 
-imagesc(bb)
+figure(1)
+imagesc([0,L1+L2],[0,D],bb)
 colorbar
-xlabel('L (cm)')
-ylabel('D (cm)')
+xlabel('Length (m)')
+ylabel('Depth (m)')
