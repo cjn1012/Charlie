@@ -107,14 +107,14 @@ for i = 1:rr
                 A(n,n) = -( ((2*dx)/dy) + (dy/dx) );
                 A(n,n+1) = (dy/(2*dx));     %% Right
                 A(n,n-1) = (dy/(2*dx));     %% Left
-                A(n,n-cc) = (dx/dy);    %% Upper node
-                B(n) = -(dx/dy)*T_0;    %% Known value(s) 
+                A(n,n-cc) = (dx/dy);   
+                B(n) = -(dx/dy)*T_0;   
                 
             case 12
                 A(n,n) = -( (dx/dy) + (dy/dx) );
-                A(n,n-1) = (dy/(2*dx));        %% Left
-                A(n,n-cc) = (dx/(2*dy));       %% Upper node
-                B(n) = -( (dy/(2*dx)) + (dx/(2*dy)) )*T_0;    %% Known value(s) 
+                A(n,n-1) = (dy/(2*dx));      
+                A(n,n-cc) = (dx/(2*dy));      
+                B(n) = -( (dy/(2*dx)) + (dx/(2*dy)) )*T_0; 
                 
         end
     end
