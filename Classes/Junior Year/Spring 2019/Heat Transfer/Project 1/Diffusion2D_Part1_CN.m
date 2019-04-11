@@ -6,13 +6,13 @@ clc
 % Input Parameters
 ResX = 30;
 ResY = 30;
-T_0 = 20; % C
-T_1 = 100; % C
+T_0 = 100+273.15; % C
+T_1 = 200+273.15; % C
 L1 = 1; % Meters
 L2 = .70; % Meters
 D = .50; % Meters
-k1 = 200; % W/mK
-k2 = 50;  % W/mK
+k1 = 1; % W/mK
+k2 = 1;  % W/mK
 
 %% call first function
 

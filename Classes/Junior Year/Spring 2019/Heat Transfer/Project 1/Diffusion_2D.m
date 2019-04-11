@@ -52,8 +52,8 @@ for i=1:nx
     end
 end
 
-T_0 = 20;
-T_1 = 100;
+T_0 = 100+273;
+T_1 = 200+273;
 for i=1:nx
     for j=1:ny
         if j == 1                                  % Assigns the east boundary cells (y=0) to 16 degrees C
