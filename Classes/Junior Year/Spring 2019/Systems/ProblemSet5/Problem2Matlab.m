@@ -6,7 +6,7 @@ close all
 J = 3;
 k = 3;
 bv = [0,3,6,12]; % Undamped, under,crital,over
-tfinal = 10;
+tfinal = 15;
 dt = .01;
 timespan = linspace(0,tfinal,tfinal/dt);
 
