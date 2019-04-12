@@ -1,5 +1,5 @@
 
-function [A , B, cc, rr] = func1(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY)
+function [A , B, cc, rr] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY)
 L = L1+L2;
 
 cc = ResX;
@@ -15,19 +15,19 @@ NodeType(1,1) = 1; % Top-Left Node
 NodeType(1, 2:ccL1-1) = 2; % Right Top Nodes
 NodeType(1, ccL1+1:cc-1) = 3; % Left Top Nodes
 NodeType(1, cc) = 4; % Top-Right Node
-NodeType(1, ccL1) = 13; % Top-Right Node
+NodeType(1, ccL1) = 13;
 
 NodeType(2:rr-1, 1) = 5; % Middle-Left Node
 NodeType(2:rr-1, 2:ccL1-1) = 6; % Right Middle Nodes
 NodeType(2:rr-1, ccL1+1:cc-1) = 7; % Left Middle Nodes
 NodeType(2:rr-1, cc) = 8; % Middle-Right Node
-NodeType(2:rr-1, ccL1) = 14; % Top-Right Node
+NodeType(2:rr-1, ccL1) = 14; 
 
 NodeType(rr, 1) = 9; % Bottom-Left Node
 NodeType(rr, 2:ccL1-1) = 10; % Right Bottom Nodes
 NodeType(rr, ccL1+1:cc-1) = 11; % Left Bottom Nodes
 NodeType(rr, cc) = 12; % Bottom-Right Node
-NodeType(rr, ccL1) = 15; % Top-Right Node
+NodeType(rr, ccL1) = 15; 
 
 
 
@@ -51,11 +51,13 @@ for i = 1:rr
                 B(n) = -k1*(dx/dy)*T_1;  %% Known value(s)
                 
             case 3  %% Node 10 , Top Middle right
-                A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
                 if n-1 == ccL1
                     A(n,n-1) = k1*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((dy)/dx) )-k1*(dy/dx);
+                else
+                    A(n,n-1) = k2*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
                 end
-                A(n,n-1) = k2*(dy/dx);     %% Left
                 A(n,n+1) = k2*(dy/dx);     %% Right
                 A(n,n+cc) = k2*(dx/dy);    %% Down node 
                 B(n) = -k2*(dx/dy)*T_0;  %% Known value(s)
@@ -82,11 +84,14 @@ for i = 1:rr
                 B(n) = 0;               %% Known value(s)  
                 
             case 7  %% Node 5 , Middle right side
-                A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
+                
                 if n-1 == ccL1
                     A(n,n-1) = k1*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((dy)/dx) )-k1*(dy/dx);
+                else
+                    A(n,n-1) = k2*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
                 end
-                A(n,n-1) = k2*(dy/dx);     %% Right
                 A(n,n+1) = k2*(dy/dx);     %% Left
                 A(n,n+cc) = k2*(dx/dy);    %% Down node 
                 A(n,n-cc) = k2*(dx/dy);    %% Upper node
@@ -102,7 +107,6 @@ for i = 1:rr
             case 9 
                 A(n,n) = -k1*( ((2*dx)/dy) + ((2*dy)/dx) );
                 A(n,n+1) = k1*(dy/dx);     %% Right
-                A(n,n+cc) = k1*(dx/dy);    %% Down node 
                 A(n,n-cc) = k1*(dx/dy);    %% Upper node
                 B(n) = -T_0*k1*((dx/dy)+(dy/dx));    %% Known value(s) 
                 
@@ -114,11 +118,14 @@ for i = 1:rr
                 B(n) = -k1*(dx/dy)*T_0;    %% Known value(s) 
                 
             case 11 
-                A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
+                
                 if n-1 == ccL1
                     A(n,n-1) = k1*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((dy)/dx) )-k1*(dy/dx);
+                else
+                    A(n,n-1) = k2*(dy/dx);     %% Left
+                    A(n,n) = -k2*( ((2*dx)/dy) + ((2*dy)/dx) );
                 end
-                A(n,n-1) = k2*(dy/dx);     %% Left
                 A(n,n+1) = k2*(dy/dx);     %% Right
                 A(n,n-cc) = k2*(dx/dy);    %% Upper node
                 B(n) = -k2*(dx/dy)*T_0;   
@@ -134,10 +141,10 @@ for i = 1:rr
                 A(n,n-1) = k1*(dy/dx);     %% Left
                 A(n,n+1) = k2*(dy/dx);     %% Right 
                 A(n,n+cc) = k1*(dx/dy);    %% Down node 
-                B(n) = -k1*((T_1*dx/dy) + (T_0*dy/dx));    %% Known value(s) 
+                B(n) = -k1*((T_1*dx/dy));    %% Known value(s) 
                 
             case 14 
-                A(n,n) = -k1*( ((2*dx)/dy) + ((2*dy)/dx) );
+                A(n,n) = -k1*( ((2*dx)/dy) + ((dy)/dx) )-k2*(dy/dx);
                 A(n,n-1) = k1*(dy/dx);     %% Right
                 A(n,n+1) = k2*(dy/dx);     %% Left
                 A(n,n+cc) = k1*(dx/dy);    %% Down node 
@@ -145,16 +152,16 @@ for i = 1:rr
                 B(n) = 0;   
                 
             case 15
-                A(n,n) = -k1*( ((2*dx)/dy) + ((2*dy)/dx) );
+                A(n,n) = -k1*( ((2*dx)/dy) + ((dy)/dx) )-k2*(dy/dx);
                 A(n,n-1) = k1*(dy/dx);     %% Left
                 A(n,n+1) = k2*(dy/dx);     %% Right
                 A(n,n-cc) = k1*(dx/dy);    %% Upper node   
-                B(n) = -T_0*k1*((dx/dy)+(dy/dx));
+                B(n) = -k1*(dx/dy)*T_0;
                 
         end
     end
     
 end
 
-A = A(:,1:ResX^2)
+
 end

@@ -1,5 +1,4 @@
-function [x] = func2(A, B)
-
+function [x] = AB(A, B)
 
 B = B';   %transpose(B)
 x = A\B;
