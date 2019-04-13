@@ -134,8 +134,8 @@ end
 d_top_tot_0  = sum(Drag_Top_0)
 d_bot_tot_0  = sum(Drag_Bot_0)
 
-d_top_tot_0  = sum(Lift_Top_0)
-d_bot_tot_0  = sum(Lift_Bot_0)
+l_top_tot_0  = sum(Lift_Top_0)
+l_bot_tot_0  = sum(Lift_Bot_0)
 
 
 
