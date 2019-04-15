@@ -49,7 +49,7 @@ CL = C_L'
 CD = C_D'
 %% Part 5
 f1 = figure(1);
-plot(AoAs,C_L,AoAs,C_D)
+plot(AoAs,C_L,'-+',AoAs,C_D,'-+')
 xlabel('Angle of Attack (\circ)')
 ylabel('Coefficient of Lift/Drag ( )')
 legend('Coefficent of Lift','Coefficient of Drag','location','northwest')
@@ -57,7 +57,7 @@ legend('Coefficent of Lift','Coefficient of Drag','location','northwest')
 
 %% Part 6
 f2 = figure(2);
-plot(AoAs,C_L./C_D)
+plot(AoAs,C_L./C_D,'-+')
 xlabel('Angle of Attack (\circ)')
 ylabel('Ratio of C_L to C_D ( )')
 
@@ -206,19 +206,19 @@ Un_A = 0.25*10^-6; % m^3
 Un_Mano = 0.05; % m
 Un_Den = 0.05; % kg/m3
  
-alift = 1/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
-aA = -Total_Lift_18/((A^2)*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
-amano = -Total_Lift_18/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2))^2)
-adens = -Total_Lift_18/(A*(998)^2*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
+alift = 1/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)));
+aA = -Total_Lift_18/((A^2)*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)));
+amano = -Total_Lift_18/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2))^2);
+adens = -Total_Lift_18/(A*(998)^2*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)));
  
 uncertainty = sqrt((alift*Un_L)^2+(amano*Un_Mano)^2+(adens*Un_Den)^2+(aA*Un_A)^2)
  
  
 %% Save Figures
 
-saveas(f1, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\clandcd.png','png');
-saveas(f2, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\cltocd.png','png');
-saveas(f3, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\totaldrags.png','png');
+saveas(f1, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\clandcd.png','png');
+saveas(f2, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\cltocd.png','png');
+saveas(f3, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\totaldrags.png','png');
 
 
 
