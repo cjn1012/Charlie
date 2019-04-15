@@ -1,7 +1,7 @@
 clear all 
 close all
 
-% Part 1
+%% Part 1
 Temp_I = 21.2+273.15; % Deg C
 Temp_F = 22.6+273.15; % Deg C
 Pres_I = 102268; % Pa
@@ -12,7 +12,7 @@ MW = 28.97/1000; % g/mol
 Density_I = (MW*Pres_I)/(R*Temp_I); % kg/m3
 Density_F = (MW*Pres_F)/(R*Temp_F); % kg/m3
 
-% Part 2
+%% Part 2
 
 
 
@@ -27,14 +27,14 @@ Pres_Foil_0 =  Pres_I - Den_Water*Gravity.*AoA_Foil_0;
 Pres_Foil_9 =  Pres_I - Den_Water*Gravity.*AoA_Foil_9;
 Pres_Foil_18 =  Pres_I - Den_Water*Gravity.*AoA_Foil_18;
 
-% Part 3
+%% Part 3
 
 Vel_Foil_0 = sqrt((2/Density_I)*(Pres_Foil_0(1)-Pres_Foil_0(2)));
 Vel_Foil_9 = sqrt((2/Density_I)*(Pres_Foil_9(1)-Pres_Foil_9(2)));
 Vel_Foil_18 = sqrt((2/Density_I)*(Pres_Foil_18(1)-Pres_Foil_18(2)));
 Vel_Foil_Mean = mean([Vel_Foil_0,Vel_Foil_9,Vel_Foil_18]);
 
-% Part 4
+%% Part 4
 
 AoAs = [-9,-6,-3,0,3,6,9,12,15,18,21];
 L_Force = [-9.3,-6.3,-3,0.4,3.3,6.3,9,11.5,13.5,11.1,10.8];
@@ -45,25 +45,24 @@ C_D = D_Force/(.5*Density_I*(Vel_Foil_Mean^2)*A);
 
 C_L_Fit = polyfit(AoAs,C_L,1);
 Zero = -C_L_Fit(2)/C_L_Fit(1); % This says we dont need to adjust at all, below +-0.5 degrees
-
-
-
-% Part 5
-
+CL = C_L'
+CD = C_D'
+%% Part 5
+f1 = figure(1);
 plot(AoAs,C_L,AoAs,C_D)
 xlabel('Angle of Attack (\circ)')
 ylabel('Coefficient of Lift/Drag ( )')
 legend('Coefficent of Lift','Coefficient of Drag','location','northwest')
 
 
-% Part 6
-
+%% Part 6
+f2 = figure(2);
 plot(AoAs,C_L./C_D)
 xlabel('Angle of Attack (\circ)')
-ylabel('Ratio of C_L and C_D ( )')
+ylabel('Ratio of C_L to C_D ( )')
 
 
-% Part 7
+%% Part 7
 
 AoA_0_T  = [AoA_Foil_0(1),AoA_Foil_0(3:12),AoA_Foil_0(12)];
 AoA_9_T  = [AoA_Foil_9(1),AoA_Foil_9(3:12),AoA_Foil_9(12)];
@@ -143,7 +142,7 @@ Skin_Drag = (1/2)*Skin_Coeff*Density_I*A*Vel_Foil_Mean^2;
 
 Induced_Coeff = (C_L.^2)/(pi*(L/c)*.7);
 Induced_Drag = (Induced_Coeff*(Density_I)*A*Vel_Foil_Mean^2)/2;
-
+Induced_Drag2 = Induced_Drag'
 Ind_D_0 = Induced_Drag(4);
 Ind_D_9 = Induced_Drag(7);
 Ind_D_18 = Induced_Drag(10);
@@ -171,7 +170,7 @@ Form_Lift_9 = sum(LiftTop9 + LiftBot9);
 Form_Drag_18 = sum(DragTop18 + DragBot18) ;
 Form_Lift_18 = sum(LiftTop18 + LiftBot18);
 
-
+Form_Drag_array = [Form_Drag_0,Form_Drag_9,Form_Lift_18];
 %% Part 11
 
 
@@ -184,19 +183,18 @@ Total_Drag_0 = Form_Drag_0 + Skin_Drag + Ind_D_0;
 Total_Drag_9 = Form_Drag_9 + Skin_Drag + Ind_D_9;
 Total_Drag_18 = Form_Drag_18 + Skin_Drag + Ind_D_18;
 Total_D = [Total_Drag_0, Total_Drag_9, Total_Drag_18];
-Total_Lift_18 = Form_Lift_18
+Total_Lift_18 = Form_Lift_18;
 Drag = [1.5,1.1,0.8,.75,.85,1.1,1.5,1.95,2.5,5.1,5.7];
 
-figure(4);
+f3 = figure(3);
 plot(AoAs, Skin_Drag_Lin)
 hold on
 plot(AoAs, Induced_Drag )
-
 plot(Specific_Angles, Drag_Form)
 plot(Specific_Angles, Total_D)
 plot(AoAs, Drag)
-title('Drag Forces on NACA 0012 Airfoil')
-legend('Skin Drag', 'Induced Drag', 'Form Drag', 'Total Drag', 'Measured Drag', 'Location', 'best')
+title('Calculated and Measured Drag Forces on NACA 0012')
+legend('Calculated Skin Drag', 'Calculated Induced Drag', 'Calculated Form Drag', 'Calculated Total Drag', 'Measured Drag', 'Location', 'best')
 xlabel('Angle of Attack (AoAs)')
 ylabel('Drag Force (N)')
 grid minor
@@ -208,14 +206,19 @@ Un_A = 0.25*10^-6; % m^3
 Un_Mano = 0.05; % m
 Un_Den = 0.05; % kg/m3
  
-d_lift = 1/(A*Density_I*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
-d_A = -Total_Lift_18/((A^2)*Density_I*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
-d_mano = -Total_Lift_18/(A*Density_I*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2))^2)
-d_dens = -Total_Lift_18/(A*(Density_I)^2*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
+alift = 1/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
+aA = -Total_Lift_18/((A^2)*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
+amano = -Total_Lift_18/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2))^2)
+adens = -Total_Lift_18/(A*(998)^2*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)))
  
-uncertainty = sqrt((d_lift*Un_L)^2+(d_mano*Un_Mano)^2+(d_dens*Un_Den)^2+(d_A*Un_A)^2)
+uncertainty = sqrt((alift*Un_L)^2+(amano*Un_Mano)^2+(adens*Un_Den)^2+(aA*Un_A)^2)
  
  
+%% Save Figures
+
+saveas(f1, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\clandcd.png','png');
+saveas(f2, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\cltocd.png','png');
+saveas(f3, 'C:\Users\charl\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\totaldrags.png','png');
 
 
 
