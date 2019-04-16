@@ -45,8 +45,8 @@ C_D = D_Force/(.5*Density_I*(Vel_Foil_Mean^2)*A);
 
 C_L_Fit = polyfit(AoAs,C_L,1);
 Zero = -C_L_Fit(2)/C_L_Fit(1); % This says we dont need to adjust at all, below +-0.5 degrees
-CL = C_L'
-CD = C_D'
+CL = C_L';
+CD = C_D';
 %% Part 5
 f1 = figure(1);
 plot(AoAs,C_L,'-+',AoAs,C_D,'-+')
@@ -142,7 +142,7 @@ Skin_Drag = (1/2)*Skin_Coeff*Density_I*A*Vel_Foil_Mean^2;
 
 Induced_Coeff = (C_L.^2)/(pi*(L/c)*.7);
 Induced_Drag = (Induced_Coeff*(Density_I)*A*Vel_Foil_Mean^2)/2;
-Induced_Drag2 = Induced_Drag'
+Induced_Drag2 = Induced_Drag';
 Ind_D_0 = Induced_Drag(4);
 Ind_D_9 = Induced_Drag(7);
 Ind_D_18 = Induced_Drag(10);
@@ -203,7 +203,7 @@ grid minor
  
 Un_L = 0.01; %N
 Un_A = 0.25*10^-6; % m^3 
-Un_Mano = 0.05; % m
+Un_Mano = 0.0005; % m
 Un_Den = 0.05; % kg/m3
  
 alift = 1/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)));
@@ -212,33 +212,3 @@ amano = -Total_Lift_18/(A*998*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2))^2);
 adens = -Total_Lift_18/(A*(998)^2*Gravity*(AoA_Foil_18(1) - AoA_Foil_18(2)));
  
 uncertainty = sqrt((alift*Un_L)^2+(amano*Un_Mano)^2+(adens*Un_Den)^2+(aA*Un_A)^2)
- 
- 
-%% Save Figures
-
-saveas(f1, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\clandcd.png','png');
-saveas(f2, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\cltocd.png','png');
-saveas(f3, 'C:\Users\User\Desktop\Charlie\Classes\Junior Year\Spring 2019\J-Lab\Lab 6\Figures\totaldrags.png','png');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
