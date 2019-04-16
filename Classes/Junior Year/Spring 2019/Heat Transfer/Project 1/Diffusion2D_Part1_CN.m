@@ -4,8 +4,8 @@ clc
 %% This Script Pulls from the MatrixMaker and MatrixSolver Functions and displays a steady 2D temperature figure
 
 % Input Parameters
-ResX = 170;
-ResY = 50;
+ResX = 60;
+ResY = 30;
 T_0 = 100+273.15; % C
 T_1 = 200+273.15; % C
 L1 = 1; % Meters
