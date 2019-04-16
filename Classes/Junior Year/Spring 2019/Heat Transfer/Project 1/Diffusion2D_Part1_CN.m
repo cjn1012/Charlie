@@ -16,14 +16,14 @@ k2 = 100;  % W/mK
 
 %% call first function
 
-[A, B, cc, rr] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY);
+[A, B, cc, rr,NodeType] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY);
 
 %% call second function
 [x] = AB(A, B);
 
 bb = reshape(x, cc, rr)';
 
-figure(2)
+figure(1)
 imagesc([0,L1+L2],[0,D],bb)
 colorbar
 xlabel('Length (m)')

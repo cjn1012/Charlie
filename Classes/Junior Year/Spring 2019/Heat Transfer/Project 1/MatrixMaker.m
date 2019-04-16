@@ -1,5 +1,5 @@
 
-function [A , B, cc, rr] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY)
+function [A , B, cc, rr,NodeType] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY)
 L = L1+L2;
 
 cc = ResX;
@@ -29,9 +29,7 @@ NodeType(rr, ccL1+1:cc-1) = 11; % Left Bottom Nodes
 NodeType(rr, cc) = 12; % Bottom-Right Node
 NodeType(rr, ccL1) = 15; 
 
-
-
-
+A = zeros(rr,cc)
 for i = 1:rr
     for j = 1:cc
        n = j + ((i-1)*cc);
