@@ -1,0 +1,588 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MachineDesign_Del2</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-16"><meta name="DC.source" content="MachineDesign_Del2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>; clc
+
+<span class="comment">%Plastic Properties Given</span>
+
+Mod_El=230000; <span class="comment">%Modulus of Elasticity E = 230000psi</span>
+Sig_y=2500; <span class="comment">%Yeild Strength Sig_y = 2500psi</span>
+Sig_uts=3000; <span class="comment">%Ultamate Tensile Strength Sig_uts = 3000psi</span>
+Density=0.0376; <span class="comment">%Density = 0.0376lb/in^3</span>
+
+<span class="comment">%Extra Definitions</span>
+w=50; <span class="comment">%Omega = 50rpm</span>
+theta=(0:1:360).*(pi/180); <span class="comment">%Singular Rotation</span>
+k=1; <span class="comment">%lbf/in</span>
+
+<span class="comment">%Lengths Determined</span>
+r_AB = 4.68;
+r_BD = 3.5;
+r_DE = 3.4;
+
+<span class="comment">%Lengths Defined</span>
+r_OA = 0.5;
+r_EF = 2.5;
+
+<span class="comment">%Geometry of Each Segment</span>
+    <span class="comment">%Base = b</span>
+    <span class="comment">%Height = h</span>
+
+<span class="comment">%Base</span>
+dimb = .35;
+dimh = .30;
+
+b_AB=dimb;
+b_DE=dimb;
+b_EF=dimb;
+<span class="comment">%Height</span>
+
+h_AB=dimh;
+h_EF=dimh;
+h_DE=dimh;
+
+<span class="comment">% member BD 3</span>
+dim2b = .5;
+dim2h = .4;
+h_BD=dim2h;
+b_BD=dim2b;
+
+<span class="comment">%Member OA</span>
+dim3b = .35;
+dim3h = .15;
+b_OA=dim3b;
+h_OA=dim3h;
+
+
+<span class="comment">%Dimentions [In Inches]</span>
+Width=dimh/2;
+Width2=dim2h/2;
+Width3=dim3h/2;
+Thickness=0.125;
+Area=[b_OA*h_OA,b_AB*h_AB,b_BD*h_BD,b_EF*h_EF];
+
+<span class="comment">%Y values for Bending Calculations</span>
+y_OA=h_OA/2;
+y_AB=h_AB/2;
+y_BD=h_BD/2;
+y_DE=h_DE/2;
+
+
+<span class="comment">%Inertia Calculations</span>
+I_OA=(b_OA*(h_OA^3))/12;
+I_AB=(b_AB*(h_AB^3))/12;
+I_BD=(b_BD*(h_BD^3))/12;
+I_DE=(b_DE*(h_DE^3))/12;
+    <span class="comment">%Inertia Matrix</span>
+I=[I_OA,I_AB,I_BD,I_DE];
+
+<span class="comment">%Moment Table from Deliverable 1 Solution</span>
+    <span class="comment">%Values in lb*in</span>
+Mmax_OA=0.56;
+Mmin_AB=0.00;
+Mmax_BD=2.67;
+Mmin_DE=0.00;
+Mmin_OA=0.54;
+Mmax_AB=0.00;
+Mmin_BD=0.72;
+Mmax_DE=0.00;
+
+Mmin_Bending=[Mmin_OA,Mmin_AB,Mmin_BD,Mmin_DE];
+Mmax_Bending=[Mmax_OA,Mmax_AB,Mmax_BD,Mmax_DE];
+
+Min_Bending_Stress=zeros(1,4);
+Max_Bending_Stress=zeros(1,4);
+<span class="keyword">for</span> i=1:4
+    <span class="keyword">if</span> i == 3
+        Min_Bending_Stress(i)=(Mmin_Bending(i)*(Width2/2)/I(i));
+        Max_Bending_Stress(i)=(Mmax_Bending(i)*(Width2/2)/I(i));
+    <span class="keyword">end</span>
+
+    Min_Bending_Stress(i)=(Mmin_Bending(i)*(Width/2)/I(i));
+    Max_Bending_Stress(i)=(Mmax_Bending(i)*(Width/2)/I(i));
+<span class="keyword">end</span>
+
+<span class="comment">%Axial Forces Table from Deliverable 1 Solution</span>
+    <span class="comment">%Values in lb</span>
+Ax_Mmax_OA=0.4;
+Ax_Mmax_AB=1.49;
+Ax_Mmin_BD=0.06;
+Ax_Mmax_DE=1.50;
+Ax_Mmin_OA=0.39;
+Ax_Mmin_AB=0.53;
+Ax_Mmax_BD=0.36;
+Ax_Mmin_DE=0.54;
+
+<span class="comment">% %Maxiumum Compression Table from Deliverable 1 Solution</span>
+<span class="comment">%     %Values in lb</span>
+<span class="comment">% CMax_OA=-1.49;</span>
+<span class="comment">% CMax_AB=-1.49;</span>
+<span class="comment">% CMax_BD=-0.46; %Located in BC Region</span>
+<span class="comment">% CMax_DE=-1.5;</span>
+
+<span class="comment">%Maxiumum Force in each Pin Table from Deliverable 1 Solutions</span>
+    <span class="comment">%Values in lb</span>
+FMax_A=1.49;
+FMax_B=1.49;
+FMax_C=2.97;
+FMax_D=1.5;
+FMax_E=1.5;
+F = [FMax_A,FMax_B,FMax_C,FMax_D,FMax_E]
+<span class="comment">%Bending Calculations</span>
+    <span class="comment">%Bending values calulated by (M*y)/I</span>
+    <span class="comment">%Maximum</span>
+Bending_Max_OA=(Mmax_OA*y_OA)/I_OA;
+Bending_Max_AB=(Mmax_AB*y_AB)/I_AB;
+Bending_Max_BD=(Mmax_BD*y_BD)/I_BD;
+Bending_Max_DE=(Mmax_DE*y_DE)/I_DE;
+    <span class="comment">%Minimum</span>
+Bending_Min_OA=(Mmin_OA*y_OA)/I_OA;
+Bending_Min_AB=(Mmin_AB*y_AB)/I_AB;
+Bending_Min_BD=(Mmin_BD*y_BD)/I_BD;
+Bending_Min_DE=(Mmin_DE*y_DE)/I_DE;
+    <span class="comment">%Bending Stress Matrix</span>
+<span class="comment">%Max_Bending_Stress=[Bending_Max_OA,Bending_Max_AB,Bending_Max_BD,Bending_Max_DE];</span>
+<span class="comment">%Min_Bending_Stress=[Bending_Min_OA,Bending_Min_AB,Bending_Min_BD,Bending_Min_DE];</span>
+
+<span class="comment">%Axial Calculations</span>
+    <span class="comment">%Axial Stress Matrix</span>
+Max_Axial=[Ax_Mmax_OA,Ax_Mmax_AB,Ax_Mmax_BD,Ax_Mmax_DE];
+Min_Axial=[Ax_Mmin_OA,Ax_Mmin_AB,Ax_Mmin_BD,Ax_Mmin_DE];
+
+Max_Axial_Stress=Max_Axial./Area;
+Min_Axial_Stress=Min_Axial./Area;
+
+<span class="comment">%Combined Stress Calculations</span>
+    Max_Comb_Stress=zeros(1,4);
+    Min_Comb_Stress=zeros(1,4);
+<span class="keyword">for</span> i=1:4
+    Max_Comb_Stress(i)=Max_Bending_Stress(i)+Max_Axial_Stress(i);
+    Min_Comb_Stress(i)=Min_Bending_Stress(i)+Min_Axial_Stress(i);
+<span class="keyword">end</span>
+
+<span class="comment">%Mean and Alternating Stress</span>
+Mean_Stress=(Max_Comb_Stress+Min_Comb_Stress)./2;
+Alt_Stress=(Max_Comb_Stress-Min_Comb_Stress)./2;
+
+<span class="comment">%Buckling &amp; Deflection</span>
+L=[r_OA,r_AB,r_BD,r_DE];
+Buckling = (pi^2*Mod_El*I)./(L.^2);
+
+Max_Deflection=L./360;
+Actual_Deflection=(Mmax_Bending.*(L.^2))./(9*sqrt(3)*Mod_El.*I);
+
+<span class="comment">%Fatigue</span>
+Sf_prime=Sig_uts/2;
+Cload=1;
+Csize=1;
+a_surf=4.511;
+b_surf=-0.265;
+Csurf=a_surf*Sig_uts^b_surf;
+Creliab=0.814;
+Ctemp=1;
+Sf=Cload*Csize*Csurf*Ctemp*Creliab*Sf_prime;
+
+<span class="comment">%Factor of Safety Calculations</span>
+    <span class="comment">%Fatigue</span>
+FOS_Fatigue_N1=(Sf*Sig_uts)./((Alt_Stress.*Sig_uts)+(Mean_Stress.*Sf));
+
+    <span class="comment">%Yeild</span>
+FOS_Yeild_Tension=Sig_y./abs(Alt_Stress - Mean_Stress);
+FOS_Yeild_N_2=Sf./Alt_Stress;
+
+FOS_Yeild_N_4=Sig_y./(Alt_Stress + Mean_Stress);
+
+    <span class="comment">%Deflection</span>
+FOS_Deflection=Max_Deflection./Actual_Deflection;
+
+    <span class="comment">%Buckling</span>
+FOS_Buckling=Buckling./Max_Axial_Stress;
+
+<span class="comment">%Shear Calculations</span>
+
+<span class="comment">%Pin Values and Calculations</span>
+    <span class="comment">%Diameter = d [Values in Inches]</span>
+d_A=0.137795;
+d_B=0.137795;
+d_C=0.21;
+d_D=0.137795;
+d_E=0.137795;
+Length=0.19685;
+d = [d_A,d_B,d_C,d_D,d_E]
+
+<span class="comment">%Shear Stress Calculations per Pin</span>
+Shear_Stress_A=sqrt(3)*FMax_A/(pi*d_A^2)/4;
+Shear_Stress_B=sqrt(3)*FMax_B/(pi*d_B^2)/4;
+Shear_Stress_C=sqrt(3)*FMax_C/(pi*d_C^2)/4;
+Shear_Stress_D=sqrt(3)*FMax_D/(pi*d_D^2)/4;
+Shear_Stress_E=sqrt(3)*FMax_E/(pi*d_E^2)/4;
+<span class="comment">%Shear Stress Array</span>
+Shear_Stress=[Shear_Stress_A,Shear_Stress_B,Shear_Stress_C,Shear_Stress_D,Shear_Stress_E];
+
+<span class="comment">%Bearing Stress Calculations per Pin</span>
+Bearing_Stress_A=FMax_A/((pi*d_A*Length)/4);
+Bearing_Stress_B=FMax_B/((pi*d_B*Length)/4);
+Bearing_Stress_C=FMax_C/((pi*d_C*Length)/4);
+Bearing_Stress_D=FMax_D/((pi*d_D*Length)/4);
+Bearing_Stress_E=FMax_E/((pi*d_E*Length)/4);
+<span class="comment">%Bearing Stress Array</span>
+Bearing_Stress=[Bearing_Stress_A,Bearing_Stress_B,Bearing_Stress_C,Bearing_Stress_D,Bearing_Stress_E];
+
+<span class="comment">%Factor of Safety Pin Calculations</span>
+FOS_Shear=Sig_y./Shear_Stress;
+FOS_Bearing=Sig_y./Bearing_Stress;
+
+<span class="comment">%Tearout Calculations</span>
+Tearout_Stress_OA=sqrt(3)*Max_Axial(1)/(2*b_OA*h_OA);
+Tearout_Stress_AB=sqrt(3)*Max_Axial(2)/(2*b_AB*h_AB);
+Tearout_Stress_BD=sqrt(3)*Max_Axial(3)/(2*b_BD*h_BD);
+Tearout_Stress_DE=sqrt(3)*Max_Axial(4)/(2*b_DE*h_DE);
+<span class="comment">%Tearout Array</span>
+Tearout_Stress=[Tearout_Stress_OA,Tearout_Stress_AB,Tearout_Stress_BD,Tearout_Stress_DE];
+
+<span class="comment">%Factor of Safety for Tearout</span>
+FOS_Tearout=Sig_y./Tearout_Stress;
+
+
+
+<span class="comment">% Creating FOS Table</span>
+t = table(FOS_Fatigue_N1',FOS_Yeild_Tension',FOS_Yeild_N_2'<span class="keyword">...</span>
+    ,FOS_Yeild_N_4',FOS_Deflection',FOS_Buckling',FOS_Tearout');
+
+t2 = table(FOS_Bearing',FOS_Shear');
+</pre><pre class="codeoutput">
+F =
+
+    1.4900    1.4900    2.9700    1.5000    1.5000
+
+
+d =
+
+    0.1378    0.1378    0.2100    0.1378    0.1378
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; close all; clc
+
+%Plastic Properties Given 
+
+Mod_El=230000; %Modulus of Elasticity E = 230000psi
+Sig_y=2500; %Yeild Strength Sig_y = 2500psi
+Sig_uts=3000; %Ultamate Tensile Strength Sig_uts = 3000psi
+Density=0.0376; %Density = 0.0376lb/in^3 
+
+%Extra Definitions
+w=50; %Omega = 50rpm
+theta=(0:1:360).*(pi/180); %Singular Rotation 
+k=1; %lbf/in 
+
+%Lengths Determined
+r_AB = 4.68;
+r_BD = 3.5;
+r_DE = 3.4;
+
+%Lengths Defined
+r_OA = 0.5;
+r_EF = 2.5;
+
+%Geometry of Each Segment 
+    %Base = b
+    %Height = h 
+ 
+%Base
+dimb = .35;
+dimh = .30;
+
+b_AB=dimb;
+b_DE=dimb;
+b_EF=dimb;
+%Height
+
+h_AB=dimh;
+h_EF=dimh;
+h_DE=dimh;
+
+% member BD 3
+dim2b = .5;
+dim2h = .4;
+h_BD=dim2h;
+b_BD=dim2b;
+
+%Member OA
+dim3b = .35;
+dim3h = .15;
+b_OA=dim3b;
+h_OA=dim3h;
+
+
+%Dimentions [In Inches]
+Width=dimh/2;
+Width2=dim2h/2;
+Width3=dim3h/2;
+Thickness=0.125;
+Area=[b_OA*h_OA,b_AB*h_AB,b_BD*h_BD,b_EF*h_EF];
+
+%Y values for Bending Calculations 
+y_OA=h_OA/2;
+y_AB=h_AB/2;
+y_BD=h_BD/2;
+y_DE=h_DE/2;
+
+
+%Inertia Calculations 
+I_OA=(b_OA*(h_OA^3))/12;
+I_AB=(b_AB*(h_AB^3))/12;
+I_BD=(b_BD*(h_BD^3))/12;
+I_DE=(b_DE*(h_DE^3))/12;
+    %Inertia Matrix 
+I=[I_OA,I_AB,I_BD,I_DE];
+
+%Moment Table from Deliverable 1 Solution
+    %Values in lb*in
+Mmax_OA=0.56;
+Mmin_AB=0.00;
+Mmax_BD=2.67;
+Mmin_DE=0.00;
+Mmin_OA=0.54;
+Mmax_AB=0.00;
+Mmin_BD=0.72;
+Mmax_DE=0.00;
+
+Mmin_Bending=[Mmin_OA,Mmin_AB,Mmin_BD,Mmin_DE];
+Mmax_Bending=[Mmax_OA,Mmax_AB,Mmax_BD,Mmax_DE];
+
+Min_Bending_Stress=zeros(1,4);
+Max_Bending_Stress=zeros(1,4);
+for i=1:4
+    if i == 3
+        Min_Bending_Stress(i)=(Mmin_Bending(i)*(Width2/2)/I(i));
+        Max_Bending_Stress(i)=(Mmax_Bending(i)*(Width2/2)/I(i));
+    end
+    
+    Min_Bending_Stress(i)=(Mmin_Bending(i)*(Width/2)/I(i));
+    Max_Bending_Stress(i)=(Mmax_Bending(i)*(Width/2)/I(i));
+end
+
+%Axial Forces Table from Deliverable 1 Solution
+    %Values in lb 
+Ax_Mmax_OA=0.4;
+Ax_Mmax_AB=1.49;
+Ax_Mmin_BD=0.06;
+Ax_Mmax_DE=1.50;
+Ax_Mmin_OA=0.39;
+Ax_Mmin_AB=0.53;
+Ax_Mmax_BD=0.36;
+Ax_Mmin_DE=0.54;
+
+% %Maxiumum Compression Table from Deliverable 1 Solution
+%     %Values in lb
+% CMax_OA=-1.49;
+% CMax_AB=-1.49;
+% CMax_BD=-0.46; %Located in BC Region 
+% CMax_DE=-1.5;
+
+%Maxiumum Force in each Pin Table from Deliverable 1 Solutions 
+    %Values in lb
+FMax_A=1.49;
+FMax_B=1.49;
+FMax_C=2.97;
+FMax_D=1.5;
+FMax_E=1.5;
+F = [FMax_A,FMax_B,FMax_C,FMax_D,FMax_E]
+%Bending Calculations 
+    %Bending values calulated by (M*y)/I
+    %Maximum
+Bending_Max_OA=(Mmax_OA*y_OA)/I_OA;
+Bending_Max_AB=(Mmax_AB*y_AB)/I_AB;
+Bending_Max_BD=(Mmax_BD*y_BD)/I_BD;
+Bending_Max_DE=(Mmax_DE*y_DE)/I_DE;
+    %Minimum 
+Bending_Min_OA=(Mmin_OA*y_OA)/I_OA;
+Bending_Min_AB=(Mmin_AB*y_AB)/I_AB;
+Bending_Min_BD=(Mmin_BD*y_BD)/I_BD;
+Bending_Min_DE=(Mmin_DE*y_DE)/I_DE;
+    %Bending Stress Matrix 
+%Max_Bending_Stress=[Bending_Max_OA,Bending_Max_AB,Bending_Max_BD,Bending_Max_DE];
+%Min_Bending_Stress=[Bending_Min_OA,Bending_Min_AB,Bending_Min_BD,Bending_Min_DE];
+
+%Axial Calculations 
+    %Axial Stress Matrix 
+Max_Axial=[Ax_Mmax_OA,Ax_Mmax_AB,Ax_Mmax_BD,Ax_Mmax_DE];
+Min_Axial=[Ax_Mmin_OA,Ax_Mmin_AB,Ax_Mmin_BD,Ax_Mmin_DE];
+
+Max_Axial_Stress=Max_Axial./Area;
+Min_Axial_Stress=Min_Axial./Area;
+
+%Combined Stress Calculations 
+    Max_Comb_Stress=zeros(1,4);
+    Min_Comb_Stress=zeros(1,4);
+for i=1:4
+    Max_Comb_Stress(i)=Max_Bending_Stress(i)+Max_Axial_Stress(i);
+    Min_Comb_Stress(i)=Min_Bending_Stress(i)+Min_Axial_Stress(i);
+end 
+
+%Mean and Alternating Stress 
+Mean_Stress=(Max_Comb_Stress+Min_Comb_Stress)./2;
+Alt_Stress=(Max_Comb_Stress-Min_Comb_Stress)./2;
+
+%Buckling & Deflection 
+L=[r_OA,r_AB,r_BD,r_DE];
+Buckling = (pi^2*Mod_El*I)./(L.^2);
+
+Max_Deflection=L./360;
+Actual_Deflection=(Mmax_Bending.*(L.^2))./(9*sqrt(3)*Mod_El.*I);
+
+%Fatigue 
+Sf_prime=Sig_uts/2;
+Cload=1;
+Csize=1;
+a_surf=4.511;
+b_surf=-0.265;
+Csurf=a_surf*Sig_uts^b_surf;
+Creliab=0.814;
+Ctemp=1;
+Sf=Cload*Csize*Csurf*Ctemp*Creliab*Sf_prime;
+
+%Factor of Safety Calculations 
+    %Fatigue 
+FOS_Fatigue_N1=(Sf*Sig_uts)./((Alt_Stress.*Sig_uts)+(Mean_Stress.*Sf));
+
+    %Yeild
+FOS_Yeild_Tension=Sig_y./abs(Alt_Stress - Mean_Stress);
+FOS_Yeild_N_2=Sf./Alt_Stress;
+
+FOS_Yeild_N_4=Sig_y./(Alt_Stress + Mean_Stress);
+
+    %Deflection
+FOS_Deflection=Max_Deflection./Actual_Deflection;
+
+    %Buckling
+FOS_Buckling=Buckling./Max_Axial_Stress;
+
+%Shear Calculations 
+
+%Pin Values and Calculations 
+    %Diameter = d [Values in Inches]
+d_A=0.137795;
+d_B=0.137795;
+d_C=0.21;
+d_D=0.137795;
+d_E=0.137795;
+Length=0.19685; 
+d = [d_A,d_B,d_C,d_D,d_E]
+
+%Shear Stress Calculations per Pin
+Shear_Stress_A=sqrt(3)*FMax_A/(pi*d_A^2)/4;
+Shear_Stress_B=sqrt(3)*FMax_B/(pi*d_B^2)/4;
+Shear_Stress_C=sqrt(3)*FMax_C/(pi*d_C^2)/4;
+Shear_Stress_D=sqrt(3)*FMax_D/(pi*d_D^2)/4;
+Shear_Stress_E=sqrt(3)*FMax_E/(pi*d_E^2)/4;
+%Shear Stress Array
+Shear_Stress=[Shear_Stress_A,Shear_Stress_B,Shear_Stress_C,Shear_Stress_D,Shear_Stress_E];
+
+%Bearing Stress Calculations per Pin
+Bearing_Stress_A=FMax_A/((pi*d_A*Length)/4);
+Bearing_Stress_B=FMax_B/((pi*d_B*Length)/4);
+Bearing_Stress_C=FMax_C/((pi*d_C*Length)/4);
+Bearing_Stress_D=FMax_D/((pi*d_D*Length)/4);
+Bearing_Stress_E=FMax_E/((pi*d_E*Length)/4);
+%Bearing Stress Array
+Bearing_Stress=[Bearing_Stress_A,Bearing_Stress_B,Bearing_Stress_C,Bearing_Stress_D,Bearing_Stress_E];
+
+%Factor of Safety Pin Calculations
+FOS_Shear=Sig_y./Shear_Stress;
+FOS_Bearing=Sig_y./Bearing_Stress;
+
+%Tearout Calculations 
+Tearout_Stress_OA=sqrt(3)*Max_Axial(1)/(2*b_OA*h_OA);
+Tearout_Stress_AB=sqrt(3)*Max_Axial(2)/(2*b_AB*h_AB);
+Tearout_Stress_BD=sqrt(3)*Max_Axial(3)/(2*b_BD*h_BD);
+Tearout_Stress_DE=sqrt(3)*Max_Axial(4)/(2*b_DE*h_DE);
+%Tearout Array
+Tearout_Stress=[Tearout_Stress_OA,Tearout_Stress_AB,Tearout_Stress_BD,Tearout_Stress_DE];
+
+%Factor of Safety for Tearout
+FOS_Tearout=Sig_y./Tearout_Stress;
+
+
+
+% Creating FOS Table
+t = table(FOS_Fatigue_N1',FOS_Yeild_Tension',FOS_Yeild_N_2'...
+    ,FOS_Yeild_N_4',FOS_Deflection',FOS_Buckling',FOS_Tearout');
+
+t2 = table(FOS_Bearing',FOS_Shear');
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
