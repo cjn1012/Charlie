@@ -1,7 +1,7 @@
 % Charlie Nitschelm
 
-% clear all
-% close all
+clear all
+close all
 clc
 %% This Script Pulls from the MatrixMaker and MatrixSolver Functions and displays a steady 2D temperature figure
 
