@@ -1,3 +1,5 @@
+% Charlie Nitschelm
+
 function [x] = AB(A, B)
 
 B = B';   %transpose(B)

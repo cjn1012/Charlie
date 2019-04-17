@@ -1,3 +1,4 @@
+% Charlie Nitschelm
 
 function [A , B, cc, rr,NodeType] = MatrixMaker(L1,L2, D, T_0, T_1,k1,k2,ResX,ResY)
 L = L1+L2;
