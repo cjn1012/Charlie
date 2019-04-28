@@ -14,9 +14,9 @@ nx=50;               % Number of steps in space(x)
 ny=50;               % Number of steps in space(y) 
 
 % Grid Dimensions
-L1 = 0.01; % Left Length
+L1 = 0.04; % Left Length
 L2 = 0.06; % Middle Length
-L3 = 0.01; % Right Length
+L3 = 0.04; % Right Length
 L4 = 0.01; % Fin Length
 D1 = 0.01; % Top Height
 D2 = .015; % Bottom Height
@@ -47,11 +47,11 @@ Index_3y =  ny;
 
 %% Creating initial matricies for T and k in order to iterate over these to change T with each iteration to find steady state solution
 
-T = zeros(ny,nx);
-k = zeros(ny,nx)*1;
+%T = zeros(ny,nx);
+k = ones(ny,nx)*10000000;
 
 T_00 = 30+273;
-T_1  = 30+273;
+%T_1  = 40+273;
 for i=1:nx
     for j=1:ny
         if i >= 1 && i<=Index_1x
@@ -59,7 +59,7 @@ for i=1:nx
                 T(j,i) = T_00;
             end
         elseif i > Index_1x && i<=Index_2x
-            if j >= 1 && j<=Index_1y  
+            if j >= 1 && j<=Index_1y
                 T(j,i) = T_00;
             end
         elseif i > Index_2x && i<=Index_3x
@@ -76,8 +76,8 @@ end
           
 for i=1:nx
     for j=1:ny
-        if i >= 1 && i<=Index_1x
-            if j >= 1 && j<=Index_3y                             
+        if i > 1 && i<=Index_1x
+            if j >= 1 && j<Index_3y                             
                 k(j,i) = 260;
             end
         elseif i > Index_1x && i<=Index_2x
@@ -85,7 +85,7 @@ for i=1:nx
                 k(j,i) = 260;
             end
         elseif i > Index_2x && i<=Index_3x
-            if j >= 1 && j<=Index_3y  
+            if j >= 1 && j<Index_3y  
                 k(j,i) = 260;
             end
         elseif i > Index_3x && i<=Index_4x
@@ -103,21 +103,28 @@ h = 180; % W/m2K
 
 % J is going in the x direction, i is going down in the y direction
 
-for x = 1:10000
+for x = 1:1000
+    
+    
 for i = 2:(nx-1)
     for j = 2:(ny-1)
-        
+
+
         % Left Rectangle
-        if i >= 2 && i<Index_1x
-            if j>=2
-                T1(j,i) = (k(j+1,i+1)*T1(j+1,i+1) + k(j+1,i-1)*T1(j+1,i-1) + k(j-1,i+1)*T1(j-1,i+1) + k(j-1,i-1)*T1(j-1,i-1)) / (k(j+1,i+1) + k(j+1,i-1) + k(j-1,i+1) + k(j-1,i-1));
-            elseif j==1
+        if i > 1 && i < Index_1x
+            if j == 1
                 T1(j,i) = (T1(j,i) - (h*dx)/k(j,i));
+                
+            elseif j >= 2
+                T1(j,i) = (k(j+1,i+1)*T1(j+1,i+1) + k(j+1,i-1)*T1(j+1,i-1) + k(j-1,i+1)*T1(j-1,i+1) + k(j-1,i-1)*T1(j-1,i-1)) / (k(j+1,i+1) + k(j+1,i-1) + k(j-1,i+1) + k(j-1,i-1));
+            
             end
         elseif i == Index_1x
             if j >= Index_1y
                 T1(j,i) = (T1(j,i) + (q*dy)/k(j,i));
             end
+        
+            
             
         %Middle Part
         elseif i >= Index_1x && i<Index_2x
@@ -160,36 +167,6 @@ ylabel('Number of Cells (y-direction) [ ]')
 colorbar
 
 
-% 
-% for int = 1:5000
-%     for i = 2:(nx-1)
-%         for j = 2:(ny-1)
-%             T2(i,j) = (k(i+1,j)*T(i+1,j) + k(i-1,j)*T(i-1,j) + k(i,j+1)*T(i,j+1) + k(i,j-1)*T(i,j-1)) / (k(i+1,j) + k(i-1,j) + k(i,j+1) + k(i,j-1)); % Calculate the new T matrix
-%         end
-%     end
-% end    
-%     
-%     % These if statements with for loops helps calculate flux between iteration 199 and 200 by calculating difference of T and then apply k to it 
-%     if int == 199
-%         for i = 2:(nx-1)
-%             for j = 2:(ny-1)
-%                 TotalFlux_x(i,j) = (k(i+1,j)*T(i+1,j) + k(i-1,j)*T(i-1,j)) / (k(i+1,j) + k(i-1,j));
-%                 TotalFlux_y(i,j) = (k(i,j+1)*T(i,j+1) + k(i,j-1)*T(i,j-1)) / (k(i,j+1) + k(i,j-1));
-%                 TotalFlux(i,j) = (k(i+1,j)*T(i+1,j) + k(i-1,j)*T(i-1,j) + k(i,j+1)*T(i,j+1) + k(i,j-1)*T(i,j-1)) / (k(i+1,j) + k(i-1,j) + k(i,j+1) + k(i,j-1));
-%             end
-%         end
-%     end
-%     if int == 200
-%         for i = 2:(nx-1)
-%             for j = 2:(ny-1)
-%                 TotalFlux_x(i,j) = k(i,j)*(TotalFlux_x(i,j)-((k(i+1,j)*T(i+1,j) + k(i-1,j)*T(i-1,j)) / (k(i+1,j) + k(i-1,j))));
-%                 TotalFlux_y(i,j) = k(i,j)*(TotalFlux_y(i,j)-((k(i,j+1)*T(i,j+1) + k(i,j-1)*T(i,j-1)) / (k(i,j+1) + k(i,j-1))));
-%                 TotalFlux(i,j) = k(i,j)*(TotalFlux(i,j)-((k(i+1,j)*T(i+1,j) + k(i-1,j)*T(i-1,j) + k(i,j+1)*T(i,j+1) + k(i,j-1)*T(i,j-1)) / (k(i+1,j) + k(i-1,j) + k(i,j+1) + k(i,j-1))));
-%             end
-%         end
-%     end
-%     T = T2;
-% end
 
 
 
