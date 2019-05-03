@@ -9,8 +9,8 @@ clear all
 %% Specifying parameters
 
 % Number of cells in each direction
-nx=28;               % Number of steps in space(x)
-ny=28;               % Number of steps in space(y) 
+nx=35;               % Number of steps in space(x)
+ny=35;               % Number of steps in space(y) 
 
 % Grid Dimensions
 L1 = 0.04; % Left Length
@@ -106,7 +106,7 @@ for i=1:nx
             if j == 1 
                 h(j,i) = 180;
             end
-        elseif i >= Index_2x && i<=Index_3x
+        elseif i >= Index_2x && i <= Index_3x
             if j == 1 
                 h(j,i) = 180;
             elseif i == Index_3x
@@ -150,10 +150,10 @@ for i=1:nx
     end
 end
 %%
-T1 = T
+T1 = T;
 
 
-for x = 1:10000
+for x = 1:1000
 
 for j = 2:Index_1x
     for i = 2:(nx-1)
