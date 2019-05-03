@@ -151,10 +151,10 @@ for i=1:nx
 end
 %%
 T1 = T;
+T2 = T1+100;
+while abs(sum(sum(T2-T1))) > .1
 
-
-for x = 1:10000
-
+T2 = T1;
 for j = 2:Index_1x
     for i = 2:(nx-1)
         T1(i,j) = Solver(i,j,k,T1,h,q,dx,dy);
