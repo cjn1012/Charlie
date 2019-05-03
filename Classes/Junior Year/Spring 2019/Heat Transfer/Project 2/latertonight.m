@@ -16,7 +16,7 @@ ny=50;               % Number of steps in space(y)
 L1 = 0.01; % Left Length
 L2 = 0.06; % Middle Length
 L3 = 0.01; % Right Length
-L4 = 0.05; % Fin Length
+L4 = 0.04; % Fin Length
 D1 = 0.01; % Top Height
 D2 = .015; % Bottom Height
 
@@ -138,7 +138,7 @@ for i=1:nx
                 q(j,i) = q11;
             end
         elseif i > Index_1x && i <= Index_2x
-            if j == Index_2y
+            if j == Index_2y-1
                 q(j,i) = q11;
             end
         elseif i == Index_2x+1
@@ -152,7 +152,7 @@ end
 %%
 T1 = T;
 T2 = T1+100;
-while abs(sum(sum(T2-T1))) > .1
+while abs(sum(sum(T2-T1))) > 1e-5
 
 T2 = T1;
 for j = 2:Index_1x
