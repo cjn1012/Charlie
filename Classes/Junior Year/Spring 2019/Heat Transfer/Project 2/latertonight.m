@@ -9,14 +9,14 @@ clear all
 %% Specifying parameters
 
 % Number of cells in each direction
-nx=35;               % Number of steps in space(x)
-ny=35;               % Number of steps in space(y) 
+nx=50;               % Number of steps in space(x)
+ny=50;               % Number of steps in space(y) 
 
 % Grid Dimensions
-L1 = 0.04; % Left Length
+L1 = 0.01; % Left Length
 L2 = 0.06; % Middle Length
-L3 = 0.04; % Right Length
-L4 = 0.02; % Fin Length
+L3 = 0.01; % Right Length
+L4 = 0.05; % Fin Length
 D1 = 0.01; % Top Height
 D2 = .015; % Bottom Height
 
@@ -34,7 +34,7 @@ x=0:dx:L;          % Range of x(0,1.5) and specifying the grid points
 y=0:dy:D;          % Range of y(0,1.2) and specifying the grid points
 
 % Assigning temperatures to the cells with T and Tn
-Index_1x =  floor((L1/L)*nx);
+Index_1x =  ceil((L1/L)*nx);
 Index_2x =  floor(((L1+L2)/L)*nx);
 Index_3x =  floor(((L1+L2+L3)/L)*nx);
 Index_4x =  nx;
@@ -49,8 +49,8 @@ Index_3y =  ny;
 k = zeros(ny,nx);
 h = zeros(ny,nx);
 q = zeros(ny,nx);
-T = ones(ny,nx)*(30+273);
-T_00 = 30+273;
+T = ones(ny,nx)*(30);
+T_00 = 30;
 q11 = 12000;
 for i=1:nx
     for j=1:ny
@@ -89,7 +89,7 @@ for i=1:nx
                 k(j,i) = 260;
             end
         elseif i > Index_3x && i<Index_4x
-            if j > Index_1y && j<Index_2y  
+            if j >= Index_1y && j<=Index_2y  
                 k(j,i) = 260;
             end
         end
@@ -106,20 +106,20 @@ for i=1:nx
             if j == 1 
                 h(j,i) = 180;
             end
-        elseif i >= Index_2x && i <= Index_3x
+        elseif i >= Index_2x && i <= Index_3x+1
             if j == 1 
                 h(j,i) = 180;
-            elseif i == Index_3x
+            elseif i == Index_3x+1
                 if j > 1 && j < Index_1y
                     h(j,i) = 180;
                 elseif j > Index_2y && j < Index_3y
                     h(j,i) = 180;
                 end
             end
-        elseif i > Index_3x && i<Index_4x
-            if j == Index_1y
+        elseif i > Index_3x+1 && i<Index_4x
+            if j == Index_1y-1
                 h(j,i) = 180;
-            elseif j == Index_2y
+            elseif j == Index_2y+1
                 h(j,i) = 180;
             end
         elseif i == Index_4x
@@ -137,11 +137,11 @@ for i=1:nx
             if j >= Index_2y && j <= Index_3y
                 q(j,i) = q11;
             end
-        elseif i > Index_1x && i < Index_2x
+        elseif i > Index_1x && i <= Index_2x
             if j == Index_2y
                 q(j,i) = q11;
             end
-        elseif i == Index_2x
+        elseif i == Index_2x+1
             if j >= Index_2y && j <= Index_3y
                 q(j,i) = q11;
             end
@@ -153,7 +153,7 @@ end
 T1 = T;
 
 
-for x = 1:1000
+for x = 1:10000
 
 for j = 2:Index_1x
     for i = 2:(nx-1)
@@ -161,19 +161,20 @@ for j = 2:Index_1x
     end
 end
 
-
-for j = Index_1x+1:Index_2x-1
+for j = Index_1x+1:Index_2x
     for i = 2:Index_2y
         T1(i,j) = Solver(i,j,k,T1,h,q,dx,dy);
     end
 end
-for j = Index_2x:Index_3x
+
+for j = Index_2x+1:Index_3x
     for i = 2:(nx-1)
         T1(i,j) = Solver(i,j,k,T1,h,q,dx,dy);
     end
 end
+
 for j = Index_3x+1:Index_4x-1
-    for i = Index_1y:(Index_2y)
+    for i = Index_1y:Index_2y
         T1(i,j) = Solver(i,j,k,T1,h,q,dx,dy);
     end
 end
