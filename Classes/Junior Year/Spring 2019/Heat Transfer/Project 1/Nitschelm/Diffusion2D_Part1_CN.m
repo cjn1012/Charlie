@@ -27,6 +27,7 @@ bb = reshape(x, cc, rr)';
 
 figure(1)
 imagesc([0,L1+L2],[0,D],bb)
-colorbar
+h = colorbar
 xlabel('Length (m)')
 ylabel('Depth (m)')
+ylabel(h, 'Temperature (°C)')
