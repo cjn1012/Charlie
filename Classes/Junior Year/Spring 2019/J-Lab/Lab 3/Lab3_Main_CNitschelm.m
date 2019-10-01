@@ -196,6 +196,7 @@ alpha = mb(1);
 Damp_Ratio = (alpha/sqrt(4*pi^2+alpha^2));
 
 
+
 figure(7)
 plot(Con,Log,'o',Con,Best_Fit_3)
 xlabel('n-1')
