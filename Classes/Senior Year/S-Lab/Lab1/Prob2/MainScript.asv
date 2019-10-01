@@ -55,7 +55,7 @@ num2 = [R2];
 den2 = [L2*C2*R2 L2 R2];
 sim('Simu2')
 Theo_Time2 = ScopeData(:,1);
-Theo_Volt2 = ScopeData(:,2)-2;
+Theo_Volt2 = ScopeData(:,2);
 
 
 figure(3)
