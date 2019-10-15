@@ -1,0 +1,45 @@
+
+Fit Model(
+	Y( :Name( "Time (s)" ) ),
+	Effects(
+		:Nose Length,
+		:Rotor Length,
+		:Nose Length * :Rotor Length,
+		:Rotor Width,
+		:Nose Length * :Rotor Width,
+		:Rotor Length * :Rotor Width,
+		:Nose Length * :Rotor Length * :Rotor Width
+	),
+	Personality( "Standard Least Squares" ),
+	Emphasis( "Effect Screening" ),
+	Run(
+		Profiler(
+			1,
+			Confidence Intervals( 1 ),
+			Desirability Functions( 1 ),
+			Name( "Time (s)" ) << Response Limits(
+				{Lower( 1.25, 0.066 ), Middle( 2.5, 0.5 ), Upper( 3.75, 0.9819 ),
+				Goal( "Maximize" ), Importance( 1 )}
+			),
+			Term Value(
+				Nose Length( 1.5, Lock( 0 ), Show( 1 ) ),
+				Rotor Length( 4.546, Lock( 0 ), Show( 1 ) ),
+				Rotor Width( 2.5, Lock( 0 ), Show( 1 ) )
+			)
+		),
+		:Name( "Time (s)" ) << {Summary of Fit( 0 ), Analysis of Variance( 0 ),
+		Parameter Estimates( 1 ), Effect Details( 0 ), Sorted Estimates( 0 ),
+		Plot Actual by Predicted( 1 ), Plot Regression( 0 ),
+		Plot Residual by Predicted( 1 ), Plot Studentized Residuals( 1 ),
+		Plot Effect Leverage( 0 ), Plot Residual by Normal Quantiles( 0 ),
+		Box Cox Y Transformation( 1 )}
+	),
+	SendToReport(
+		Dispatch(
+			{"Response Time (s)"},
+			"Parameter Estimates",
+			OutlineBox,
+			{Close( 0 )}
+		)
+	)
+);

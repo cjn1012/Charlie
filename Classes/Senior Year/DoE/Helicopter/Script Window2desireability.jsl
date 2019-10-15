@@ -1,0 +1,63 @@
+
+Fit Model(
+	Y( :Name( "Time (s)" ), :Name( "Distance (in)" ) ),
+	Effects(
+		:Nose Length,
+		:Rotor Length,
+		:Nose Length * :Rotor Length,
+		:Rotor Width,
+		:Nose Length * :Rotor Width,
+		:Rotor Length * :Rotor Width,
+		:Nose Length * :Rotor Length * :Rotor Width
+	),
+	Personality( "Standard Least Squares" ),
+	Emphasis( "Effect Screening" ),
+	Run(
+		Profiler(
+			1,
+			Confidence Intervals( 1 ),
+			Desirability Functions( 1 ),
+			Name( "Time (s)" ) << Response Limits(
+				{Lower( 1.5, 0.066 ), Middle( 2.375, 0.5 ), Upper( 3.25, 0.9819 ),
+				Goal( "Maximize" ), Importance( 3 )}
+			),
+			Name( "Distance (in)" ) <<
+			Response Limits(
+				{Lower( 0, 0.9819 ), Middle( 6, 0.5 ), Upper( 14, 0.066 ),
+				Goal( "Minimize" ), Importance( 1 )}
+			),
+			Maximize and Remember,
+			Term Value(
+				Nose Length( 1, Max( 3 ), Lock( 0 ), Show( 1 ) ),
+				Rotor Length( 1, Min( 1 ), Max( 8 ), Lock( 0 ), Show( 1 ) ),
+				Rotor Width( 2, Lock( 0 ), Show( 1 ) )
+			)
+		),
+		:Name( "Time (s)" ) << {Summary of Fit( 0 ), Analysis of Variance( 0 ),
+		Parameter Estimates( 1 ), Effect Details( 0 ), Sorted Estimates( 0 ),
+		Plot Actual by Predicted( 1 ), Plot Regression( 0 ),
+		Plot Residual by Predicted( 1 ), Plot Studentized Residuals( 1 ),
+		Plot Effect Leverage( 0 ), Plot Residual by Normal Quantiles( 0 ),
+		Box Cox Y Transformation( 1 )},
+		:Name( "Distance (in)" ) << {Summary of Fit( 0 ), Analysis of Variance( 0 ),
+		Parameter Estimates( 1 ), Effect Details( 0 ), Sorted Estimates( 0 ),
+		Plot Actual by Predicted( 1 ), Plot Regression( 0 ),
+		Plot Residual by Predicted( 1 ), Plot Studentized Residuals( 1 ),
+		Plot Effect Leverage( 0 ), Plot Residual by Normal Quantiles( 0 ),
+		Box Cox Y Transformation( 0 )}
+	),
+	SendToReport(
+		Dispatch(
+			{"Prediction Profiler"},
+			"2",
+			ScaleBox,
+			{Min( 1 ), Max( 8 ), Inc( 0.5 ), Minor Ticks( 0 )}
+		),
+		Dispatch(
+			{"Prediction Profiler"},
+			"1",
+			ScaleBox,
+			{Min( 1 ), Max( 3 ), Inc( 0.2 ), Minor Ticks( 0 )}
+		)
+	)
+);
