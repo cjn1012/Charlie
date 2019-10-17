@@ -1,0 +1,11 @@
+﻿Data
+Headers, Channel 0 (PXI1Slot5/0) Amplitude, Channel 0 (PXI1Slot5/0) Frequency
+Channel, Channel 0, Channel 0
+Measurement, Amplitude, Frequency
+Value, 6.97685281187296, 11.7206444750686
+Mean, 5.68401385409137, 9.88563626559455
+Minimum, 3.89751258306205, 0
+Maximum, 7.48227437399328, 12.087394042718
+Range, 3.58476179093122, 12.087394042718
+Standard deviation, 1.44431393693805, 4.84578711182895
+Count, 6, 6
