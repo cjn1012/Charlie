@@ -1,0 +1,518 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Part4Code</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-30"><meta name="DC.source" content="Part4Code.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Reading in Data for c,d,e</a></li><li><a href="#3">a</a></li><li><a href="#4">b</a></li><li><a href="#5">d.)</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2 id="2">Reading in Data for c,d,e</h2><pre class="codeinput">close <span class="string">all</span>;
+P_TachOut = xlsread(<span class="string">'P-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+P_MotorIn = xlsread(<span class="string">'P-Control.csv'</span>, <span class="string">'B7:B100007'</span>);
+P_Time    = xlsread(<span class="string">'P-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+figure(1)
+plot(P_Time,P_TachOut)
+hold <span class="string">on</span>
+plot(P_Time,P_MotorIn)
+legend(<span class="string">'Tach Out'</span>,<span class="string">'Motor In'</span>)
+
+I_TachOut = xlsread(<span class="string">'I-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+I_MotorIn = xlsread(<span class="string">'I-Control.csv'</span>, <span class="string">'B7:B100007'</span>);
+I_Time    = xlsread(<span class="string">'I-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+figure(2)
+plot(I_Time,I_TachOut)
+hold <span class="string">on</span>
+plot(I_Time,I_MotorIn)
+legend(<span class="string">'Tach Out'</span>,<span class="string">'Motor In'</span>)
+
+PI_TachOut = xlsread(<span class="string">'PI-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+PI_MotorIn = xlsread(<span class="string">'PI-Control.csv'</span>, <span class="string">'B7:B100007'</span>);
+PI_Time    = xlsread(<span class="string">'PI-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+figure(3)
+plot(PI_Time,PI_TachOut)
+hold <span class="string">on</span>
+plot(PI_Time,PI_MotorIn)
+legend(<span class="string">'Tach Out'</span>,<span class="string">'Motor In'</span>)
+</pre><img vspace="5" hspace="5" src="Part4Code_01.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_02.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_03.png" alt=""> <h2 id="3">a</h2><pre class="codeinput"><span class="comment">% drawing the block diagrams of each controller attached in  folder</span>
+</pre><h2 id="4">b</h2><p>Root Locus Plots for each controller</p><pre class="codeinput">Ri  = 100000;  <span class="comment">%ohm</span>
+Rf  = 150000;  <span class="comment">%ohm</span>
+C1  = .033e-6; <span class="comment">%farad</span>
+C2  = .010e-6; <span class="comment">%farad</span>
+K   = 11.9;      <span class="comment">%unitless</span>
+KI  = 1e-4;
+tau = 0.0089;  <span class="comment">%sec</span>
+K_m = 0.1774;  <span class="comment">%krpm/v</span>
+
+P_sys  = tf([K_m*Rf*K], [tau 1]);
+I_sys  = tf([K_m*KI], [(tau*C1) C1 0]);
+PI_sys = tf([K_m*K*C2*Rf K_m*K], [tau*C2 C2 0]);
+
+
+
+<span class="comment">% c - finding roots</span>
+close <span class="string">all</span>;
+
+P_TachOut = xlsread(<span class="string">'P-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+<span class="comment">% P_MotorIn = xlsread('P-Control.csv', 'B7:B100007');</span>
+P_Time    = xlsread(<span class="string">'P-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+
+I_TachOut = xlsread(<span class="string">'I-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+<span class="comment">% I_MotorIn = xlsread('I-Control.csv', 'B7:B100007');</span>
+I_Time    = xlsread(<span class="string">'I-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+
+PI_TachOut = xlsread(<span class="string">'PI-Control.csv'</span>, <span class="string">'A7:A100007'</span>);
+<span class="comment">% PI_MotorIn = xlsread('PI-Control.csv', 'B7:B100007');</span>
+PI_Time    = xlsread(<span class="string">'PI-Control.csv'</span>, <span class="string">'C7:C100007'</span>);
+
+
+[rp,kp] = rlocus(P_sys);
+Proot1_p = rp(1);
+Proot1_k = kp(1);
+
+[rp,kp] = rlocus(I_sys);
+Iroot1_p = rp(1,1);
+Iroot1_k = kp(1);
+Iroot2_p = rp(2,1);
+Iroot2_k = kp(1);
+
+[rp,kp] = rlocus(PI_sys);
+PIroot1_p = rp(1,1);
+PIroot1_k = kp(1);
+PIroot2_p = rp(2,1);
+PIroot2_k = kp(1);
+
+figure(4)
+rlocus(P_sys); title(<span class="string">'Root Locus of P Motor Controller'</span>)
+text(Proot1_p + 15, 1, strcat({<span class="string">'Root: '</span>}, num2str(Proot1_p,4), <span class="string">' s^{-1}'</span>));
+figure(5)
+rlocus(I_sys); title(<span class="string">'Root Locus of I Motor Controller'</span>)
+text(Iroot1_p-4, 5, strcat({<span class="string">'Root: '</span>}, num2str(Iroot1_p,4), <span class="string">' s^{-1}'</span>));
+text(Iroot2_p, 5, strcat({<span class="string">'Root: '</span>}, num2str(Iroot2_p,4), <span class="string">' s^{-1}'</span>));
+figure(6)
+rlocus(PI_sys); title(<span class="string">'Root Locus of PI Motor Controller'</span>)
+text(PIroot1_p, -50, strcat({<span class="string">'Root: '</span>}, num2str(PIroot1_p,4), <span class="string">' s^{-1}'</span>));
+text(PIroot2_p-100, 75, strcat({<span class="string">'Root: '</span>}, num2str(PIroot2_p,4), <span class="string">' s^{-1}'</span>));
+
+<span class="comment">% step responses</span>
+
+figure()
+P_TachOut = wsmooth(P_TachOut, P_Time, 3);
+plot(P_Time - .052, P_TachOut - P_TachOut(1), <span class="string">'r'</span>)
+hold <span class="string">on</span>
+step(P_sys* -1e-5, P_Time(end));
+xlabel(<span class="string">'Time'</span>); ylabel(<span class="string">'Voltage [V]'</span>);
+legend(<span class="string">'Observed'</span>, <span class="string">'Simulated'</span>)
+title(<span class="string">'P Controller Step Response'</span>); grid <span class="string">on</span>;
+xlim([0 P_Time(end)])
+
+tau_index  = .632*(mean(P_TachOut(end-30000:end)));
+
+<span class="keyword">for</span> i = 1:length(P_Time)
+    <span class="keyword">if</span> P_Time(i) &gt; .052
+        basetime = i;
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+baseline = mean(P_TachOut(1:basetime));
+basedev = std(P_TachOut(1:basetime));
+threshold = 5*basedev;
+
+<span class="keyword">for</span> i = 1:length(P_Time)
+    <span class="keyword">if</span> (abs(P_TachOut(i) - baseline) &gt; threshold)
+        starttime = i; <span class="comment">% start of event</span>
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+P_Time = P_Time(starttime:end);
+P_TachOut = P_TachOut(starttime:end);
+<span class="comment">% figure()</span>
+<span class="comment">% plot(P_Time, P_TachOut)</span>
+
+<span class="keyword">for</span> ii = 1:length(P_TachOut)
+   <span class="keyword">if</span> P_TachOut(ii) &lt;= 0.95*tau_index &amp;&amp; P_TachOut(ii) &gt;= 1.05*tau_index
+       P_tau = P_Time(ii);
+       <span class="keyword">break</span>
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">% I Controller</span>
+I_TachOut = wsmooth(I_TachOut, I_Time, 8);
+num = [K_m*4e-5];
+den = [Ri*C1*tau C1*Ri 0];
+sys = tf(num, den);
+sys = feedback(sys, Ri);
+[resp, time] = step(sys, I_Time(end));
+figure()
+plot(I_Time -.217 , I_TachOut - I_TachOut(1), <span class="string">'r'</span>, time, resp*7.9e5)
+xlim([0 I_Time(end)])
+xlabel(<span class="string">'Time'</span>); ylabel(<span class="string">'Voltage [V]'</span>);
+legend(<span class="string">'Observed'</span>, <span class="string">'Simulated'</span>)
+title(<span class="string">'I Controller Step Response'</span>); grid <span class="string">on</span>;
+
+I_wn  = abs((5.735 - 4.092)/(0.03009 - 0.2484))*2*pi;
+I_fv  = mean(I_TachOut(end-3000:end)) - I_TachOut(1); <span class="comment">% I_TachOut(1) is negative</span>
+I_pv  = 9.739;
+I_OS  = (I_pv - I_fv)/I_fv;
+I_zeta = 0.43; <span class="comment">% determined from % overshoot</span>
+
+I_SetTime   = 4/(I_zeta*I_wn); <span class="comment">% settling time?</span>
+I_tau       = I_SetTime/4;
+
+<span class="comment">% PI Controller</span>
+PI_TachOut = wsmooth(PI_TachOut, I_Time, 8);
+PI_TachOut = wsmooth(PI_TachOut, PI_Time, 2);
+KPI = 2e-5;
+num = [KPI*K_m*Rf*C2 KPI*K_m];
+den = [Ri*C2*tau Ri*C2 0];
+sys2 = tf(num, den);
+sys2 = feedback(sys2, Ri);
+[res, t] = step(sys2, PI_Time(end));
+figure()
+plot(PI_Time -.307 , PI_TachOut - PI_TachOut(1), <span class="string">'r'</span>, t, res*7.8e5)
+xlabel(<span class="string">'Time'</span>); ylabel(<span class="string">'Voltage [V]'</span>);
+legend(<span class="string">'Observed'</span>, <span class="string">'Simulated'</span>)
+title(<span class="string">'PI Controller Step Response'</span>); grid <span class="string">on</span>;
+xlim([-.05 PI_Time(end) - .307])
+
+PI_wn  = abs((5.01 - 4.067)/(0.3559 - 0.3277))*2*pi;
+PI_fv  = mean(PI_TachOut(end-3000:end));
+PI_pv  = 5.01;
+PI_OS  = (PI_pv - PI_fv)/PI_fv;
+PI_zeta = 0.37; <span class="comment">% determined from % overshoot</span>
+
+PI_SetTime   = 4/(PI_zeta*I_wn); <span class="comment">% settling time?</span>
+PI_tau       = PI_SetTime/4;
+</pre><img vspace="5" hspace="5" src="Part4Code_04.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_05.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_06.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_07.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_08.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_09.png" alt=""> <h2 id="5">d.)</h2><pre class="codeinput"><span class="comment">% P controller</span>
+ptach = xlsread(<span class="string">'disturbanceP.csv'</span>,<span class="string">'A8:A100007'</span>);
+ptime = 0:2.4e-6:(2.4e-6)*1e5;
+ptime = ptime(1:end-1);
+
+ptach = wsmooth(ptach, ptime, 3);
+ptachInt = mean(ptach(1:7000));
+ptachFin = mean(ptach(end-80000:end));
+pSSerror = ((ptachInt - ptachFin)/ptachInt)* 100;
+figure()
+<span class="comment">% plot(ptime, ptach);</span>
+
+<span class="comment">% I controller</span>
+itach = xlsread(<span class="string">'disturbanceI.csv'</span>, <span class="string">'A8:A100007'</span>);
+itime = 0:6e-6:(6e-6)*1e5;
+itime = itime(1:end-1);
+
+itach = wsmooth(itach, itime, 3);
+itachInt = mean(itach(1:35000));
+itachFin = mean(itach(end-35000:end));
+iSSerror = abs((itachInt - itachFin)/itachInt)* 100;
+figure()
+<span class="comment">% plot(itime, itach);</span>
+
+<span class="comment">% PI controller</span>
+pitach = xlsread(<span class="string">'disturbancePI.csv'</span>, <span class="string">'A8:A100007'</span>);
+pitime = 0:6e-6:(6e-6)*1e5;
+pitime = pitime(1:end-1);
+
+pitach = wsmooth(pitach, pitime, 3);
+pitachInt = mean(pitach(1:10000));
+pitachFin = mean(pitach(end-50000:end));
+piSSerror = abs((pitachInt - pitachFin)/itachInt)* 100;
+figure()
+<span class="comment">% plot(pitime, pitach);</span>
+</pre><img vspace="5" hspace="5" src="Part4Code_10.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_11.png" alt=""> <img vspace="5" hspace="5" src="Part4Code_12.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all
+close all
+
+%% Reading in Data for c,d,e
+close all; 
+P_TachOut = xlsread('P-Control.csv', 'A7:A100007');
+P_MotorIn = xlsread('P-Control.csv', 'B7:B100007');
+P_Time    = xlsread('P-Control.csv', 'C7:C100007');
+figure(1)
+plot(P_Time,P_TachOut)
+hold on
+plot(P_Time,P_MotorIn)
+legend('Tach Out','Motor In')
+
+I_TachOut = xlsread('I-Control.csv', 'A7:A100007');
+I_MotorIn = xlsread('I-Control.csv', 'B7:B100007');
+I_Time    = xlsread('I-Control.csv', 'C7:C100007');
+figure(2)
+plot(I_Time,I_TachOut)
+hold on
+plot(I_Time,I_MotorIn)
+legend('Tach Out','Motor In')
+
+PI_TachOut = xlsread('PI-Control.csv', 'A7:A100007');
+PI_MotorIn = xlsread('PI-Control.csv', 'B7:B100007');
+PI_Time    = xlsread('PI-Control.csv', 'C7:C100007');
+figure(3)
+plot(PI_Time,PI_TachOut)
+hold on
+plot(PI_Time,PI_MotorIn)
+legend('Tach Out','Motor In')
+
+%% a
+
+% drawing the block diagrams of each controller attached in  folder
+
+
+%% b 
+% Root Locus Plots for each controller
+
+Ri  = 100000;  %ohm
+Rf  = 150000;  %ohm
+C1  = .033e-6; %farad
+C2  = .010e-6; %farad
+K   = 11.9;      %unitless
+KI  = 1e-4;
+tau = 0.0089;  %sec
+K_m = 0.1774;  %krpm/v
+
+P_sys  = tf([K_m*Rf*K], [tau 1]);
+I_sys  = tf([K_m*KI], [(tau*C1) C1 0]);
+PI_sys = tf([K_m*K*C2*Rf K_m*K], [tau*C2 C2 0]);
+
+
+
+% c - finding roots
+close all;  
+
+P_TachOut = xlsread('P-Control.csv', 'A7:A100007');
+% P_MotorIn = xlsread('P-Control.csv', 'B7:B100007');
+P_Time    = xlsread('P-Control.csv', 'C7:C100007');
+
+I_TachOut = xlsread('I-Control.csv', 'A7:A100007');
+% I_MotorIn = xlsread('I-Control.csv', 'B7:B100007');
+I_Time    = xlsread('I-Control.csv', 'C7:C100007');
+
+PI_TachOut = xlsread('PI-Control.csv', 'A7:A100007');
+% PI_MotorIn = xlsread('PI-Control.csv', 'B7:B100007');
+PI_Time    = xlsread('PI-Control.csv', 'C7:C100007');
+
+
+[rp,kp] = rlocus(P_sys);
+Proot1_p = rp(1);
+Proot1_k = kp(1);
+
+[rp,kp] = rlocus(I_sys);
+Iroot1_p = rp(1,1);
+Iroot1_k = kp(1);
+Iroot2_p = rp(2,1);
+Iroot2_k = kp(1);
+
+[rp,kp] = rlocus(PI_sys);
+PIroot1_p = rp(1,1);
+PIroot1_k = kp(1);
+PIroot2_p = rp(2,1);
+PIroot2_k = kp(1);
+
+figure(4)
+rlocus(P_sys); title('Root Locus of P Motor Controller')
+text(Proot1_p + 15, 1, strcat({'Root: '}, num2str(Proot1_p,4), ' s^{-1}'));
+figure(5)
+rlocus(I_sys); title('Root Locus of I Motor Controller')
+text(Iroot1_p-4, 5, strcat({'Root: '}, num2str(Iroot1_p,4), ' s^{-1}'));
+text(Iroot2_p, 5, strcat({'Root: '}, num2str(Iroot2_p,4), ' s^{-1}'));
+figure(6)
+rlocus(PI_sys); title('Root Locus of PI Motor Controller')
+text(PIroot1_p, -50, strcat({'Root: '}, num2str(PIroot1_p,4), ' s^{-1}'));
+text(PIroot2_p-100, 75, strcat({'Root: '}, num2str(PIroot2_p,4), ' s^{-1}'));
+
+% step responses 
+
+figure()
+P_TachOut = wsmooth(P_TachOut, P_Time, 3);
+plot(P_Time - .052, P_TachOut - P_TachOut(1), 'r')
+hold on
+step(P_sys* -1e-5, P_Time(end));
+xlabel('Time'); ylabel('Voltage [V]');
+legend('Observed', 'Simulated')
+title('P Controller Step Response'); grid on;
+xlim([0 P_Time(end)])
+
+tau_index  = .632*(mean(P_TachOut(end-30000:end)));
+
+for i = 1:length(P_Time)
+    if P_Time(i) > .052
+        basetime = i;
+        break
+    end
+end
+    
+baseline = mean(P_TachOut(1:basetime));
+basedev = std(P_TachOut(1:basetime)); 
+threshold = 5*basedev;
+
+for i = 1:length(P_Time)
+    if (abs(P_TachOut(i) - baseline) > threshold)
+        starttime = i; % start of event
+        break
+    end
+end
+
+P_Time = P_Time(starttime:end);
+P_TachOut = P_TachOut(starttime:end);
+% figure()
+% plot(P_Time, P_TachOut)
+
+for ii = 1:length(P_TachOut)
+   if P_TachOut(ii) <= 0.95*tau_index && P_TachOut(ii) >= 1.05*tau_index
+       P_tau = P_Time(ii);
+       break
+   end
+end
+
+% I Controller
+I_TachOut = wsmooth(I_TachOut, I_Time, 8);
+num = [K_m*4e-5];
+den = [Ri*C1*tau C1*Ri 0];
+sys = tf(num, den);
+sys = feedback(sys, Ri);
+[resp, time] = step(sys, I_Time(end));
+figure()
+plot(I_Time -.217 , I_TachOut - I_TachOut(1), 'r', time, resp*7.9e5)
+xlim([0 I_Time(end)])
+xlabel('Time'); ylabel('Voltage [V]');
+legend('Observed', 'Simulated')
+title('I Controller Step Response'); grid on;
+
+I_wn  = abs((5.735 - 4.092)/(0.03009 - 0.2484))*2*pi;
+I_fv  = mean(I_TachOut(end-3000:end)) - I_TachOut(1); % I_TachOut(1) is negative
+I_pv  = 9.739;
+I_OS  = (I_pv - I_fv)/I_fv;
+I_zeta = 0.43; % determined from % overshoot
+
+I_SetTime   = 4/(I_zeta*I_wn); % settling time? 
+I_tau       = I_SetTime/4;
+
+% PI Controller
+PI_TachOut = wsmooth(PI_TachOut, I_Time, 8);
+PI_TachOut = wsmooth(PI_TachOut, PI_Time, 2);
+KPI = 2e-5;
+num = [KPI*K_m*Rf*C2 KPI*K_m];
+den = [Ri*C2*tau Ri*C2 0]; 
+sys2 = tf(num, den);
+sys2 = feedback(sys2, Ri);
+[res, t] = step(sys2, PI_Time(end));
+figure()
+plot(PI_Time -.307 , PI_TachOut - PI_TachOut(1), 'r', t, res*7.8e5)
+xlabel('Time'); ylabel('Voltage [V]');
+legend('Observed', 'Simulated')
+title('PI Controller Step Response'); grid on; 
+xlim([-.05 PI_Time(end) - .307])
+
+PI_wn  = abs((5.01 - 4.067)/(0.3559 - 0.3277))*2*pi;
+PI_fv  = mean(PI_TachOut(end-3000:end)); 
+PI_pv  = 5.01;
+PI_OS  = (PI_pv - PI_fv)/PI_fv;
+PI_zeta = 0.37; % determined from % overshoot
+
+PI_SetTime   = 4/(PI_zeta*I_wn); % settling time? 
+PI_tau       = PI_SetTime/4;
+
+
+%% d.)
+
+% P controller
+ptach = xlsread('disturbanceP.csv','A8:A100007');
+ptime = 0:2.4e-6:(2.4e-6)*1e5;
+ptime = ptime(1:end-1);
+
+ptach = wsmooth(ptach, ptime, 3);
+ptachInt = mean(ptach(1:7000));
+ptachFin = mean(ptach(end-80000:end));
+pSSerror = ((ptachInt - ptachFin)/ptachInt)* 100;
+figure()
+% plot(ptime, ptach);
+
+% I controller
+itach = xlsread('disturbanceI.csv', 'A8:A100007');
+itime = 0:6e-6:(6e-6)*1e5;
+itime = itime(1:end-1);
+
+itach = wsmooth(itach, itime, 3);
+itachInt = mean(itach(1:35000));
+itachFin = mean(itach(end-35000:end));
+iSSerror = abs((itachInt - itachFin)/itachInt)* 100;
+figure()
+% plot(itime, itach);
+
+% PI controller
+pitach = xlsread('disturbancePI.csv', 'A8:A100007');
+pitime = 0:6e-6:(6e-6)*1e5;
+pitime = pitime(1:end-1);
+
+pitach = wsmooth(pitach, pitime, 3);
+pitachInt = mean(pitach(1:10000));
+pitachFin = mean(pitach(end-50000:end));
+piSSerror = abs((pitachInt - pitachFin)/itachInt)* 100;
+figure()
+% plot(pitime, pitach);
+
+
+##### SOURCE END #####
+--></body></html>

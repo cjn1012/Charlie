@@ -1,0 +1,293 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>lab5</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-11-30"><meta name="DC.source" content="lab5.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Part 2</a></li><li><a href="#2">Part 3</a></li></ul></div><h2 id="1">Part 2</h2><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+Input_ei=[1.5 2 3 4 5 6 7 8 9 10]; <span class="comment">%Volts</span>
+Tach_eo=[.265 .561 1.14 1.72 2.38 2.994 3.579 4.195 4.794 5.405]; <span class="comment">%Volts</span>
+MUT_em=[.390 .867 1.756 2.661 3.85 4.85 5.806 6.784 7.768 8.751]; <span class="comment">%Volts</span>
+
+<span class="comment">%a</span>
+Ktach=3; <span class="comment">%Volts/KRPM</span>
+
+<span class="comment">%b</span>
+<span class="keyword">for</span> i=1:length(Tach_eo)
+Omega(i)=Tach_eo(i)/Ktach;
+<span class="keyword">end</span>
+MUTfit=polyfit(Omega,MUT_em,1);
+Ke=MUTfit(1); <span class="comment">% Ke motor voltage constant (Volts/KRPM)</span>
+Keactual=(4.39+5.37)/2;
+figure(1)
+bestfit=(MUTfit(1)*Omega)+MUTfit(2);
+plot(Omega,MUT_em,<span class="string">'bo-'</span>,Omega,bestfit,<span class="string">'r-'</span>)
+ylabel(<span class="string">'MUT Voltage, e_m (Volts)'</span>)
+xlabel(<span class="string">'Angular Velocity, \omega (KRPM)'</span>)
+title(<span class="string">'MUT Voltage vs \omega'</span>)
+grid <span class="string">on</span>
+legend(<span class="string">'Data'</span>,<span class="string">'Best Fit'</span>)
+<span class="comment">%c</span>
+
+Kt=((Ke/1000)/(pi/30))*141.6; <span class="comment">%oz-in/A</span>
+ktactual=6.6;<span class="comment">%oz-in/A</span>
+</pre><img vspace="5" hspace="5" src="lab5_01.png" alt=""> <h2 id="2">Part 3</h2><pre class="codeinput">File37 = <span class="string">'3.7.xlsx'</span>;
+data37 = xlsread(File37); <span class="comment">%import data</span>
+CH037 = data37(5:100004,1); <span class="comment">%Ch0</span>
+CH137 = data37(5:100004,2); <span class="comment">%Ch1</span>
+t37 = data37(5:100004,3)-.2935; <span class="comment">%time</span>
+File39 = <span class="string">'3.9.xlsx'</span>;
+data39 = xlsread(File39); <span class="comment">%import data</span>
+CH039 = data39(5:100004,1); <span class="comment">%Ch0</span>
+CH139 = data39(5:100004,2); <span class="comment">%Ch1</span>
+t39 = data39(5:100004,3); <span class="comment">%time</span>
+<span class="comment">%a</span>
+<span class="comment">% system of equations in document</span>
+
+<span class="comment">%b</span>
+
+ei=6; <span class="comment">%Volts</span>
+R=3.6; <span class="comment">%Ohms</span>
+TStall=(Kt*ei)/R; <span class="comment">%ozf-in</span>
+
+<span class="comment">%c</span>
+Ksys=abs(mean(CH037(end-100:end))/mean(CH137(end-100:end))); <span class="comment">%K</span>
+Kmot=Ksys/Ktach; <span class="comment">%KRPM/Volt for c</span>
+tau_Voltage=(.632*(8))-4;
+<span class="keyword">for</span> i=1:length(t37)
+    <span class="keyword">if</span> CH037(i)  &gt;= tau_Voltage
+        tau632_motor = t37(i); <span class="comment">%Tau for part c in seconds</span>
+        <span class="keyword">break</span>
+
+    <span class="keyword">else</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+figure(2)
+plot(t37,CH037,t37,CH137,tau632_motor,tau_Voltage,<span class="string">'d'</span>)
+axis([-.05 .1 -8 8])
+grid <span class="string">on</span>
+xlabel(<span class="string">'Time, t (seconds)'</span>)
+ylabel(<span class="string">'Voltage (Volts)'</span>)
+legend(<span class="string">'Tachometer Output, e_o'</span>,<span class="string">'Motor Input, e_a'</span>)
+title(<span class="string">'Tachometer Output and Motor Input With Step Change'</span>)
+
+<span class="comment">%d</span>
+R42=4.2;<span class="comment">%Ohms</span>
+B=.5*(Kt-(Kmot*Ke*Kt))/(Kmot*R42); <span class="comment">%oz-in/KRPM</span>
+J=.5*((tau632_motor*((Ke*Kt)+(R42*B)))/R42)*(.001/(pi/30));
+
+<span class="comment">%e</span>
+
+t39new=t39(79200:end)-.19;
+CH039new=CH039(79200:end);
+CH139new=CH139(79200:end);
+figure(3)
+CH039S=wsmooth(CH039new,t39new,6);<span class="comment">%Smoothed</span>
+CH139S=wsmooth(CH139new,t39new,6);<span class="comment">%Smoothed</span>
+meanCH039=mean(CH039S(end-100:end));
+AMP=(CH039S(1)-CH039S(end));
+plot(t39,CH039,t39,CH139)<span class="comment">%-meanCH039)%tau632_motor,tau_Voltage,'d')</span>
+<span class="comment">%plot(t39,CH039)</span>
+<span class="comment">%axis([-.05 .1 -8 8])</span>
+grid <span class="string">on</span>
+xlabel(<span class="string">'Time, t (seconds)'</span>)
+ylabel(<span class="string">'Voltage (Volts)'</span>)
+title(<span class="string">'Motor Subjected to 5\Omega Resistor'</span>)
+
+<span class="comment">% for i = 1:length(t39new)</span>
+<span class="comment">%</span>
+<span class="comment">%     if CH039S(i)&lt;= (.368*AMP)+meanCH039</span>
+<span class="comment">%         tau39 = t39new(i);</span>
+<span class="comment">%         break</span>
+<span class="comment">%</span>
+<span class="comment">%     else</span>
+<span class="comment">%     end</span>
+<span class="comment">% end</span>
+tau39=find((abs((.368*AMP)+meanCH039)-CH039S) &lt;= .001);
+plot(t39new,CH039S,t39new(tau39(end)),CH039S(tau39(end)),<span class="string">'d'</span>)
+grid <span class="string">on</span>
+xlabel(<span class="string">'Time, t (seconds)'</span>)
+ylabel(<span class="string">'Voltage (Volts)'</span>)
+title(<span class="string">'Motor Subjected to 5\Omega Resistor'</span>)
+tau39=t39new(tau39(end));
+Settling_Time=4*tau39;
+sserror=(CH039new(1)-meanCH039)/CH039new(1); <span class="comment">%(Initial Voltage - Final Voltage)/(Initial Voltage)</span>
+</pre><img vspace="5" hspace="5" src="lab5_02.png" alt=""> <img vspace="5" hspace="5" src="lab5_03.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Part 2
+clear all
+close all
+Input_ei=[1.5 2 3 4 5 6 7 8 9 10]; %Volts
+Tach_eo=[.265 .561 1.14 1.72 2.38 2.994 3.579 4.195 4.794 5.405]; %Volts
+MUT_em=[.390 .867 1.756 2.661 3.85 4.85 5.806 6.784 7.768 8.751]; %Volts
+
+%a
+Ktach=3; %Volts/KRPM
+
+%b
+for i=1:length(Tach_eo)
+Omega(i)=Tach_eo(i)/Ktach;
+end
+MUTfit=polyfit(Omega,MUT_em,1);
+Ke=MUTfit(1); % Ke motor voltage constant (Volts/KRPM)
+Keactual=(4.39+5.37)/2;
+figure(1)
+bestfit=(MUTfit(1)*Omega)+MUTfit(2);
+plot(Omega,MUT_em,'bo-',Omega,bestfit,'r-')
+ylabel('MUT Voltage, e_m (Volts)')
+xlabel('Angular Velocity, \omega (KRPM)')
+title('MUT Voltage vs \omega')
+grid on
+legend('Data','Best Fit')
+%c
+
+Kt=((Ke/1000)/(pi/30))*141.6; %oz-in/A
+ktactual=6.6;%oz-in/A
+%% Part 3
+File37 = '3.7.xlsx';
+data37 = xlsread(File37); %import data
+CH037 = data37(5:100004,1); %Ch0
+CH137 = data37(5:100004,2); %Ch1
+t37 = data37(5:100004,3)-.2935; %time
+File39 = '3.9.xlsx';
+data39 = xlsread(File39); %import data
+CH039 = data39(5:100004,1); %Ch0
+CH139 = data39(5:100004,2); %Ch1
+t39 = data39(5:100004,3); %time
+%a
+% system of equations in document
+
+%b
+
+ei=6; %Volts
+R=3.6; %Ohms
+TStall=(Kt*ei)/R; %ozf-in
+
+%c
+Ksys=abs(mean(CH037(end-100:end))/mean(CH137(end-100:end))); %K
+Kmot=Ksys/Ktach; %KRPM/Volt for c
+tau_Voltage=(.632*(8))-4; 
+for i=1:length(t37)
+    if CH037(i)  >= tau_Voltage
+        tau632_motor = t37(i); %Tau for part c in seconds
+        break
+       
+    else 
+    end
+end
+figure(2)
+plot(t37,CH037,t37,CH137,tau632_motor,tau_Voltage,'d')
+axis([-.05 .1 -8 8])
+grid on
+xlabel('Time, t (seconds)')
+ylabel('Voltage (Volts)')
+legend('Tachometer Output, e_o','Motor Input, e_a')
+title('Tachometer Output and Motor Input With Step Change')
+
+%d
+R42=4.2;%Ohms
+B=.5*(Kt-(Kmot*Ke*Kt))/(Kmot*R42); %oz-in/KRPM
+J=.5*((tau632_motor*((Ke*Kt)+(R42*B)))/R42)*(.001/(pi/30));
+
+%e
+
+t39new=t39(79200:end)-.19;
+CH039new=CH039(79200:end);
+CH139new=CH139(79200:end);
+figure(3)
+CH039S=wsmooth(CH039new,t39new,6);%Smoothed
+CH139S=wsmooth(CH139new,t39new,6);%Smoothed
+meanCH039=mean(CH039S(end-100:end));
+AMP=(CH039S(1)-CH039S(end));
+plot(t39,CH039,t39,CH139)%-meanCH039)%tau632_motor,tau_Voltage,'d')
+%plot(t39,CH039)
+%axis([-.05 .1 -8 8])
+grid on
+xlabel('Time, t (seconds)')
+ylabel('Voltage (Volts)')
+title('Motor Subjected to 5\Omega Resistor')
+
+% for i = 1:length(t39new)
+%     
+%     if CH039S(i)<= (.368*AMP)+meanCH039
+%         tau39 = t39new(i);
+%         break
+%        
+%     else 
+%     end
+% end
+tau39=find((abs((.368*AMP)+meanCH039)-CH039S) <= .001);
+plot(t39new,CH039S,t39new(tau39(end)),CH039S(tau39(end)),'d')
+grid on
+xlabel('Time, t (seconds)')
+ylabel('Voltage (Volts)')
+title('Motor Subjected to 5\Omega Resistor')
+tau39=t39new(tau39(end));
+Settling_Time=4*tau39;
+sserror=(CH039new(1)-meanCH039)/CH039new(1); %(Initial Voltage - Final Voltage)/(Initial Voltage)
+
+##### SOURCE END #####
+--></body></html>
