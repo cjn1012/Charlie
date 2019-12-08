@@ -6,8 +6,6 @@ bTime    = xlsread('bengine.xlsx', 'Voltage - Dev1_ai0', 'A9:A209');
 bForce   = xlsread('bengine.xlsx', 'Voltage - Dev1_ai0', 'B9:B209');
 bPressur = xlsread('bengine.xlsx', 'Voltage - Dev1_ai1', 'B9:B209');
 
-
-
 cTime    = xlsread('Cengine.xlsx', 'Voltage - Dev1_ai0', 'A9:A209');
 cForce   = xlsread('Cengine.xlsx', 'Voltage - Dev1_ai0', 'B9:B209');
 cPressur = xlsread('Cengine.xlsx', 'Voltage - Dev1_ai1', 'B9:B209');
@@ -33,7 +31,7 @@ dForce = ((dForce - mean(dForce(end - 10:end)))./.015).*4.5;
 
 %measured values
 d_throatd = .150*.0254;
-c_throatd  = .1375*.0254;
+c_throatd  = .125*.0254;
 b_throatd = .125*.0254;
 
 
@@ -85,22 +83,14 @@ xlim([0 1])
 
 %% Isp calc
 
-bForce = bForce(37:61);
-cForce = cForce(48:90);
-dForce = dForce(40:80);
-
-bMean = mean(bForce);
-cMean = mean(cForce);
-dMean = mean(dForce);
-
 %given values
 tot_thrustd  = 20; % N sec
 tot_thrustc  = 10; % N sec
 tot_thrustb  = 5;  % N sec
 
-max_Pb = max(bPressur);
-max_Pc = max(cPressur);
-max_Pd = max(dPressur);
+max_Pb = max(bPressur)+101300;
+max_Pc = max(cPressur)+101300;
+max_Pd = max(dPressur)+101300;
 
 d_throatA = ((d_throatd/2)^2)*pi;
 c_throatA  = ((c_throatd/2)^2)*pi;
@@ -110,20 +100,20 @@ m_dotb = (.0056/.9);
 m_dotc = (.0198/1.9); %kg/s
 m_dotd = (.0211/1.7);
 
-ve_b = (bMean-(b_throatA*(max_Pb)))/m_dotb;  
-ve_c = (cMean-(c_throatA*(max_Pc)))/m_dotc;  
-ve_d = (dMean-(d_throatA*(max_Pd)))/m_dotd;  
+ve_b = (tot_thrustb-(b_throatA*(max_Pb)))/m_dotb;  
+ve_c = (tot_thrustc-(c_throatA*(max_Pc)))/m_dotc;  
+ve_d = (tot_thrustd-(d_throatA*(max_Pd)))/m_dotd;  
 
 
-Ispb1 = bMean/(m_dotb*9.81); 
-Ispc1 = cMean/(m_dotc*9.81); 
-Ispd1 = dMean/(m_dotd*9.81);
+Ispb = ve_b/9.81; 
+Ispc = ve_c/9.81; 
+Ispd = ve_d/9.81;
 
 Ispb2 = ve_b/9.81; 
-Ispc2 = ve_c/9.81; 
-Ispd2 = ve_d/9.81;
+Ispc = ve_c/9.81; 
+Ispd = ve_d/9.81;
 
 
-rd = 1/(((45.2/1000)*9.81)/tot_thrustd);
+rd = 1/(((45.2/1000)*9.81)/tot_thrustd); 
 rc = 1/(((24.0/1000)*9.81)/tot_thrustc);
 rb = 1/(((19.1/1000)*9.81)/tot_thrustb);
