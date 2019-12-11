@@ -1,0 +1,361 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MainCode</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-12-10"><meta name="DC.source" content="MainCode.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Problem 3</a></li><li><a href="#3">Problem 4</a></li><li><a href="#4">Problem 5</a></li></ul></div><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>;
+<span class="comment">% Filters</span>
+Voltage = [0,-.1,-.2,-.3,-.4,-.5,-.6,-.7,-.8,-.9,-1,-1.1,-1.2,-1.3,-1.4,-1.5,-1.6,-1.7,-1.8,-1.9,-2];
+DarkCurrent = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+Current577 = [49,33,20,10,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].*10^-11;
+Current435 = [35,33,31.5,29.5,27.5,25.5,23.5,21,19.5,17,15,13.5,12,10.5,9,7,5,3.3,2.1,1,0]*10^-10;
+Current365 = [82,72,64,58,50,43,38,30,24,18,13,8,4,.6,.33,.13,.06,0,0,0,0]*10^-10;
+Current546 = [26,20,12,5,.84,.08,.012,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008]*10^-10;
+Current404 = [73,63,53,43,37,29,21,15,9,4,.51,.22,.11,-.7,-.12,-.14,-.15,-.16,-.16,-.16,-.16]*10^-10;
+
+
+f1=figure(1);
+plot(Voltage,Current365)
+hold <span class="string">on</span>
+plot(Voltage,DarkCurrent)
+plot(-1.4,0,<span class="string">'o'</span>)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'365nm Filter and Dark Current Intersection'</span>)
+legend(<span class="string">'365nm'</span>,<span class="string">'Dark Current'</span>)
+
+f2=figure(2);
+plot(Voltage,Current404)
+hold <span class="string">on</span>
+plot(Voltage,DarkCurrent)
+plot(-1,0,<span class="string">'o'</span>)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'404nm Filter and Dark Current Intersection'</span>)
+legend(<span class="string">'404nm'</span>,<span class="string">'Dark Current'</span>)
+
+f3=figure(3);
+plot(Voltage,Current435)
+hold <span class="string">on</span>
+plot(Voltage,DarkCurrent)
+plot(-2,0,<span class="string">'o'</span>)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'435nm Filter and Dark Current Intersection'</span>)
+legend(<span class="string">'435nm'</span>,<span class="string">'Dark Current'</span>)
+
+f4=figure(4);
+plot(Voltage,Current546)
+hold <span class="string">on</span>
+plot(Voltage,DarkCurrent)
+plot(-0.5,0,<span class="string">'o'</span>)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'546nm Filter and Dark Current Intersection'</span>)
+legend(<span class="string">'546nm'</span>,<span class="string">'Dark Current'</span>)
+
+f5=figure(5);
+plot(Voltage,Current577)
+hold <span class="string">on</span>
+plot(Voltage,DarkCurrent)
+plot(-0.5,0,<span class="string">'o'</span>)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'577nm Filter and Dark Current Intersection'</span>)
+legend(<span class="string">'577nm'</span>,<span class="string">'Dark Current'</span>)
+
+f6=figure(6);
+plot(Voltage,Current365)
+hold <span class="string">on</span>
+plot(Voltage,Current404)
+plot(Voltage,Current435)
+plot(Voltage,Current546)
+plot(Voltage,Current577)
+xlabel(<span class="string">'Voltage (V)'</span>)
+ylabel(<span class="string">'Current (A)'</span>)
+title(<span class="string">'All Filters plotted with the Dark Current'</span>)
+legend(<span class="string">'365nm'</span>,<span class="string">'404nm'</span>,<span class="string">'435nm'</span>,<span class="string">'546nm'</span>,<span class="string">'577nm'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+
+
+saveas(f1,<span class="string">'365nm.png'</span>)
+saveas(f2,<span class="string">'404nm.png'</span>)
+saveas(f3,<span class="string">'435nm.png'</span>)
+saveas(f4,<span class="string">'546nm.png'</span>)
+saveas(f5,<span class="string">'577nm.png'</span>)
+saveas(f6,<span class="string">'allnm.png'</span>)
+</pre><img vspace="5" hspace="5" src="MainCode_01.png" alt=""> <img vspace="5" hspace="5" src="MainCode_02.png" alt=""> <img vspace="5" hspace="5" src="MainCode_03.png" alt=""> <img vspace="5" hspace="5" src="MainCode_04.png" alt=""> <img vspace="5" hspace="5" src="MainCode_05.png" alt=""> <img vspace="5" hspace="5" src="MainCode_06.png" alt=""> <h2 id="2">Problem 3</h2><pre class="codeinput">StoppingPot = [-1.4,-1.0,-2.0,-.5,-.5];
+c = 2.99*10^9;
+Wavelength = [365,404,435,546,577]*10^-9;
+Frequency = c./Wavelength;
+
+f7 = figure(7);
+err = .1*ones(size(Frequency));
+errorbar(Frequency,StoppingPot,err)
+title(<span class="string">'Affect of Frequency on Stopping Potential'</span>)
+xlabel(<span class="string">'Frequency (Hz)'</span>)
+ylabel(<span class="string">'Stopping Potential (V)'</span>)
+
+saveas(f7,<span class="string">'stoppingpotvsfreq.png'</span>)
+
+hact = 6.626*10^-34
+e = 1.602*10^-19;
+h = -(e*StoppingPot)./Frequency;
+havg = mean(h)
+errh = 7.8*10^-35
+</pre><pre class="codeoutput">
+hact =
+
+   6.6260e-34
+
+
+havg =
+
+   2.5144e-35
+
+
+errh =
+
+   7.8000e-35
+
+</pre><img vspace="5" hspace="5" src="MainCode_07.png" alt=""> <h2 id="3">Problem 4</h2><pre class="codeinput">upperbound = havg+errh
+
+percentdiff = (hact-havg)/((hact+havg)/2)
+</pre><pre class="codeoutput">
+upperbound =
+
+   1.0314e-34
+
+
+percentdiff =
+
+    1.8538
+
+</pre><h2 id="4">Problem 5</h2><pre class="codeinput">workfunction = ((havg*c)./Wavelength)/2
+workfunction = mean(workfunction)
+errworkfunction = 2*workfunction
+me = 9.1*10^-31
+
+v = sqrt((havg.*Frequency-workfunction)/(.5*me))
+</pre><pre class="codeoutput">
+workfunction =
+
+   1.0e-18 *
+
+    0.1030    0.0930    0.0864    0.0688    0.0651
+
+
+workfunction =
+
+   8.3290e-20
+
+
+errworkfunction =
+
+   1.6658e-19
+
+
+me =
+
+   9.1000e-31
+
+
+v =
+
+   1.0e+05 *
+
+    5.1927    4.7533    4.4362    3.4579    3.2143
+
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all; close all;
+% Filters
+Voltage = [0,-.1,-.2,-.3,-.4,-.5,-.6,-.7,-.8,-.9,-1,-1.1,-1.2,-1.3,-1.4,-1.5,-1.6,-1.7,-1.8,-1.9,-2];
+DarkCurrent = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+Current577 = [49,33,20,10,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].*10^-11;
+Current435 = [35,33,31.5,29.5,27.5,25.5,23.5,21,19.5,17,15,13.5,12,10.5,9,7,5,3.3,2.1,1,0]*10^-10;
+Current365 = [82,72,64,58,50,43,38,30,24,18,13,8,4,.6,.33,.13,.06,0,0,0,0]*10^-10;
+Current546 = [26,20,12,5,.84,.08,.012,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008,.008]*10^-10;
+Current404 = [73,63,53,43,37,29,21,15,9,4,.51,.22,.11,-.7,-.12,-.14,-.15,-.16,-.16,-.16,-.16]*10^-10;
+
+
+f1=figure(1);
+plot(Voltage,Current365)
+hold on
+plot(Voltage,DarkCurrent)
+plot(-1.4,0,'o')
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('365nm Filter and Dark Current Intersection')
+legend('365nm','Dark Current')
+
+f2=figure(2);
+plot(Voltage,Current404)
+hold on
+plot(Voltage,DarkCurrent)
+plot(-1,0,'o')
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('404nm Filter and Dark Current Intersection')
+legend('404nm','Dark Current')
+
+f3=figure(3);
+plot(Voltage,Current435)
+hold on
+plot(Voltage,DarkCurrent)
+plot(-2,0,'o')
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('435nm Filter and Dark Current Intersection')
+legend('435nm','Dark Current')
+
+f4=figure(4);
+plot(Voltage,Current546)
+hold on
+plot(Voltage,DarkCurrent)
+plot(-0.5,0,'o')
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('546nm Filter and Dark Current Intersection')
+legend('546nm','Dark Current')
+
+f5=figure(5);
+plot(Voltage,Current577)
+hold on
+plot(Voltage,DarkCurrent)
+plot(-0.5,0,'o')
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('577nm Filter and Dark Current Intersection')
+legend('577nm','Dark Current')
+
+f6=figure(6);
+plot(Voltage,Current365)
+hold on
+plot(Voltage,Current404)
+plot(Voltage,Current435)
+plot(Voltage,Current546)
+plot(Voltage,Current577)
+xlabel('Voltage (V)')
+ylabel('Current (A)')
+title('All Filters plotted with the Dark Current')
+legend('365nm','404nm','435nm','546nm','577nm','location','northwest')
+
+
+saveas(f1,'365nm.png')
+saveas(f2,'404nm.png')
+saveas(f3,'435nm.png')
+saveas(f4,'546nm.png')
+saveas(f5,'577nm.png')
+saveas(f6,'allnm.png')
+
+
+
+%% Problem 3
+
+StoppingPot = [-1.4,-1.0,-2.0,-.5,-.5];
+c = 2.99*10^9;
+Wavelength = [365,404,435,546,577]*10^-9;
+Frequency = c./Wavelength;
+
+f7 = figure(7);
+err = .1*ones(size(Frequency));
+errorbar(Frequency,StoppingPot,err)
+title('Affect of Frequency on Stopping Potential')
+xlabel('Frequency (Hz)')
+ylabel('Stopping Potential (V)')
+
+saveas(f7,'stoppingpotvsfreq.png')
+
+hact = 6.626*10^-34
+e = 1.602*10^-19;
+h = -(e*StoppingPot)./Frequency;
+havg = mean(h)
+errh = 7.8*10^-35
+
+%% Problem 4
+upperbound = havg+errh
+
+percentdiff = (hact-havg)/((hact+havg)/2)
+
+
+
+%% Problem 5
+workfunction = ((havg*c)./Wavelength)/2
+workfunction = mean(workfunction)
+errworkfunction = 2*workfunction
+me = 9.1*10^-31
+
+v = sqrt((havg.*Frequency-workfunction)/(.5*me))
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
