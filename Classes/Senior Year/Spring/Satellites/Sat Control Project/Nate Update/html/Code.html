@@ -1,0 +1,249 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Code</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-03-30"><meta name="DC.source" content="Code.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput">clear <span class="string">all</span>
+close <span class="string">all</span>
+
+ix =100;
+iy = 100;
+iz = 1000;
+sim(<span class="string">'model'</span>)
+
+tol=.01;
+
+<span class="keyword">for</span> i = 2:length(u)
+    <span class="keyword">if</span> mean(abs(u(i,4))+abs(u(i+1,4))+abs(u(i+2,4))+abs(u(i+3,4))+abs(u(i+4,4))) &lt; tol
+        u1_end = i;
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="keyword">for</span> i = 2:length(u)
+    <span class="keyword">if</span> mean(abs(u(i,5))+abs(u(i+1,5))+abs(u(i+2,5))+abs(u(i+3,5))+abs(u(i+4,5))) &lt; tol
+        u2_end = i;
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+tol=.0001;
+
+<span class="keyword">for</span> i = 2:length(u)
+    <span class="keyword">if</span> mean(abs(u(i,6))+abs(u(i+1,6))+abs(u(i+2,6))+abs(u(i+3,6))+abs(u(i+4,6))) &lt; tol
+        u3_end = i;
+        <span class="keyword">break</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure(1)
+plot(tout,u(:,4))
+hold <span class="string">on</span>
+plot(u1_end/100,0,<span class="string">'o'</span>)
+title(<span class="string">'X-Axis Body Rates'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Body Rates (rad/s)'</span>)
+xlim([0,120])
+text(50,1,<span class="string">'Stabilizes at t=48.93 seconds'</span>)
+
+figure(2)
+plot(tout,u(:,5))
+hold <span class="string">on</span>
+plot(u2_end/100,0,<span class="string">'o'</span>)
+title(<span class="string">'Y-Axis Body Rates'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Body Rates (rad/s)'</span>)
+xlim([0,120])
+text(50,1,<span class="string">'Stabilizes at t=48.82 seconds'</span>)
+
+figure(3)
+plot(tout,u(:,6))
+hold <span class="string">on</span>
+plot(u3_end/100,0,<span class="string">'o'</span>)
+title(<span class="string">'Z-Axis Body Rates'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Body Rates (rad/s)'</span>)
+xlim([0,1200])
+ylim([-.5,5])
+text(400,0,<span class="string">'Stabilizes at t=1000.00 seconds'</span>)
+
+figure(4)
+plot(tout,controleffort(:,1))
+hold <span class="string">on</span>
+plot(tout,controleffort(:,2))
+plot(tout,controleffort(:,3))
+title(<span class="string">'Control Effort of PID Controllers'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Control Effort (J s)'</span>)
+xlim([0,1200])
+ylim([0,5500])
+legend(<span class="string">'X-Axis PID'</span>,<span class="string">'Y-Axis PID'</span>,<span class="string">'Z-Axis PID'</span>,<span class="string">'location'</span>,<span class="string">'northwest'</span>)
+
+figure(5)
+plot(tout,u(:,1))
+hold <span class="string">on</span>
+plot(tout,u(:,2))
+plot(tout,u(:,3))
+title(<span class="string">'Moment Added to Satellite Axis'</span>)
+xlabel(<span class="string">'Time (s)'</span>)
+ylabel(<span class="string">'Moment (N m)'</span>)
+xlim([0,995])
+ylim([-5.5,.5])
+legend(<span class="string">'X-Axis'</span>,<span class="string">'Y-Axis'</span>,<span class="string">'Z-Axis'</span>)
+</pre><img vspace="5" hspace="5" src="Code_01.png" alt=""> <img vspace="5" hspace="5" src="Code_02.png" alt=""> <img vspace="5" hspace="5" src="Code_03.png" alt=""> <img vspace="5" hspace="5" src="Code_04.png" alt=""> <img vspace="5" hspace="5" src="Code_05.png" alt=""> <p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+clear all
+close all
+
+ix =100;
+iy = 100;
+iz = 1000;
+sim('model')
+
+tol=.01;
+
+for i = 2:length(u)
+    if mean(abs(u(i,4))+abs(u(i+1,4))+abs(u(i+2,4))+abs(u(i+3,4))+abs(u(i+4,4))) < tol
+        u1_end = i;
+        break
+    end
+end
+for i = 2:length(u)
+    if mean(abs(u(i,5))+abs(u(i+1,5))+abs(u(i+2,5))+abs(u(i+3,5))+abs(u(i+4,5))) < tol
+        u2_end = i;
+        break
+    end
+end
+
+tol=.0001;
+
+for i = 2:length(u)
+    if mean(abs(u(i,6))+abs(u(i+1,6))+abs(u(i+2,6))+abs(u(i+3,6))+abs(u(i+4,6))) < tol
+        u3_end = i;
+        break
+    end
+end
+
+figure(1)
+plot(tout,u(:,4))
+hold on
+plot(u1_end/100,0,'o')
+title('X-Axis Body Rates')
+xlabel('Time (s)')
+ylabel('Body Rates (rad/s)')
+xlim([0,120])
+text(50,1,'Stabilizes at t=48.93 seconds')
+
+figure(2)
+plot(tout,u(:,5))
+hold on
+plot(u2_end/100,0,'o')
+title('Y-Axis Body Rates')
+xlabel('Time (s)')
+ylabel('Body Rates (rad/s)')
+xlim([0,120])
+text(50,1,'Stabilizes at t=48.82 seconds')
+
+figure(3)
+plot(tout,u(:,6))
+hold on
+plot(u3_end/100,0,'o')
+title('Z-Axis Body Rates')
+xlabel('Time (s)')
+ylabel('Body Rates (rad/s)')
+xlim([0,1200])
+ylim([-.5,5])
+text(400,0,'Stabilizes at t=1000.00 seconds')
+
+figure(4)
+plot(tout,controleffort(:,1))
+hold on
+plot(tout,controleffort(:,2))
+plot(tout,controleffort(:,3))
+title('Control Effort of PID Controllers')
+xlabel('Time (s)')
+ylabel('Control Effort (J s)')
+xlim([0,1200])
+ylim([0,5500])
+legend('X-Axis PID','Y-Axis PID','Z-Axis PID','location','northwest')
+
+figure(5)
+plot(tout,u(:,1))
+hold on
+plot(tout,u(:,2))
+plot(tout,u(:,3))
+title('Moment Added to Satellite Axis')
+xlabel('Time (s)')
+ylabel('Moment (N m)')
+xlim([0,995])
+ylim([-5.5,.5])
+legend('X-Axis','Y-Axis','Z-Axis')
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
